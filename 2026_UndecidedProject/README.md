@@ -1,6 +1,7 @@
-# Team Name
+# Team Name - Undecided
 
 ### Team Members
+Hope McBride 2.0
 
 ### Final Proposal
 1. Persona/Scenario
