@@ -1,7 +1,7 @@
 # Team Name - Undecided
 
 ### Team Members
-- Hope McBride 2.0
+- 
 - Katie Litchen 1.0
 - Tiffany Jones 1.0
 
@@ -9,7 +9,7 @@ Something else :P
 
 ### Final Proposal
 1. Persona/Scenario
-    1. Persona
+    1. Persona : Gen Audience
     2. Scenario
 2. Requirements Document
 
