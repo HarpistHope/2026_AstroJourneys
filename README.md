@@ -3,7 +3,7 @@
 - Katie Litchen
 - Hope McBride
 - Tiffany Jones
-
+- Akhila Vattaluri Gangireddigari 
 
 Project Outline (Based on Proposal Requirements)
 
