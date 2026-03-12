@@ -14,7 +14,7 @@ LETS ALL MAKE CHANGES!!!
     2. Scenario
 2. Requirements Document
 
-3. Wireframes  NEXT WWEKS PROBLEM
+3. Wireframes  NEXT WEEKS PROBLEM
 
 
 
