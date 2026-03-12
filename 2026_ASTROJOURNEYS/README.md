@@ -16,7 +16,7 @@ YIPPIEEEEEEE ;)
     2. Scenario
 2. Requirements Document
 
-3. Wireframes  NEXT weeks PROBLEM
+3. Wireframes  NEXT WEEKS PROBLEM
 
 
 
