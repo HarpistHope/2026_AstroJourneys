@@ -9,7 +9,7 @@ Something else :P
 
 ### Final Proposal
 1. Persona/Scenario
-    1. Persona
+    1. Persona : Gen Audience
     2. Scenario
 2. Requirements Document
 
