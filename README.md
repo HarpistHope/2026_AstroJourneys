@@ -1,3 +1,5 @@
+# Team Name - AstroJourneys!
+
 # Geog575 Project Proposal:
 
 ## Group Members: 
@@ -40,4 +42,6 @@ From the first manned space flights in the 1960s to the lunar ventures of future
 | 3 | Information Seeking | Retrieve: Objects. Click or brush objects noted on the distance tracker, map view, or within the event context to retrieve additional details |
 
 ## Wireframes: 
-
+1. ![LandingPage](img/landingpage.png)
+2. ![InitialView](img/initialview.png)
+3. ![UserSelectedView](img/userselectedview.png)
