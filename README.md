@@ -19,5 +19,22 @@ From the first manned space flights in the 1960s to the lunar ventures of future
 **Scenario #2:** Oliver’s dad arrives at the interactive after Oliver is done. The main interaction page is still active from when Oliver was exploring, so his dad selects the ‘Reset to Home’ button to return to the initial landing page. After clicking the start button, he scrolls through the historical timeline, paying close attention to how the map view and contextual information pane update dynamically for each event. As the timeline progresses, the map automatically zooms to and highlights the NASA center locations associated with each historical milestone. Oliver’s dad notices a **pattern** where many NASA centers are located in southern, coastal regions. By examining their proximity to water and considering rocket launch safety and debris risks, he draws **associations** and explores possible **correlations** between warm climates, nearby water access, rocket transportation logistics, and launch and safety considerations. These associations help him better understand how NASA selects sites for their space centers. 
 
 ## Requirements Document: 
+| Representation |
+| :---     | :---:    | ---:     |
+| 1 | Landing Page | Title/Home page with intro text and a launch button |
+| 2 | Interface Event Page | Opens from the launch button and houses all subsequent elements alongside nav buttons to tab through events and a return button to return to the landing page |
+| 3 | Timeline | Displays the year of the currently displayed event alongside the event name. Each node represents one event of interest |
+| 4 | Historical Events | Each node on the timeline corresponds to an event of interest. Content of subsequent elements will refresh based on the current event, including a text description of what the event was, how it relates to the story, and some fun historical facts |
+| 5 | Historical Images | Photos or other static visualizations relevant to specific events will be available throughout the journey |
+| 6 | Basemap | Each timeline event will have an associated map representation focusing on key area(s) relevant to the event. The scale/extent will be fixed for each view |
+| 7 | Event Locations | Markers on the basemap will indicate the points/locations of interest for each event. Pop-ups or labels may be included as needed to house more context for the event location |
+| 8 | Flight Distances From Earth | Dynamic graphic depicting the extent of how far we have journeyed from Earth. Progresses with each event and may expand / re-scale as we send astronauts and satellites further in space on our journey |
+| :---     | :---:    | ---:     |
+| Interaction |
+| :---     | :---:    | ---:     |
+| 1 | Timeline Manipulation | Sequence: Objects. Sequence through important dates on the timeline to trigger changes in the distance tracker, map view, and information window |
+| 2 | Event Focus | Zoom/pan, automatically: Objects. The distance tracker and map view will adjust to the extent suited for the current event |
+| 3 | Information Seeking | Retrieve: Objects. Click or brush objects noted on the distance tracker, map view, or within the event context to retrieve additional details |
 
 ## Wireframes: 
+
