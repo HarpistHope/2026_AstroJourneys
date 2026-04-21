@@ -41,9 +41,12 @@
         </div>
         `);
 
-    // close landing page on click
+    // close landing page on click, allow interactions with main window elements
     d3.select(".close-btn").on("click", function() {
-        landing.style("display","none")
+        landing.style("display","none");
+
+        d3.selectAll("#map, #timeline, #infoBox, #distTracker")
+        .style("pointer-events", "auto");
     });
 
     // set window-responsive frame widths (arbitrary dimensions to start, edit exact measures as project comes together)
