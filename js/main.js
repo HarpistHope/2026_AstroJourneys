@@ -57,6 +57,7 @@
         var trackerWidth = window.innerWidth - 100
     }
 
+    // set heights, proportionally consistent across window dimensions
     var mapHeight = window.innerHeight - 250;
     var infoHeight = window.innerHeight - 250;
     var trackerHeight = window.innerHeight - 100;
@@ -66,11 +67,12 @@
 
     // set up window, include map, info, and tracker containers
     function setWindow() {
+
         // call map, infobox, and distance tracker functions
         setMap();
 
         setInfoBox();
-        
+
         setDistTrack();
 
 
@@ -78,34 +80,40 @@
 
     }; // end of setWindow()
 
-    // set up function specifically to create the map
+    // set up function  to create the map
     function setMap() {
+
         // create svg container for map
         var map = d3.select("map")
             .append("svg")
             .attr("class", "map")
             .attr("width", mapWidth)
             .attr("height", mapHeight)
+
     }; // end of setMap()
 
     // set up function to create infoBox
     function setInfoBox() {
+
         // create svg container for info/context
         var infoBox = d3.select("infoBox")
             .append("svg")
             .attr("class", "infoBox")
             .attr("height", infoHeight)
             .attr("width", infoWidth)
+
     }; // end of setInfoBox()
 
     // set up function to create distance tracker
     function setDistTrack() {
+
         // create svg container for distance tracker
         var distTracker = d3.select("distTracker")
             .append("svg")
             .attr("class", "distTracker")
             .attr("width", trackerWidth)
             .attr("height", trackerHeight)
+
     }; // end of setDistTrack()
 
 
