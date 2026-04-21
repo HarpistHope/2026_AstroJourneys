@@ -71,6 +71,7 @@
         year: 1969,
         distance: 238855,
         coords: [-80.6, 28.6] // Kennedy Space Center (lng, lat)
+        // think about adding linked image and map view for each event here
     },
     {
         title: "Artemis II",
