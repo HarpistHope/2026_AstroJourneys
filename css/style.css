@@ -1,1 +1,24 @@
 /*insert style here*/
+
+/* Random styling for now, will visualize with data later */
+#infoBox {
+    position: fixed;   /* or absolute if inside a layout wrapper, decide later in process */
+    top: 20px;
+    right: 20px;
+
+    width: 320px;  
+    height: 60vh;      /* limits vertical space */
+
+    background: rgba(0, 0, 0, 0.85);
+    color: white;
+
+    padding: 16px;
+    border-radius: 10px;
+
+    overflow-y: auto;  /* this enables scrolling if text is too long */
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: #888 transparent;
+
+    z-index: 1000;
+}
