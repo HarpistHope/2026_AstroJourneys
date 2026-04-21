@@ -27,28 +27,6 @@
 // Wrap entire script in anonymous function
 (function() {
 
-    // create welcome/landing page item
-    var landing = d3.select("body")
-        .append("div")
-        .attr("class", "landingPage");
-
-    // set landing html design
-    landing.html(`
-        <div class="landing-content">
-        <p><h1>ASTRO JOURNEYS!</h1></p>
-        <p>Blast off on an incredible journey through the story of America's Space Program.</p>
-        <button class="close-btn">Blast-off!</button>
-        </div>
-        `);
-
-    // close landing page on click, allow interactions with main window elements
-    d3.select(".close-btn").on("click", function() {
-        landing.style("display","none");
-
-        d3.selectAll("#map, #timeline, #infoBox, #distTracker")
-        .style("pointer-events", "auto");
-    });
-
     // set window-responsive frame widths (arbitrary dimensions to start, edit exact measures as project comes together)
     if(window.innerWidth < 700) {
         var mapWidth = window.innerWidth - 40
@@ -94,9 +72,41 @@
     // define maxDistance (check how distance attribute is called in event data)
     var maxDistance = d3.max(events, d => d.distance);
 
-    // begin script when window loads
-    window.onload = setWindow;
+    // function to create landing page and setWindow when window loads
+    window.onload = function() {
+        // create welcome/landing page
+        var landing = d3.select("body")
+            .append("div")
+            .attr("class", "landingPage");
 
+        // set landing html design
+        landing.html(`
+            <div class="landing-content">
+            <p><h1>ASTRO JOURNEYS!</h1></p>
+            <p>Blast off on an incredible journey through the story of America's Space Program.</p>
+            <button class="close-btn">Blast-off!</button>
+            </div>
+            `);
+
+        // lock interaction with main window interactions
+        d3.selectAll("#map, #timeline, #infoBox, #distTracker")
+            .style("pointer-events", "none");
+
+        // anon function to create button to close landing page on click, allow interactions with main window elements
+        landing.select(".close-btn").on("click", function() {
+            landing.style("display","none");
+
+        // unlock interaction with main window interactions
+        d3.selectAll("#map, #timeline, #infoBox, #distTracker")
+            .style("pointer-events", "auto");
+        
+        // initialize main window 
+        setWindow();
+        });
+
+    }; // end of anonymous onload function
+
+    
     // set up window, include map, info, and tracker containers
     function setWindow() {
 
