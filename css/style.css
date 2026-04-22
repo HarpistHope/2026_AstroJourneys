@@ -2,9 +2,59 @@
 
 /* playing around with random styling for now, will visualize with data later */
 
+body {
+    overflow: hidden; /*to prvent whole screen from scrolling, only containers*/
+    margin: 0;
+}
+
+#main {
+    display: grid;
+    grid-template-columns: 20% 60% 20%;
+    grid-template-rows: 50% 50%;
+    height: 100vh;
+}
+
 /* to prevent accidental clicks 'behind' the landing page */
 #map, #timeline, #infoBox, #distTracker {
     pointer-events: none; 
+}
+
+#timeline {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    overflow: auto;
+    
+}
+
+#map {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+#infoBox {
+    grid-column: 2;
+    grid-row: 2;
+
+    width: 320px;  
+    height: 60vh;      /* limits vertical space */
+
+    background: rgba(0, 0, 0, 0.85);
+    color: white;
+
+    padding: 16px;
+    border-radius: 10px;
+
+    overflow-y: auto;  /* this enables scrolling if text is too long */
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: #888 transparent;
+
+    z-index: 1000;
+}
+
+#distTracker {
+    grid-column: 3;
+    grid-row: 1/ span 2;
 }
 
 .landingPage {
@@ -56,24 +106,3 @@
     box-shadow: 0 0 25px rgba(255, 215, 0, 1);
 }
 
-#infoBox {
-    position: fixed;   /* or absolute if inside a layout wrapper, decide later in process */
-    top: 20px;
-    right: 20px;
-
-    width: 320px;  
-    height: 60vh;      /* limits vertical space */
-
-    background: rgba(0, 0, 0, 0.85);
-    color: white;
-
-    padding: 16px;
-    border-radius: 10px;
-
-    overflow-y: auto;  /* this enables scrolling if text is too long */
-    overflow-x: hidden;
-    scrollbar-width: thin;
-    scrollbar-color: #888 transparent;
-
-    z-index: 1000;
-}
