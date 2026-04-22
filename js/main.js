@@ -10,16 +10,16 @@
 //          - Four containers 
 //              -- Main window containing everything 
 //                  + background graphics/designs
-//                  + timeline scroll
+//                  + vertical timeline scroll - on the left third of the window; yellow, with arrows indicating which direction the timeline overflows (up/down, clickable if more events beyond the visible portion, grayed out otherwise)
 //                  + Return to Launch button, resets timeline & activates landing page popup/window
-//              -- Map view containing map
+//              -- Map view containing map - centered, upper portion of the middle third of the window
 //                  + zoom linked to timeline scroll/click
 //                  + small popup (similar to leaflet popups?) containing concise location info
-//              -- Information Box
+//              -- Information Box - centered, lower portion of the middle third of the window
 //                  + updates with timeline scroll/click
 //                  + text (should be able to scroll if necessary?)
 //                  + pictures embedded in text (with associated image descriptions - located static below or activated on mouseover?)
-//              -- Distance tracker
+//              -- Distance tracker - right third of the window
 //                  + zoom out linked with timeline click
 //                  + shuttle graphic moves further from earth with timeline click
 //                  + possible hover or click interaction to trigger exact distance popup? Or just place shuttle graphic label alongside with dynamically updating distance
@@ -40,7 +40,7 @@
     // set heights, proportionally consistent across window dimensions
     var mapHeight = window.innerHeight - 250;
     var trackerHeight = window.innerHeight - 100;
-    var timelineHeight = window.innerHeight;
+    var timelineHeight = window.innerHeight - 75;
     
     // try to set up sounds activated by interactions? -- need to find and add sound files
     var sounds = {
@@ -61,6 +61,7 @@
         year: 1969,
         distance: 238855,
         coords: [-80.6, 28.6], // Kennedy Space Center (lng, lat)
+        location: "Kennedy Space Center",
         locDateFounded: "July 1, 1962",
         locImage: "kennedyin1969.jpg",
         infoImage: "apollo11.jpg",
@@ -73,6 +74,7 @@
         year: 2026,
         distance: 252756,
         coords: [-80.6, 28.6], // Kennedy Space Center (lng, lat)
+        location: "Kennedy Space Center",
         locDateFounded: "July 1, 1962",
         locImage: "kennedyin2026.jpg",
         infoImage: "artemisII.jpg",
@@ -123,6 +125,8 @@
         setWindow();
         });
 
+        console.log("Onload Running");
+
     }; // end of anonymous onload function
 
     
@@ -156,6 +160,16 @@
         var scale = d3.scalePoint()
             .domain(events.map(d => d.year))
             .range([50, timelineHeight - 50]);
+
+        // create timeline line    
+        timeline.append("line")
+            .attr("x1", 50)
+            .attr("x2", 50)
+            .attr("y1", 0)
+            .attr("y2", timelineHeight)
+            .attr("stroke", "gold")
+            .attr("stroke-width", 2)
+            .attr("marker-end", "url(#arrow)");
         
         // set up timeline interaction
         timeline.selectAll("circle")
@@ -168,6 +182,22 @@
                 currentEvent = events.indexOf(d);
                 updateViews(currentEvent);
             });
+
+        // set up arrow markers on timeline (I had to google method to create these)
+        timeline.append("defs")
+            .append("marker")
+            .attr("id", "arrow")
+            .attr("viewBox", "0 0 10 10")
+            .attr("refX", 5)
+            .attr("refY", 5)
+            .attr("markerWidth", 6)
+            .attr("markerHeight", 6)
+            .attr("orient", "auto-start-reverse")
+            .append("path")
+            .attr("d", "M 0 0 L 10 5 L 0 10 z")
+            .attr("fill", "gold");
+
+
 
     }; // end of setTimeline()
 
@@ -193,8 +223,8 @@
 
         // use promise.all to parallelize asynchronous data loading
         var promises = [
-            d3.csv(""),
-            d3.json("") // put data sources here
+            d3.csv("data/SpaceCenters.csv"),
+            d3.json("data/states_wgs84.topojson") // put data sources here
         ];
         Promise.all(promises).then(callback);
 
@@ -295,7 +325,7 @@
         //loop through csv to assign each set of csv attribute values to geojson states
             for (var i = 0; i < csvData.length; i++) {
                 var csvState = csvData[i]; //the current state
-                var csvKey = csvState.ISO3166_2; //the CSV primary key
+                var csvKey = csvState.STATE_ABBR; //the CSV primary key
 
                 //loop through geojson states to find correct state
                 for (var a = 0; a < usStates.length; a++) {
@@ -448,13 +478,13 @@
     }; // end of updateViews()
 
     // function to separate out sounds so they don't stack on each other
-    function playSound(sound) {
+    // function playSound(sound) {
 
-        sound.pause();
-        sound.currentTime = 0;
-        sound.play();
+    //     sound.pause();
+    //     sound.currentTime = 0;
+    //     sound.play();
 
-    }; // end of playSound()
+    // }; // end of playSound()
 
     // add reset/return to launch function to reset attributes and open landing page
     function reset() {
@@ -471,4 +501,4 @@
         updateViews(currentEvent);
     }; // end of reset()
 
-}); // end of entire script
+})(); // end of entire script
