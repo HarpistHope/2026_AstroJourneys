@@ -27,6 +27,7 @@
 // Wrap entire script in anonymous function
 (function() {
 
+    // pseudoglobal variables  
     // set window-responsive frame widths (arbitrary dimensions to start, edit exact measures as project comes together)
     if(window.innerWidth < 700) {
         var mapWidth = window.innerWidth - 40
@@ -40,9 +41,17 @@
     var mapHeight = window.innerHeight - 250;
     var trackerHeight = window.innerHeight - 100;
     var timelineHeight = window.innerHeight;
+    
+    // try to set up sounds activated by interactions? -- need to find and add sound files
+    var sounds = {
+        click: new Audio("sounds/click.mp3"),
+        launch: new Audio("sounds/launch.mp3"),
+        transition: new Audio("sounds/transition.mp3")
+    };
 
-    // pseudoglobal variables   
-
+    // define last event index
+    var lastEventIndex = -1; 
+    
     // eventual list of timeline events, placeholder examples in there right now
     // NOTE: We should decide if distances will be in miles or km lol
     var events = [    
@@ -51,7 +60,11 @@
         description: "First Moon landing",
         year: 1969,
         distance: 238855,
-        coords: [-80.6, 28.6] // Kennedy Space Center (lng, lat)
+        coords: [-80.6, 28.6], // Kennedy Space Center (lng, lat)
+        locDateFounded: "July 1, 1962",
+        locImage: "kennedyin1969.jpg",
+        infoImage: "apollo11.jpg",
+        funFact: "The Other Astronaut: Michael Collins had a vital role to play - but he often gets forgotten. While his buddies Neil and Buzz were exploring the lunar surface for the first time, Michael stayed in lunar orbit to pilot the command module."
         // think about adding linked image and map view for each event here
     },
     {
@@ -59,12 +72,17 @@
         description: "Farthest distance from Earth",
         year: 2026,
         distance: 252756,
-        coords: [-80.6, 28.6] // Kennedy Space Center (lng, lat)
+        coords: [-80.6, 28.6], // Kennedy Space Center (lng, lat)
+        locDateFounded: "July 1, 1962",
+        locImage: "kennedyin2026.jpg",
+        infoImage: "artemisII.jpg",
+        funFact: "Moon Joy: During the 10-day live stream, millions around the globe were entertained by the unrestrained enthusiasm shown by the Artemis astronauts and NASA coms teams. 'Moon Joy' quickly spread around the world."
+        
     }
 ];
 
     // all variables here are defined 'globally,' they are all called in several functions below
-    var map, g, path, zoom, locationPopup, projection;
+    var landing, map, g, path, zoom, locationPopup, projection;
 
     // create currentEvent variable, starts at index 0
     var currentEvent = 0;
@@ -75,7 +93,7 @@
     // function to create landing page and setWindow when window loads
     window.onload = function() {
         // create welcome/landing page
-        var landing = d3.select("body")
+        landing = d3.select("body")
             .append("div")
             .attr("class", "landingPage");
 
@@ -94,6 +112,7 @@
 
         // anon function to create button to close landing page on click, allow interactions with main window elements
         landing.select(".close-btn").on("click", function() {
+            sounds.launch.play();
             landing.style("display","none");
 
         // unlock interaction with main window interactions
@@ -132,6 +151,24 @@
             .append("svg")
             .attr("class", "timeline")
             .attr("height", timelineHeight)
+
+        // create scale for timeline interaction movement
+        var scale = d3.scalePoint()
+            .domain(events.map(d => d.year))
+            .range([50, timelineHeight - 50]);
+        
+        // set up timeline interaction
+        timeline.selectAll("circle")
+            .data(events)
+            .enter()
+            .append("circle")
+            .attr("cy", d => scale(d.year))
+            .attr("cx", 50)
+            .on("click", function(event, d) {
+                currentEvent = events.indexOf(d);
+                updateViews(currentEvent);
+            });
+
     }; // end of setTimeline()
 
     // set up function  to create the map
@@ -166,6 +203,20 @@
             .scaleExtent([1, 8])
             .on("zoom", zoomed);
         map.call(zoom);
+
+        // set up event location point markers
+        g.selectAll(".event-point")
+            .data(events)
+            .enter()
+            .append("circle")
+            .attr("class", "event-point")
+            .attr("cx", d => projection(d.coords)[0])
+            .attr("cy", d => projection(d.coords)[1])
+            .attr("r", 5)
+            .on("click", (e, d, i) => {
+                currentEvent = i;
+                updateViews(i);
+            });
         
         // set up callback function to join data
         function callback(data) {
@@ -224,13 +275,17 @@
             .append("svg")
             .attr("class", "distTracker")
             .attr("width", trackerWidth)
-            .attr("height", trackerHeight)
+            .attr("height", trackerHeight);
 
         d3.select("#distTracker svg") // add shuttle svg (literally just a circle for now, Ill figure out how to add an actual shuttle graphic/icon later)
             .append("circle")
             .attr("class", "shuttle")
             .attr("r", 10)
             .attr("cy", 50);
+
+        d3.select("#distTracker")
+            .append("text")
+            .attr("class", "distLabel")
 
     }; // end of setDistTrack()
 
@@ -333,27 +388,40 @@
 
     // add updateViews function (similar to changeAttributes from d3 lab)
     function updateViews(index) {
+        // prevent too many activations
+        if (index === lastEventIndex) 
+            return; 
+            lastEventIndex = index;
         
         // define event 
         var event = events[index];
 
+        playSound(sounds.transition);
+
         // add locationPopup layout
         d3.select(".locationPopup")
             .html(`
-                <h2>${event.title}</h2>
-                <p>${event.description}</p>
-                <p><strong>Year:</strong> ${event.year}</p>
+                <h2>${event.location}</h2>
+                <p>Established in ${event.locDateFounded}</p>
+                <p>${event.locImage}</p>
             `);
 
-        // add infoBox text
+        // add infoBox text and fun fact button
         d3.select(".info-content")
             .html(`
                 <h2>${event.title}</h2>
                 <p>${event.description}</p>
                 <p><strong>Year:</strong> ${event.year}</p>
                 <p><strong>Distance from Earth:</strong> ${event.distance}</p>
-                <img src="someImage.jpg" style="width:100%; border-radius:8px;">
+                <img src="${event.infoImage}" style="width:100%; border-radius:8px;">
+                <button class="funFactBtn">Did You Know?</button>
             `);
+        
+        // activate funFact button on click
+        d3.select(".funFactBtn").on("click", () => {
+            playSound(sounds.click); 
+            alert(event.funFact);
+        });
 
         // set up scale for the distance tracker
         var scale = d3.scaleLinear()
@@ -363,15 +431,30 @@
         // move shuttle graphic along distance tracker scale
         d3.select(".shuttle") // will need to create shuttle graphic, circle for now
             .transition()
+            .duration(1000)
+            .ease(d3.easeCubic)
             .attr("cx", scale(event.distance));
 
         // zoom to event location on the map
         zoomToLocation(event);
 
+        // update distance tracker label
+        d3.select(".distLabel")
+            .text(event.distance + "miles");
+
         // test updateViews once data is loaded
         console.log("Event: ", event);
 
     }; // end of updateViews()
+
+    // function to separate out sounds so they don't stack on each other
+    function playSound(sound) {
+
+        sound.pause();
+        sound.currentTime = 0;
+        sound.play();
+
+    }; // end of playSound()
 
     // add reset/return to launch function to reset attributes and open landing page
     function reset() {

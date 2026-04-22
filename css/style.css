@@ -2,6 +2,11 @@
 
 /* playing around with random styling for now, will visualize with data later */
 
+/* to prvent whole screen from scrolling, only containers */
+body {
+    overflow: hidden;
+}
+
 /* to prevent accidental clicks 'behind' the landing page */
 #map, #timeline, #infoBox, #distTracker {
     pointer-events: none; 
