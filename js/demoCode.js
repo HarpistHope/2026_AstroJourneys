@@ -54,9 +54,121 @@
     
     // eventual list of timeline events, placeholder examples in there right now
     // NOTE: We should decide if distances will be in miles or km lol
-    var events = [    
-        {
-        title: "Apollo 11",
+    // I feel like it may be nice to include events that may not have a map reference/data link
+    // I'm going to add them in here and we can move them to an appropriate place later - or eliminate!
+    var events = [   
+    {
+        title: "Our First Taste of Flight:Wilber and Orville Wright",
+        description: "First Powered Flight",
+        year: 1903, // complete date December 17,1903
+        distance: 0.16, // (852 ft) duration: 59 sec, altitude: 10 ft
+        coords: [-75.7, 36.0], // Kill Devil Hills, Kitty Hawk, NC (lng, lat)
+        location: "Kill Devil Hills, near Kitty Hawk, NC",
+        locDateFounded: "",
+        locImage: "",
+        infoImage: "",
+        funFact: ""
+    }, 
+    {
+        title: "NASA is Born",
+        description: "",
+        year: 1958, // complete date Oct. 1, 1958
+        distance: 
+        coords: [-77.0, 38.9], // Washington, D.C. (lng, lat)
+        location: "Washington, D.C.",
+        locDateFounded: "",
+        locImage: "",
+        infoImage: "",
+        funFact: "NASA opened for business in Washington, D.C."
+    },
+    {
+        title: "The “Original Seven”,
+        description: "NASA’s First Class of Astronauts",
+        year: 1959, // complete date April 9, 1959
+        distance: "",
+        coords: [], // Washington, D.C. (lng, lat)
+        location: "",
+        locDateFounded: "",
+        locImage: "",
+        infoImage: "",
+        funFact: "Wally Schirra, Deke Slayton, John Glenn, Scott Carpenter, Alan Shepard, Gus Grissom, and Gordon Cooper became the “Original Seven”, NASA’s first class of astronauts."
+    },
+    {
+        title: "The US Makes it to Space: Mercury-Redstone 3 Freedom 7 Mission",
+        description: "First American in Space",
+        year: 1961, // complete date May 5, 1961
+        distance: 303, //duration: 00:15:28 HMS
+        coords: [-80.6, 28.5], // (lng, lat)
+        location: "", // The event locations will have a lot of repeats. Should we incorporate a location for a relatable fact? Astronaut's hometown, etc?
+        locDateFounded: "",
+        locImage: "",
+        infoImage: "",
+        funFact: "Astronaut Alan Shepard Jr. became the first American in space, witnessing a view of Earth no American had seen before. Part of Project Mercury which spanned 25 flights over between 1961 and 1963, the Freedom 7 mission lasted 15 minutes, 28 seconds."
+    },
+    {
+        title: "The Power of One: Project Mercury",
+        description:""
+        year: 1961-1963
+        distance: "",
+        coords: [], 
+        location: "",
+        locDateFounded: "",
+        locImage: "",
+        infoImage: "",
+        funFact: "With room for only one astronaut per mission, Project Mercury launched six missions, showing that humans could function for periods up to 34 hours of weightless flight.
+    },
+    {
+        title: "Mercury-Atlas 6: Friendship 7 Mission",
+        description: "First Trip around the Moon",
+        year: 1962, // complete date February 20, 1962
+        distance: 75679, //duration: 04:55:23 HMS
+        coords: [-80.6, 28.5], // (lng, lat)
+        location: "Cape Canaveral",
+        locDateFounded: "",
+        locImage: "",
+        infoImage: "",
+        funFact:"Astronaut John Glenn made history onboard the Friendship 7 Mercury spacecraft, becoming the first U.S. astronaut to orbit Earth."
+    },
+    {
+        title: "Gemini IV Mission",
+        description: "First Walk in Space",
+        year: 1965, // complete date June 3, 1965
+        distance: 1600000, //duration: 97:56:12 HMS
+        coords: [-80.6, 28.5], // (lng, lat)
+        location: "Cape Canaveral",
+        locDateFounded: "",
+        locImage: "",
+        infoImage: "",
+        funFact: "Gemini IV mission led NASA astronaut, Ed White, to become the first American to walk in space."
+        // funFact2: "Project Gemini expanded onboard capacity to two astronauts, spanning 10 manned missions."
+    },
+    {
+        title: "Apollo 1",
+        description: "Our First Loss",
+        year: 1967, // complete date Jan. 27, 1967
+        distance: , //duration: 
+        coords: [-80.6, 28.5], // (lng, lat)
+        location: "Cape Canaveral",
+        locDateFounded: "",
+        locImage: "",
+        infoImage: "",
+        funFact: "The Apollo 1 Mission marked the first tragedy of spaceflight as fire broke out during a preflight test, taking the lives of Astronauts Gus Grissom, Ed White, and Roger Chaffee, fueling a renewed dedication to safety protocol."
+    },
+    {
+        title: "Messages from Space",
+        description: "",
+        year: 1968, // complete date Oct. 19, 1968
+        distance: , //duration: 
+        coords: [], // (lng, lat)
+        location: "",
+        locDateFounded: "",
+        locImage: "",
+        infoImage: "",
+        funFact:"The first live TV broadcast from a manned U.S. spacecraft was transmitted from the Apollo 7 mission"
+
+    },
+    {
+        title: "Apollo 11: One Giant Leap for Mankind",
         description: "First Moon landing",
         year: 1969,
         distance: 238855,
@@ -64,9 +176,21 @@
         location: "Kennedy Space Center",
         locDateFounded: "July 1, 1962",
         locImage: "kennedyin1969.jpg",
-        infoImage: "apollo11.jpg",
+        infoImage: "apollo11.jpg", 
         funFact: "The Other Astronaut: Michael Collins had a vital role to play - but he often gets forgotten. While his buddies Neil and Buzz were exploring the lunar surface for the first time, Michael stayed in lunar orbit to pilot the command module."
         // think about adding linked image and map view for each event here
+    },
+    {
+        title: "Apollo 13: Beating the Odds",
+        description: "",
+        year: 1970, //complete year: April 17, 1970 
+        distance: , //duration: 
+        coords: [], // (lng, lat)
+        location: "",
+        locDateFounded: "",
+        locImage: "",
+        infoImage: "", 
+        funFact: "The Apollo 13 crew used ingenuity to configure onboard equipment and supplies to successfully remove carbon dioxide from the Lunar Module after an oxygen tank explosion, returning to Earth safely."
     },
     {
         title: "Artemis II",
