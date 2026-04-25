@@ -61,60 +61,61 @@
         title: "Wilber and Orville Wright",
         description: "First Powered Flight",
         year: 1903, // complete date December 17,1903
-        distance: 0.16, // (852 ft) duration: 59 sec, altitude: 10 ft
+        distance: 0.16, // Fourth Flight: (852 ft, 0.16 miles) duration: 59 sec, altitude: 10 ft, First Flight: 120 ft, 12 seconds
         coords: [-75.7, 36.0], // Kill Devil Hills, Kitty Hawk, NC (lng, lat)
         location: "Kill Devil Hills, near Kitty Hawk, NC",
         locDateFounded: "",
-        locImage: "",
-        infoImage: "1903_First_Flight.jpg",
-        funFact: 'Without existing equipment on the market, the Wright Brothers not only designed their own wind tunnel to test wing shape, but also engineered a lightweight gasoline engine and custom propeller to power their aircraft, the "Flyer".'
+        locImage: "WrightBros_FirstFlight_1903.jpg", // or "1903_Dec14_Preflight.jpg" shows more context of the hill
+        infoImage: "WrightBros_GliderKited_1901.jpg", //testing glider for lift as a kite
+        funFact: 'To understand the components of lift, Wilber and Orville tested their initial glider design as a kite, progressing to extensive unmanned and manned glider flights. From there, and without existing equipment on the market, the Wright Brothers not only designed their own wind tunnel to test wing shape, but also engineered a lightweight gasoline engine and custom propeller to power their aircraft, the "Flyer".'
     },
     {
         title: "NASA is Born",
         description: "NASA opened for business in Washington, D.C.",
         year: 1958, // complete date Oct. 1, 1958
-        distance: 
+        distance: "",
         coords: [-77.0, 38.9], // Washington, D.C. (lng, lat)
-        location: "Washington, D.C.",
+        location: "Washington, DC", //Dolley Madison House on Lafayette Square in Washington, DC
         locDateFounded: "",
-        locImage: "NASAFirstHeadquarters.jpg", //The Dolly Madison House, 1520 H Street, NW, in Washington, DC
-        infoImage: "NACA_XSeriesPressureSuit.jpg", //Robert Champine in X-Series Pressure Suit, 1957 - one of the first designs built to protect pilots' bodies in the event of exposure to the low air pressure at high altitude.
-        funFact: "NASA's footing was built on the vast aeronautics research of NACA, the National Advisory Committee for Aeronautics, founded in 1915."
+        locImage: "NASA_FirstHeadquarters 1958.jpg", //The Dolly Madison House, 1520 H Street, NW, in Washington, DC
+        infoImage: "NACA_PilotJoeAlgranti_1960.jpg", //Pilot Joe Algranti climbs into the cockpit of a McDonnell F2H-2B Banshee on the tarmac at the NACA Lewis Flight Propulsion Laboratory. Algranti was a primary test subject for the Multi-Axis Space Test Inertia Facility (MASTIF), a device used to train the Mercury astronauts how to control a spinning capsule.
+        funFact: "NASA's footing was built on the vast aeronautics research, testing and knowledge of the people at NACA, the National Advisory Committee for Aeronautics, founded in 1915."
     },
+    // create space suit section? One of first suits: NACA_XSeriesPressureSuit_1957.jpg", //Robert Champine in X-Series Pressure Suit, 1957 - one of the first designs built to protect pilots' bodies in the event of exposure to the low air pressure at high altitude.
     {
         title: "The “Original Seven”",
         description: "NASA’s First Astronauts",
         year: 1959, // complete date April 9, 1959
         distance: "",
-        coords: [], // Washington, D.C. (lng, lat)
-        location: "",
+        coords: [-77.0, 38.9], // Washington, D.C. (lng, lat)
+        location: "Washington, DC", //The 90 minute event took place in the ballroom of the Dolley Madison House, complete with photo session and a panel discussion with reporters
         locDateFounded: "",
-        locImage: "",
-        infoImage: "original7.jpg",
-        funFact: "Wally Schirra, Deke Slayton, John Glenn, Scott Carpenter, Alan Shepard, Gus Grissom, and Gordon Cooper were selected as NASA’s Mercury astronauts. This delegation propelled them into the center of public attention as the faces of American space exploration"
+        locImage: "Mercury_Original7bw_1959.jpg", // color image: Mercury_Original7_1959.jpg
+        infoImage: "Mercury_Original7_LifeMagazine_1959_COPYRIGHTED.jpg", // This is copyrighted, so I emailed LIFE Magazine requesting permission for use. 
+        funFact: "Wally Schirra, Deke Slayton, John Glenn, Scott Carpenter, Alan Shepard, Gus Grissom, and Gordon Cooper were selected as NASA’s Mercury astronauts. NASA and government officials decided that active military test pilots with extemplary physical and psychological fitness would make the best candidates for space flight. After rigorous screenings, these seven men rose to the top of the list. This delegation propelled them into the center of public attention as the faces of American space exploration."
     },
     {
         title: "The US Makes it to Space: Mercury-Redstone 3 Freedom 7 Mission",
         description: "First American in Space",
         year: 1961, // complete date May 5, 1961
         distance: 303, //duration: 00:15:28 HMS
-        coords: [-80.6, 28.5], // (lng, lat)
-        location: "", // The event locations will have a lot of repeats. Should we incorporate a location for a relatable fact? Astronaut's hometown, etc?
+        coords: [-80.6, 28.5], // Cape Canaveral Space Force Station (lng, lat) 
+        location: "Cape Canaveral Space Force Station", // Cape Canaveral Space Force Station
         locDateFounded: "",
-        locImage: "",
-        infoImage: "",
+        locImage: "Mercury_AlanShepard_Freedom7Capsule_1961.jpg", //photo info copied from NASA site: Astronaut Alan B. Shepard Jr., in his pressure suit and helmet, is being inserted into the Freedom 7 capsule in preparation for the Mercury-Redstone 3 (MR-3) mission
+        infoImage: "Mercury_Earth_MercuryRedstone3_1961.jpg", //photo info from NASA site: Mercury-Redstone 3 (MR-3) spaceflight Earth observations of a cloudy Earth surface.
         funFact: "Astronaut Alan Shepard Jr. witnessed a view of Earth no American had seen before. Part of Project Mercury which spanned 25 flights over between 1961 and 1963, the Freedom 7 mission lasted 15 minutes, 28 seconds."
     },
     {
         title: "The Power of One: Project Mercury",
-        description:""
-        year: 1961-1963
+        description:"",
+        year: 1961-1963,
         distance: "",
-        coords: [], 
-        location: "",
+        coords: [-80.6, 28.5], // Cape Canaveral Space Force Station (lng, lat) 
+        location: "Cape Canaveral Space Force Station",
         locDateFounded: "",
-        locImage: "",
-        infoImage: "",
+        locImage: "Mercury_MissionControl_1962.jpg", //Copied from NASA: Flight controllers gather inside Mercury Mission Control during the first orbit of John Glenn's Friendship 7 mission, which launched on Feb. 20, 1962.
+        infoImage: "Mercury_ScottCarpenterTraining_1961.jpg", //from NASA: Project Mercury astronaut M. Scott Carpenter, prime pilot for the United States second manned orbital flight, undergoes a simulated mission in the procedures trainer at Langley Air Force Base, Virginia, headquarters for the National Aeronautics and Space Administration?s Manned Spacecraft Center.
         funFact: "With room for only one astronaut per mission, Project Mercury launched six missions, showing that humans could function for periods up to 34 hours of weightless flight."
     },
     {
@@ -122,10 +123,10 @@
         description: "Astronaut John Glenn made history onboard the Friendship 7 Mercury spacecraft, becoming the first U.S. astronaut to orbit Earth.",
         year: 1962, // complete date February 20, 1962
         distance: 75679, //duration: 04:55:23 HMS
-        coords: [-80.6, 28.5], // (lng, lat)
-        location: "Cape Canaveral",
+        coords: [-80.6, 28.5], // Cape Canaveral Space Force Station (lng, lat) 
+        location: "Cape Canaveral Space Force Station",
         locDateFounded: "",
-        locImage: "",
+        locImage: "Mercury_Atlas6_1962.jpg", //caption copied from NASA: This is a view of the Mercury-Atlas 6 spacecraft as it leaves the launch pad at Cape Canaveral, Florida. Onboard the spacecraft is astronaut John H. Glenn Jr., pilot of the MA-6 mission, on its way to a three-Earth-orbital mission, making Glenn the first American to fly a manned Earth-orbiting mission.
         infoImage: "",
         funFact:""
     },
