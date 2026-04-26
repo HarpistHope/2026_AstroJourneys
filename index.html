@@ -1,39 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width">
-            <title>Astro Journeys</title>
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Giant Leaps — NASA Human Spaceflight 1958–2026</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
 
-        <!--put your external stylesheet links here-->
-        <link rel="stylesheet" href="css/style.css">
-        <!--[if IE<9]>
-            <link rel="stylesheet" href="css/style.ie.css">
-        <![endif]-->
+<!--STARFIELD CANVAS-->
+<canvas id="starfield"></canvas>
 
-         <!--you can also place internal styles here;
-             place these within <style> tags-->
-    </head>
+<!--LANDING PAGE -->
+<div id="landing">
+  <div class="orbit-wrap">
+    <div class="orbit-ring"><div class="orbit-dot"></div></div>
+    <div class="orbit-ring"><div class="orbit-dot" style="top:auto;bottom:-3.5px"></div></div>
+    <div class="orbit-ring"></div>
+  </div>
 
-    <body>
-        <!--put your initial page content here-->
-        <div id="timeline"></div>
-        
-        <div id="main">
-            <div id="map"></div>
-            <div id="infoBox"></div>
-            <div id="distTracker"></div>
-        </div>
+  <div class="land-badge">NASA &middot; Human Spaceflight &middot; 1958&ndash;2026</div>
+  <h1 class="land-title">GIANT<br>LEAPS</h1>
+  <p class="land-sub">Small Steps &nbsp;&middot;&nbsp; Giant Leaps &nbsp;&middot;&nbsp; Infinite Frontier</p>
+  <p class="land-desc">
+    From Alan Shepard&rsquo;s 15-minute flight to Artemis and beyond &mdash;
+    68 years of human spaceflight through interactive maps, orbital distance tracking,
+    and real mission stories updated through 2026.
+  </p>
+  <button class="land-btn" id="btn-start">&#9654;&nbsp; BEGIN JOURNEY</button>
+</div>
 
+<!--MAIN APP -->
+<div id="app">
 
-        <!--you can also use this space for internal scripts;
-        place these within <script> tags-->
+  <!--TOP BAR-->
+  <div id="topbar">
+    <div class="tb-left">
+      <span class="nasa-mark">NASA</span>
+      <div class="tb-divider"></div>
+      <span class="tb-title">Giant Leaps &middot; Human Spaceflight 1958&ndash;2026</span>
+    </div>
+    <div class="tb-center">
+      <div class="tb-year"  id="year-display">1958</div>
+      <div class="tb-event" id="event-display">NASA Founded</div>
+    </div>
+    <button class="reset-btn" id="btn-reset">&#8617; Reset to Home</button>
+  </div>
 
-        <!--put your external script links here-->
-        <script src="lib/d3.v7.js"></script>
-        <script src="lib/topojson/topojson.js"></script>
-        <!-- <script src="lib/simple-statistics.js"></script>
-        <script type="text/javascript" src="lib/jquery-3.5.1.js"></script> -->
-        <script type="text/javascript" src="js/main.js"></script>
-    </body>
+  <!--MAP-->
+  <div id="map-wrap">
+    <svg id="map-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div id="map-scan"></div>
+
+    <!-- Corner brackets -->
+    <div class="map-corner mc-tl"></div>
+    <div class="map-corner mc-tr"></div>
+    <div class="map-corner mc-bl"></div>
+    <div class="map-corner mc-br"></div>
+
+    <!-- HUD label -->
+    <div id="map-hud">GEOSPATIAL VIEW &middot; NASA OPERATIONS</div>
+
+    <!-- Layer toggle tabs -->
+    <div id="map-tabs">
+      <div class="map-tab on" id="tab-c" onclick="switchTab('c')">NASA Centers</div>
+      <div class="map-tab"    id="tab-a" onclick="switchTab('a')">Astronauts</div>
+    </div>
+
+    <!-- Hover tooltip -->
+    <div id="map-tooltip">
+      <div class="tip-title" id="tip-title"></div>
+      <div class="tip-body"  id="tip-body"></div>
+      <div class="tip-tag"   id="tip-tag"></div>
+    </div>
+  </div>
+
+  <!-- ── RIGHT PANEL ── -->
+  <div id="panel">
+
+    <!-- Orbital Distance Tracker -->
+    <div id="dist-wrap">
+      <div class="section-label">&#10022; Orbital Distance Tracker &mdash; Journey From Earth</div>
+      <svg id="dist-svg" viewBox="0 0 400 238" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+
+    <!-- Event Info -->
+    <div id="info-wrap" class="fade-content">
+      <div id="info-inner"></div>
+    </div>
+
+  </div><!-- /#panel -->
+
+  <!-- ── TIMELINE ── -->
+  <div id="timeline">
+    <button class="nav-btn" id="btn-prev" disabled>&#9668; PREV</button>
+
+    <div id="tl-track">
+      <div class="tl-line"></div>
+      <div id="tl-fill"></div>
+      <div id="tl-nodes"></div>
+    </div>
+
+    <button class="nav-btn" id="btn-next">NEXT &#9658;</button>
+  </div>
+
+</div><!-- /#app -->
+
+<!-- SCRIPTS
+     Load order matters:
+     1. map-data.js  — US state polygons + world outlines
+     2. data.js      — Mission events, NASA centers, astronaut data
+     3. main.js      — All application logic
+-->
+<script src="js/ak_map-data.js"></script>
+<script src="js/ak_data.js"></script>
+<script src="js/main.js"></script>
+
+</body>
 </html>

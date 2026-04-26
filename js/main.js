@@ -1,0 +1,586 @@
+/* main.js — NASA Giant Leaps application logic */
+
+/* STARFIELD  */
+(function initStars() {
+  const canvas = document.getElementById('starfield');
+  const ctx = canvas.getContext('2d');
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const stars = Array.from({ length: 280 }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 1.3 + 0.2,
+    a: Math.random(),
+    speed: Math.random() * 0.005 + 0.002
+  }));
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(s => {
+      s.a += s.speed;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(185,215,255,${Math.abs(Math.sin(s.a))})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+
+/*  MAP PROJECTION  */
+const VIEWS = {
+  usa:   { ln0:-125, ln1:-66,  lt0:50,  lt1:23  },   // full continental US
+  use:   { ln0:-98,  ln1:-66,  lt0:47,  lt1:24  },   // eastern US
+  uss:   { ln0:-108, ln1:-74,  lt0:38,  lt1:24.5 },  // southeastern US 
+  world: { ln0:-180, ln1:180,  lt0:82,  lt1:-56  }   // world
+};
+
+let MAP_W = 0, MAP_H = 0;
+
+function project(lat, lng, view) {
+  const v = VIEWS[view] || VIEWS.usa;
+  const x = (lng - v.ln0) / (v.ln1 - v.ln0) * MAP_W;
+  const y = (v.lt0 - lat) / (v.lt0 - v.lt1) * MAP_H;
+  return [x, y];
+}
+
+function buildPathD(coords, view) {
+  return coords.map((c, i) => {
+    const [x, y] = project(c[1], c[0], view);
+    return `${i === 0 ? 'M' : 'L'}${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join('') + 'Z';
+}
+
+
+/* MAP RENDERING */
+let ACTIVE_TAB  = 'c'; // 'c' = centers, 'a' = astronauts
+let CURRENT_IDX = 0;
+
+function drawMap(view, eventMarkers) {
+  const wrap = document.getElementById('map-wrap');
+  MAP_W = wrap.offsetWidth  || 800;
+  MAP_H = wrap.offsetHeight || 500;
+
+  const svg = document.getElementById('map-svg');
+  svg.setAttribute('viewBox', `0 0 ${MAP_W} ${MAP_H}`);
+  svg.setAttribute('width',  MAP_W);
+  svg.setAttribute('height', MAP_H);
+
+  let s = '';
+
+  //Ocean background
+  s += `<rect width="${MAP_W}" height="${MAP_H}" fill="#010a1a"/>`;
+
+  // Subtle grid
+  const gw = MAP_W / 10, gh = MAP_H / 7;
+  for (let gx = 0; gx <= MAP_W; gx += gw)
+    s += `<line x1="${gx.toFixed(0)}" y1="0" x2="${gx.toFixed(0)}" y2="${MAP_H}" stroke="rgba(0,212,255,0.03)" stroke-width="1"/>`;
+  for (let gy = 0; gy <= MAP_H; gy += gh)
+    s += `<line x1="0" y1="${gy.toFixed(0)}" x2="${MAP_W}" y2="${gy.toFixed(0)}" stroke="rgba(0,212,255,0.03)" stroke-width="1"/>`;
+
+  if (view === 'world') {
+    // World continents
+    WORLD_OUTLINES.forEach(pts => {
+      s += `<path d="${buildPathD(pts, view)}" class="world-land"/>`;
+    });
+    // Water labels
+    const labels = [
+      [30, -30, 'Atlantic Ocean'],
+      [10, 160, 'Pacific Ocean'],
+      [-15, 75, 'Indian Ocean']
+    ];
+    labels.forEach(([lat, lng, txt]) => {
+      const [lx, ly] = project(lat, lng, view);
+      s += `<text x="${lx.toFixed(0)}" y="${ly.toFixed(0)}" class="water-label" text-anchor="middle">${txt}</text>`;
+    });
+  } else {
+    // US States
+    US_STATES.forEach(([abbr, coords]) => {
+      const cls = SOUTH_STATES.has(abbr) ? 'state-south' : 'state-base';
+      s += `<path d="${buildPathD(coords, view)}" class="${cls}"/>`;
+    });
+    // Outer glow border
+    s += `<rect width="${MAP_W}" height="${MAP_H}" fill="none" stroke="rgba(0,212,255,0.055)" stroke-width="3"/>`;
+    // Water labels
+    if (view !== 'usa' || MAP_W > 600) {
+      const [gl_x, gl_y] = project(26, -89, view);
+      s += `<text x="${gl_x.toFixed(0)}" y="${gl_y.toFixed(0)}" class="water-label" text-anchor="middle">Gulf of Mexico</text>`;
+    }
+    if (view === 'usa') {
+      const [pa_x, pa_y] = project(40, -128, view);
+      s += `<text x="${pa_x.toFixed(0)}" y="${pa_y.toFixed(0)}" class="water-label" text-anchor="middle">Pacific Ocean</text>`;
+      const [at_x, at_y] = project(34, -64, view);
+      s += `<text x="${at_x.toFixed(0)}" y="${at_y.toFixed(0)}" class="water-label" text-anchor="middle">Atlantic</text>`;
+    }
+  }
+
+  // Permanent layer (centers or astronaut birthplaces)
+  const permList = ACTIVE_TAB === 'c' ? NASA_CENTERS : ASTRONAUT_BIRTHS;
+  permList.forEach(p => {
+    const [cx, cy] = project(p.lat, p.lng, view);
+    if (cx < -15 || cx > MAP_W + 15 || cy < -15 || cy > MAP_H + 15) return;
+    const col   = p.col || '#ffca28';
+    const label = p.abbr || p.name.split(' ')[0];
+    const desc  = ACTIVE_TAB === 'c' ? p.role : p.mission;
+    const tag   = ACTIVE_TAB === 'c' ? `NASA CENTER · ${p.state}` : `Born: ${p.born}`;
+    s += makeDot(cx, cy, col, 4.5, true, p.name, desc, tag, label, ACTIVE_TAB === 'a');
+  });
+
+  // Event-specific markers 
+  eventMarkers.forEach(m => {
+    const [cx, cy] = project(m.lat, m.lng, view);
+    if (cx < -15 || cx > MAP_W + 15 || cy < -15 || cy > MAP_H + 15) return;
+    const short = (m.label || '').split(',')[0].trim().split(' ').slice(0, 2).join(' ');
+    s += makeDot(cx, cy, m.col, m.type === 'b' ? 5.5 : 7.5, false, m.label, m.desc,
+                 m.type === 'b' ? 'BIRTHPLACE' : 'NASA FACILITY', short, m.type === 'b');
+  });
+
+  svg.innerHTML = s;
+  attachTooltips();
+}
+
+function makeDot(x, y, col, r, perm, lbl, desc, tag, shortLabel, isBirth) {
+  const opacity = perm ? 0.72 : 1;
+  const dur     = perm ? '3.5s' : '2.3s';
+  const L = (lbl  || '').replace(/"/g, "'");
+  const D = (desc || '').replace(/"/g, "'");
+  const T = (tag  || '').replace(/"/g, "'");
+  const glow = perm ? 3 : 5;
+
+  let s = `<g opacity="${opacity}">`;
+
+  // Pulse rings
+  s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="none" stroke="${col}" stroke-width="${perm ? 1.2 : 1.8}">
+    <animate attributeName="r" values="${r};${r + 13};${r}" dur="${dur}" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.8;0;0.8" dur="${dur}" repeatCount="indefinite"/>
+  </circle>`;
+  s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="none" stroke="${col}" stroke-width=".9">
+    <animate attributeName="r" values="${r};${r + 7};${r}" dur="${dur}" begin=".8s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.5;0;0.5" dur="${dur}" begin=".8s" repeatCount="indefinite"/>
+  </circle>`;
+
+  // Core dot — data attributes for tooltip
+  s += `<circle class="map-dot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}"
+    fill="${col}" stroke="rgba(255,255,255,0.5)" stroke-width="1.3"
+    style="cursor:pointer;filter:drop-shadow(0 0 ${glow}px ${col})"
+    data-l="${L}" data-d="${D}" data-t="${T}"/>`;
+
+  // Star symbol for birthplace markers
+  if (isBirth) {
+    s += `<text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle"
+      font-size="${(r * 1.1).toFixed(1)}" fill="#010c1e"
+      style="pointer-events:none;font-weight:bold">&#9733;</text>`;
+  }
+
+  // Short label for event-specific (non-permanent) markers
+  if (!perm) {
+    s += `<text x="${(x + r + 4).toFixed(1)}" y="${(y + 4).toFixed(1)}"
+      font-family="Share Tech Mono,Courier New,monospace" font-size="8"
+      fill="${col}" opacity=".88" style="pointer-events:none">${shortLabel}</text>`;
+  }
+
+  s += '</g>';
+  return s;
+}
+
+function attachTooltips() {
+  const tip  = document.getElementById('map-tooltip');
+  const tipT = document.getElementById('tip-title');
+  const tipB = document.getElementById('tip-body');
+  const tipG = document.getElementById('tip-tag');
+
+  document.getElementById('map-svg').querySelectorAll('.map-dot').forEach(dot => {
+    dot.addEventListener('mouseenter', e => {
+      tipT.textContent = dot.dataset.l;
+      tipB.textContent = dot.dataset.d;
+      tipG.textContent = dot.dataset.t;
+
+      const wr  = document.getElementById('map-wrap').getBoundingClientRect();
+      let tx = e.clientX - wr.left + 14;
+      let ty = e.clientY - wr.top  - 12;
+      if (tx + 230 > MAP_W) tx = e.clientX - wr.left - 242;
+      if (ty + 90  > MAP_H) ty = e.clientY - wr.top  - 90;
+
+      tip.style.left = tx + 'px';
+      tip.style.top  = ty + 'px';
+      tip.classList.add('on');
+    });
+    dot.addEventListener('mouseleave', () => tip.classList.remove('on'));
+  });
+}
+
+function switchTab(t) {
+  ACTIVE_TAB = t;
+  document.getElementById('tab-c').classList.toggle('on', t === 'c');
+  document.getElementById('tab-a').classList.toggle('on', t === 'a');
+  document.getElementById('map-hud').textContent =
+    t === 'a' ? 'ASTRONAUT BIRTHPLACES · HOVER STARS FOR INFO'
+               : 'NASA CENTERS · SOUTHEASTERN OPERATIONS CORRIDOR';
+  drawMap(EVENTS[CURRENT_IDX].mapView, EVENTS[CURRENT_IDX].markers);
+}
+
+
+/* ORBITAL DISTANCE TRACKER  */
+function renderDistTracker(idx) {
+  const W = 400, H = 238;
+  const OX = 84, OY = 119, maxR = 88;           // Earth center + max orbital radius
+  const BX = 185, BW = W - BX - 10, PT = 22;    // Bar chart start, width, top padding
+  const MAX_D = 270000;
+  const logMax = Math.log10(MAX_D + 1);
+
+  const cur = EVENTS[idx];
+
+  // Build history: unique distances from events 0..idx, sorted
+  const hist = [];
+  const seen = new Set();
+  for (let j = 0; j <= idx; j++) {
+    const d = EVENTS[j].dist;
+    if (!seen.has(d)) { seen.add(d); hist.push({ yr: EVENTS[j].year, dist: d }); }
+  }
+  hist.sort((a, b) => a.dist - b.dist);
+  const rowH = (H - PT - 26) / Math.max(hist.length, 1);
+
+  // Named altitude rings
+  const RINGS = [
+    { dist: 254,    label: 'ISS/LEO' },
+    { dist: 870,    label: 'Polaris' },
+    { dist: 238855, label: 'Moon'    },
+    { dist: 268553, label: 'Artemis' }
+  ];
+  RINGS.forEach(o => { o.r = (Math.log10(o.dist + 1) / logMax) * maxR; });
+
+  let s = `<defs>
+    <radialGradient id="earthG" cx="42%" cy="36%">
+      <stop offset="0%"   stop-color="#3a88ff"/>
+      <stop offset="55%"  stop-color="#0e40a8"/>
+      <stop offset="100%" stop-color="#020e24"/>
+    </radialGradient>
+    <radialGradient id="moonG">
+      <stop offset="0%"   stop-color="#d0d8e4"/>
+      <stop offset="100%" stop-color="#4a5568"/>
+    </radialGradient>
+    <radialGradient id="earthGlow" cx="50%" cy="50%">
+      <stop offset="0%"   stop-color="rgba(40,120,255,0.25)"/>
+      <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+    </radialGradient>
+    <linearGradient id="barBlue" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#0b3d91"/>
+      <stop offset="100%" stop-color="#00d4ff"/>
+    </linearGradient>
+    <linearGradient id="barRed" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#7c1500"/>
+      <stop offset="100%" stop-color="#ff3d21"/>
+    </linearGradient>
+    <linearGradient id="barGreen" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#004020"/>
+      <stop offset="100%" stop-color="#00e5a0"/>
+    </linearGradient>
+    <filter id="bigGlow">
+      <feGaussianBlur stdDeviation="2.8" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="smallGlow">
+      <feGaussianBlur stdDeviation="1.4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>`;
+
+  // Dark orbital area background
+  s += `<rect x="0" y="0" width="${BX - 4}" height="${H}" fill="rgba(0,3,14,0.76)" rx="2"/>`;
+
+  // Background stars in orbital area
+  [[8,14,.9],[19,52,.6],[54,8,1.1],[38,72,.7],[14,128,.85],[65,94,.6],
+   [28,156,.9],[47,38,.55],[11,80,.7],[53,122,.8],[68,158,.6],[31,20,1],
+   [61,56,.7],[24,104,.55],[44,174,.8],[70,30,.65],[9,144,.9],[37,198,.7],
+   [60,210,.55],[22,184,.8],[73,80,.5],[16,165,.6]].forEach(([sx,sy,sr]) => {
+    s += `<circle cx="${sx}" cy="${sy}" r="${sr}" fill="white" opacity="${(0.1 + sr * 0.12).toFixed(2)}"/>`;
+  });
+
+  // Named altitude rings with labels
+  RINGS.forEach(o => {
+    if (o.r > 2 && o.r < maxR * 1.05) {
+      s += `<circle cx="${OX}" cy="${OY}" r="${o.r.toFixed(1)}" fill="none" stroke="rgba(0,212,255,0.1)" stroke-width="1.1" stroke-dasharray="4,7"/>`;
+      const lx = (OX + o.r * 0.68).toFixed(1);
+      const ly = (OY - o.r * 0.73 - 5).toFixed(1);
+      s += `<text x="${lx}" y="${ly}" font-family="Share Tech Mono,monospace" font-size="6.5" fill="rgba(0,212,255,0.32)">${o.label}</text>`;
+    }
+  });
+
+  // Faint guide rings
+  [0.22, 0.48, 0.72].forEach(f => {
+    s += `<circle cx="${OX}" cy="${OY}" r="${(maxR * f).toFixed(1)}" fill="none" stroke="rgba(0,212,255,0.04)" stroke-width=".8"/>`;
+  });
+
+  // Arc trajectory paths for visited missions
+  hist.forEach(h => {
+    if (h.dist === 0) return;
+    const r2 = (Math.log10(h.dist + 1) / logMax) * maxR;
+    const isCur = (h.dist === cur.dist);
+    const ex  = (OX + r2 * 0.72).toFixed(1);
+    const ey  = (OY - r2 * 0.72).toFixed(1);
+    const cpx = (OX + r2 * 0.36).toFixed(1);
+    const cpy = (OY - r2 * 0.09).toFixed(1);
+
+    s += `<path d="M${OX},${OY} Q${cpx},${cpy} ${ex},${ey}" fill="none"
+      stroke="${isCur ? 'rgba(0,212,255,0.65)' : 'rgba(0,212,255,0.13)'}"
+      stroke-width="${isCur ? 2.2 : 0.9}"
+      stroke-dasharray="${isCur ? 'none' : '4,5'}"/>`;
+
+    if (!isCur) {
+      s += `<circle cx="${ex}" cy="${ey}" r="3.2" fill="rgba(0,212,255,0.45)" filter="url(#smallGlow)"/>`;
+    }
+  });
+
+  // Current mission — animated pulsing rocket dot
+  if (cur.dist > 0) {
+    const r2 = (Math.log10(cur.dist + 1) / logMax) * maxR;
+    const ex = (OX + r2 * 0.72).toFixed(1);
+    const ey = (OY - r2 * 0.72).toFixed(1);
+    const mc = cur.dist >= 248000 ? '#ff3d21'
+              : cur.dist >= 200000 ? '#ffca28'
+              : cur.dist >= 800    ? '#00e5a0'
+              : '#00d4ff';
+
+    // Double pulsing rings
+    s += `<circle cx="${ex}" cy="${ey}" r="8" fill="none" stroke="${mc}" stroke-width="2">
+      <animate attributeName="r" values="8;26;8" dur="2.4s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;0;0.8" dur="2.4s" repeatCount="indefinite"/>
+    </circle>`;
+    s += `<circle cx="${ex}" cy="${ey}" r="8" fill="none" stroke="${mc}" stroke-width="1.2">
+      <animate attributeName="r" values="8;17;8" dur="2.4s" begin=".75s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.5;0;0.5" dur="2.4s" begin=".75s" repeatCount="indefinite"/>
+    </circle>`;
+
+    // Core dot
+    s += `<circle cx="${ex}" cy="${ey}" r="6.5" fill="${mc}" stroke="white" stroke-width="1.3" filter="url(#bigGlow)"/>`;
+
+    // Rocket emoji + distance label
+    s += `<text x="${(parseFloat(ex) + 8).toFixed(1)}" y="${(parseFloat(ey) - 5).toFixed(1)}" font-size="15" filter="url(#smallGlow)">🚀</text>`;
+    if (cur.dist > 100) {
+      const dv = cur.dist >= 1000 ? Math.round(cur.dist / 1000) + 'K mi' : cur.dist + ' mi';
+      s += `<text x="${(parseFloat(ex) + 9).toFixed(1)}" y="${(parseFloat(ey) + 9).toFixed(1)}"
+        font-family="Share Tech Mono,monospace" font-size="7" fill="${mc}" opacity="0.9">${dv}</text>`;
+    }
+  }
+
+  // Moon for lunar missions
+  if (cur.dist >= 200000) {
+    const mR = maxR * 1.01;
+    const mx = (OX + mR * 0.70).toFixed(1);
+    const my = (OY - mR * 0.72).toFixed(1);
+    s += `<circle cx="${mx}" cy="${my}" r="12" fill="url(#moonG)" filter="url(#smallGlow)"/>`;
+    s += `<text x="${mx}" y="${(parseFloat(my) + 5).toFixed(1)}" text-anchor="middle" font-size="13">🌕</text>`;
+  }
+
+  // Earth globe
+  s += `<circle cx="${OX}" cy="${OY}" r="30" fill="url(#earthGlow)"/>`;
+  s += `<circle cx="${OX}" cy="${OY}" r="21" fill="url(#earthG)" filter="url(#smallGlow)" stroke="rgba(60,140,255,0.4)" stroke-width="1.2"/>`;
+  s += `<text x="${OX}" y="${OY + 7.5}" text-anchor="middle" font-size="20">🌍</text>`;
+
+  // Divider line
+  s += `<line x1="${BX - 6}" y1="8" x2="${BX - 6}" y2="${H - 8}" stroke="rgba(0,212,255,0.12)" stroke-width="1"/>`;
+
+  // Bar chart header
+  s += `<text x="${(BX + BW / 2).toFixed(1)}" y="15" text-anchor="middle"
+    font-family="Share Tech Mono,monospace" font-size="7.5"
+    fill="rgba(0,212,255,0.48)" letter-spacing="1.5">MISSION DISTANCES (log scale)</text>`;
+
+  // Distance bars
+  hist.forEach((h, ri) => {
+    const y   = PT + ri * rowH + rowH * 0.08;
+    const bH  = Math.max(rowH * 0.8, 7);
+    const w   = h.dist === 0 ? 3 : (Math.log10(h.dist + 1) / logMax) * BW;
+    const isCur  = (h.dist === cur.dist);
+    const isOld  = (h.dist >= 248000 && h.dist < 268000);
+    const isNew  = (h.dist >= 268000);
+    const grad   = isNew ? 'url(#barGreen)' : isOld ? 'url(#barRed)' : 'url(#barBlue)';
+    const opacity = isCur ? 1 : 0.35;
+
+    s += `<rect x="${BX}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${bH.toFixed(1)}" rx="1.5"
+      fill="${grad}" opacity="${opacity}"${isCur ? ' filter="url(#smallGlow)"' : ''}/>`;
+    s += `<text x="${(BX - 5).toFixed(1)}" y="${(y + bH / 2 + 3.5).toFixed(1)}" text-anchor="end"
+      font-family="Share Tech Mono,monospace" font-size="7.5"
+      fill="${isCur ? 'rgba(0,212,255,.88)' : 'rgba(0,212,255,.32)'}">${h.yr}</text>`;
+
+    if (h.dist > 0) {
+      const val = h.dist >= 1000 ? Math.round(h.dist / 1000) + 'K' : h.dist;
+      s += `<text x="${(BX + w + 4).toFixed(1)}" y="${(y + bH / 2 + 3.5).toFixed(1)}"
+        font-family="Share Tech Mono,monospace" font-size="7.5"
+        fill="${isCur ? '#ffca28' : 'rgba(190,215,255,.28)'}">${val}mi</text>`;
+    }
+    if (isOld) s += `<text x="${(BX + w + 4).toFixed(1)}" y="${(y + 4).toFixed(1)}"
+      font-family="Share Tech Mono,monospace" font-size="6.5" fill="#ff3d21">★ OLD REC</text>`;
+    if (isNew) s += `<text x="${(BX + w + 4).toFixed(1)}" y="${(y + 4).toFixed(1)}"
+      font-family="Share Tech Mono,monospace" font-size="6.5" fill="#00e5a0">★ NEW REC</text>`;
+  });
+
+  // Current mission label at bottom
+  s += `<text x="${(BX + BW / 2).toFixed(1)}" y="${H - 5}" text-anchor="middle"
+    font-family="Orbitron,Impact,monospace" font-size="8.5" font-weight="bold"
+    fill="#ffca28">${cur.distLabel}</text>`;
+
+  document.getElementById('dist-svg').innerHTML = s;
+}
+
+
+/* IMAGE LOADER WITH FALLBACK */
+function loadImageWithFallback(imgEl, urlList, emoji, caption) {
+  let attempt = 0;
+
+  const tryNext = () => {
+    if (attempt >= urlList.length) {
+      // All URLs failed — show styled emoji placeholder
+      const wrap = imgEl.parentElement;
+      if (wrap) {
+        wrap.innerHTML =
+          `<div style="width:100%;height:100%;display:flex;flex-direction:column;
+              align-items:center;justify-content:center;
+              background:linear-gradient(135deg,#061228,#020810);gap:8px">
+            <div style="font-size:2.6rem">${emoji}</div>
+            <div style="font-family:Share Tech Mono,Courier New,monospace;font-size:.55rem;
+                color:rgba(0,212,255,.4);letter-spacing:.1rem;text-align:center;padding:0 12px">
+              ${caption}</div>
+            <div style="font-family:Share Tech Mono,Courier New,monospace;font-size:.48rem;
+                color:rgba(255,202,40,.3);letter-spacing:.1rem">
+              NASA PUBLIC DOMAIN ARCHIVE</div>
+          </div>`;
+      }
+      return;
+    }
+    imgEl.onerror = () => { attempt++; tryNext(); };
+    imgEl.src = urlList[attempt];
+  };
+
+  tryNext();
+}
+
+
+/* INFO PANEL*/
+function renderInfo(ev) {
+  let h = `<div class="event-img-wrap">
+    <img class="event-img" id="ev-photo" alt="${ev.photoCap}" style="${ev.photoStyle || ''}"/>
+    <div class="img-overlay"></div>
+    <div class="img-caption">${ev.photoCap}</div>
+  </div>`;
+
+  h += `<div class="event-body">
+    <div class="event-name">${ev.name}</div>
+    <div class="event-meta">${ev.meta}</div>
+    <div class="event-desc">${ev.desc}</div>
+    <div class="fact-block">
+      <div class="fact-label">★ Historical Fact</div>
+      <div class="fact-text">${ev.fact}</div>
+    </div>`;
+
+  if (ev.dyk) {
+    h += `<button class="dyk-btn" onclick="toggleDyk(this)">✦ &nbsp;Did You Know?</button>
+          <div class="dyk-panel" id="dyk-panel">${ev.dyk}</div>`;
+  }
+  h += '</div>';
+
+  document.getElementById('info-inner').innerHTML = h;
+
+  // Load image with multi-URL fallback
+  const img = document.getElementById('ev-photo');
+  if (img) loadImageWithFallback(img, ev.photos, ev.emoji, ev.photoCap);
+}
+
+function toggleDyk(btn) {
+  const panel = document.getElementById('dyk-panel');
+  panel.classList.toggle('on');
+  btn.innerHTML = panel.classList.contains('on') ? '✕ &nbsp;Close' : '✦ &nbsp;Did You Know?';
+}
+
+
+/* TIMELINE */
+function buildTimeline() {
+  const container = document.getElementById('tl-nodes');
+  container.innerHTML = '';
+
+  EVENTS.forEach((ev, i) => {
+    const pct  = i / (EVENTS.length - 1) * 100;
+    const node = document.createElement('div');
+    node.className = 'tl-node';
+    node.style.left = pct + '%';
+    node.title = `${ev.year} — ${ev.name}`;
+    node.innerHTML = `<span class="tl-year">${ev.year}</span>`;
+    node.addEventListener('click', () => goTo(i));
+    container.appendChild(node);
+  });
+}
+
+function updateTimeline() {
+  document.querySelectorAll('.tl-node').forEach((node, i) => {
+    node.classList.toggle('on',   i === CURRENT_IDX);
+    node.classList.toggle('done', i <  CURRENT_IDX);
+  });
+  document.getElementById('tl-fill').style.width = (CURRENT_IDX / (EVENTS.length - 1) * 100) + '%';
+  document.getElementById('btn-prev').disabled = (CURRENT_IDX === 0);
+  document.getElementById('btn-next').disabled = (CURRENT_IDX === EVENTS.length - 1);
+}
+
+
+/* NAVIGATE TO EVENT */
+function goTo(idx, instant) {
+  CURRENT_IDX = idx;
+  const ev = EVENTS[idx];
+
+  document.getElementById('year-display').textContent = ev.year;
+  document.getElementById('event-display').textContent = ev.name;
+  updateTimeline();
+  drawMap(ev.mapView, ev.markers);
+  renderDistTracker(idx);
+
+  document.getElementById('map-hud').textContent =
+    ACTIVE_TAB === 'a' ? 'ASTRONAUT BIRTHPLACES · HOVER STARS FOR INFO'
+    : ev.mapView === 'world' ? 'GLOBAL VIEW · INTERNATIONAL PARTNER SITES'
+    : 'NASA OPERATIONS CORRIDOR · SOUTHEASTERN USA';
+
+  const infoWrap = document.getElementById('info-wrap');
+  if (instant) {
+    renderInfo(ev);
+    return;
+  }
+  infoWrap.classList.add('fading');
+  setTimeout(() => {
+    renderInfo(ev);
+    infoWrap.classList.remove('fading');
+  }, 260);
+}
+
+
+/* BOOT */
+document.getElementById('btn-start').addEventListener('click', () => {
+  document.getElementById('landing').classList.add('out');
+  document.getElementById('app').classList.add('on');
+  buildTimeline();
+  setTimeout(() => goTo(0, true), 120);
+});
+
+document.getElementById('btn-reset').addEventListener('click', () => {
+  document.getElementById('app').classList.remove('on');
+  document.getElementById('landing').classList.remove('out');
+  CURRENT_IDX = 0;
+});
+
+document.getElementById('btn-prev').addEventListener('click', () => {
+  if (CURRENT_IDX > 0) goTo(CURRENT_IDX - 1);
+});
+
+document.getElementById('btn-next').addEventListener('click', () => {
+  if (CURRENT_IDX < EVENTS.length - 1) goTo(CURRENT_IDX + 1);
+});
+
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('app').classList.contains('on')) return;
+  if (e.key === 'ArrowRight' && CURRENT_IDX < EVENTS.length - 1) goTo(CURRENT_IDX + 1);
+  if (e.key === 'ArrowLeft'  && CURRENT_IDX > 0)                 goTo(CURRENT_IDX - 1);
+});
+
+window.addEventListener('resize', () => {
+  if (document.getElementById('app').classList.contains('on'))
+    drawMap(EVENTS[CURRENT_IDX].mapView, EVENTS[CURRENT_IDX].markers);
+});

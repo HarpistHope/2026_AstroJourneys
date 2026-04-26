@@ -1,0 +1,108 @@
+/*insert style here*/
+
+/* playing around with random styling for now, will visualize with data later */
+
+body {
+    overflow: hidden; /*to prvent whole screen from scrolling, only containers*/
+    margin: 0;
+}
+
+#main {
+    display: grid;
+    grid-template-columns: 20% 60% 20%;
+    grid-template-rows: 50% 50%;
+    height: 100vh;
+}
+
+/* to prevent accidental clicks 'behind' the landing page */
+#map, #timeline, #infoBox, #distTracker {
+    pointer-events: none; 
+}
+
+#timeline {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    overflow: auto;
+    
+}
+
+#map {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+#infoBox {
+    grid-column: 2;
+    grid-row: 2;
+
+    width: 320px;  
+    height: 60vh;      /* limits vertical space */
+
+    background: rgba(0, 0, 0, 0.85);
+    color: white;
+
+    padding: 16px;
+    border-radius: 10px;
+
+    overflow-y: auto;  /* this enables scrolling if text is too long */
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: #888 transparent;
+
+    z-index: 1000;
+}
+
+#distTracker {
+    grid-column: 3;
+    grid-row: 1/ span 2;
+}
+
+.landingPage {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+
+    background: radial-gradient(circle at center, #0b0f2a 0%, #000000 100%);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 9999;
+}
+
+.landing-content {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255,255,255,0.8),
+                 0 0 20px rgba(255,215,0,0.6);
+}
+
+/* close button */
+.close-btn {
+    margin-top: 20px;
+
+    padding: 14px 28px;
+    font-size: 18px;
+    font-weight: bold;
+
+    background: #ffd700; /* bright star yellow */
+    color: #111;
+
+    border: none;
+    border-radius: 50px;
+
+    cursor: pointer;
+
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+    transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(255, 215, 0, 1);
+}
+
