@@ -146,10 +146,10 @@ canvas#starfield {
 #map-svg { width:100%; height:100%; display:block; }
 
 /* SVG map element classes */
-.state-base  { fill:#09182e; stroke:#1a3560; stroke-width:.7px; }
+.state-base  { fill:#0d2545; stroke:#1e5090; stroke-width:.7px; }
 .state-south { fill:#0d2545; stroke:#1e5090; stroke-width:.9px; }
-.state-border { fill:none; stroke:rgba(0,212,255,.28); stroke-width:1.3px; }
-.world-land  { fill:#08152a; stroke:#162e55; stroke-width:.5px; }
+.state-border { fill:none; stroke:#1e5090; stroke-width:1.3px; }
+.world-land  { fill:#0d2245; stroke:#1e5090; stroke-width:.5px; }
 .water-label {
   font-family:var(--fm); font-size:10px;
   fill:rgba(0,212,255,.2); letter-spacing:1.5px;

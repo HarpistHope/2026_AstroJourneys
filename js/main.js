@@ -205,7 +205,7 @@ function drawMap(view, eventMarkers) {
     });
     // Water labels
     const labels = [
-      [30, -30, 'Atlantic Ocean'],
+      [30, -35, 'Atlantic Ocean'],
       [10, 160, 'Pacific Ocean'],
       [-15, 75, 'Indian Ocean']
     ];
@@ -220,7 +220,7 @@ function drawMap(view, eventMarkers) {
       s += `<path d="${buildPathD(coords, view)}" class="${cls}"/>`;
     });
     // Outer glow border
-    s += `<rect width="${MAP_W}" height="${MAP_H}" fill="none" stroke="rgba(0,212,255,0.055)" stroke-width="3"/>`;
+    s += `<rect width="${MAP_W}" height="${MAP_H}" fill="none" stroke="rgba(0, 213, 255, 0.12)" stroke-width="3"/>`;
     // Water labels
     if (view !== 'usa' || MAP_W > 600) {
       const [gl_x, gl_y] = project(26, -89, view);
