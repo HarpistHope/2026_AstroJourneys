@@ -54,21 +54,32 @@ function buildPathD(coords, view) {
   }).join('') + 'Z';
 }
 
-// fetch geojson as US_STATES
+// fetch geojsons as US_STATES and WORLD_OUTLINES
 let US_STATES = [];
+let WORLD_OUTLINES = [];
 
-async function loadStates() {
-  const res = await fetch('data/us_48states.json');
-  const geo = await res.json();
-  US_STATES = convertGeo(geo);
+async function loadjsons() {
+  const [usRes, worldRes] = await Promise.all([
+    fetch('data/us_48states_albersShp.json'),
+    fetch('data/worldcountries_eqEarth.json')
+  ]);
+
+  const usGeo = await usRes.json();
+  const worldGeo = await worldRes.json();
+
+  US_STATES = convertStates(usGeo);
+  WORLD_OUTLINES = convertWorld(worldGeo);
+
   console.log('states loaded:', US_STATES.length);
+  console.log('world loaded:', WORLD_OUTLINES.length);
 };
 
-// convert geojson to match existing format
-function convertGeo(geo) {
+
+// convert states geojson to match existing format
+function convertStates(usGeo) {
   const states = [];
 
-  geo.features.forEach(f => {
+  usGeo.features.forEach(f => {
     const abbr =
       f.properties.STUSPS ||
       f.properties.NAME;
@@ -87,6 +98,35 @@ function convertGeo(geo) {
   });
 
   return states;
+}
+
+// convert world geojson to match existing format
+function convertWorld(worldGeo) {
+  const countries = [];
+
+  worldGeo.features.forEach(f => {
+    const geom = f.geometry;
+
+    if (!geom) return;
+
+    // Polygon countries
+    if (geom.type === 'Polygon') {
+      geom.coordinates.forEach(ring => {
+        countries.push(ring);
+      });
+    }
+
+    // MultiPolygon countries
+    if (geom.type === 'MultiPolygon') {
+      geom.coordinates.forEach(poly => {
+        poly.forEach(ring => {
+          countries.push(ring);
+        });
+      });
+    }
+  });
+
+  return countries;
 }
 
 /* MAP RENDERING */
@@ -588,7 +628,7 @@ function goTo(idx, instant) {
 
 /* BOOT */
 document.getElementById('btn-start').addEventListener('click', () => {
-  loadStates().then(() => {   // load geojson
+  loadjsons().then(() => {   // load geojsons
 
     document.getElementById('landing').classList.add('out');
     document.getElementById('app').classList.add('on');
