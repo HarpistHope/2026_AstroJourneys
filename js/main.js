@@ -1,4 +1,5 @@
 /* main.js — NASA Giant Leaps application logic */
+// Note from HKM: Thanks for writing this, Akhila! I am having a bit of trouble incorporating the geojsons with d3, I think your coding skills are a bit too advanced for me lol. I will keep working on it! 
 
 /* STARFIELD  */
 (function initStars() {
