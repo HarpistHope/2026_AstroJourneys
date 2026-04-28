@@ -2,13 +2,14 @@
 
 // Note from HKM: Thanks for writing this, Akhila! I am having a bit of trouble incorporating the geojsons with d3, I think your coding skills are a bit too advanced for me lol. I will keep working on it! 
 // Notes from group meeting 04/28/26
-// Add location advantage to location popups
+// Add location advantage to location popups 
+// add legend/color context for NASA center markers colors
 // make distance tracker graphic bigger
 // standardize distance
 // edit+add events to ak_data.js
 // default view should only highlight/mark relevant NASA centers; include all centers + astronaut birthplaces as extra 
 // make map frame smaller to allow more legible detail with disttracker and info boxes
-// Do the marker colors have relevance?
+// Do the marker colors have relevance? If so, maybe make a legend?
 // Incorporate Image context,make images more prominent?
 // dehighlight south east states 
 // fix astronaut birth places button and Did You Know buttons?
