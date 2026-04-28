@@ -101,7 +101,7 @@ const EVENTS = [
     dyk:  null,
     dist: 175,
     distLabel: '175 miles — Gemini Orbit',
-    photos: ['https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Ed_White_first_American_spacewalk.jpg/480px-Ed_White_first_American_spacewalk.jpg',
+    photos: ['img/Mercury_Original7_1959.jpg', 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Ed_White_first_American_spacewalk.jpg/480px-Ed_White_first_American_spacewalk.jpg',
              'https://upload.wikimedia.org/wikipedia/commons/4/45/Ed_White_first_American_spacewalk.jpg'],
     photoCap: 'Ed White — first American spacewalk, Gemini IV, June 1965 (NASA)',
     emoji: '🧑‍🚀',
