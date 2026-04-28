@@ -32,20 +32,48 @@
 
 /*  MAP PROJECTION  */
 const VIEWS = {
-  usa:   { ln0:-125, ln1:-66,  lt0:50,  lt1:23  },   // full continental US
-  use:   { ln0:-98,  ln1:-66,  lt0:47,  lt1:24  },   // eastern US
-  uss:   { ln0:-108, ln1:-74,  lt0:38,  lt1:24.5 },  // southeastern US 
-  world: { ln0:-180, ln1:180,  lt0:82,  lt1:-56  }   // world
+  usa:   { ln0:-125, ln1:-66,  lt0:50,  lt1:23, bias: 0 },   // full continental US
+  use:   { ln0:-98,  ln1:-66,  lt0:47,  lt1:24, bias: 0  },   // eastern US
+  uss:   { ln0:-108, ln1:-74,  lt0:38,  lt1:24.5, bias: 0 },  // southeastern US 
+  world: { ln0:-180, ln1:180,  lt0:82,  lt1:-56, bias: -0.035 }   // world
 };
 
 let MAP_W = 0, MAP_H = 0;
 
+const MAP_COMPRESS = 0.94;
+
+// function project(lat, lng, view) {
+//   const v = VIEWS[view] || VIEWS.usa;
+//   const x = (lng - v.ln0) / (v.ln1 - v.ln0) * MAP_W;
+//   const y = (v.lt0 - lat) / (v.lt0 - v.lt1) * MAP_H;
+//   return [x, y];
+// }
+
+// replace original project function to prevent maps/geojsons from strecthing with view changes
 function project(lat, lng, view) {
   const v = VIEWS[view] || VIEWS.usa;
-  const x = (lng - v.ln0) / (v.ln1 - v.ln0) * MAP_W;
-  const y = (v.lt0 - lat) / (v.lt0 - v.lt1) * MAP_H;
+
+  const lonSpan = v.ln1 - v.ln0;
+  const latSpan = v.lt0 - v.lt1;
+
+  const baseScale = Math.min(
+    MAP_W / lonSpan,
+    MAP_H / latSpan
+  );
+
+  const scale = baseScale * MAP_COMPRESS;
+
+  const offsetX = (MAP_W - lonSpan * scale) / 2;
+  const verticalBias = v.bias || 0; // moves the world map frame slightly higher for better visual balance
+  const offsetY =
+    (MAP_H - latSpan * scale) / 2 +
+    MAP_H * verticalBias;
+
+  const x = (lng - v.ln0) * scale + offsetX;
+  const y = (v.lt0 - lat) * scale + offsetY;
+
   return [x, y];
-}
+};
 
 function buildPathD(coords, view) {
   return coords.map((c, i) => {
@@ -142,6 +170,7 @@ function drawMap(view, eventMarkers) {
   svg.setAttribute('viewBox', `0 0 ${MAP_W} ${MAP_H}`);
   svg.setAttribute('width',  MAP_W);
   svg.setAttribute('height', MAP_H);
+  svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
 
   let s = '';
 
