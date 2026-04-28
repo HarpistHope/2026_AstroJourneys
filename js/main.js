@@ -1,5 +1,16 @@
 /* main.js — NASA Giant Leaps application logic */
+
 // Note from HKM: Thanks for writing this, Akhila! I am having a bit of trouble incorporating the geojsons with d3, I think your coding skills are a bit too advanced for me lol. I will keep working on it! 
+// Notes from group meeting 04/28/26
+// Add location advantage to location popups
+// make distance tracker graphic bigger
+// standardize distance
+// edit+add events to ak_data.js
+// default view should only highlight/mark relevant NASA centers; include all centers + astronaut birthplaces as extra 
+// make map frame smaller to allow more legible detail with disttracker and info boxes
+// Do the marker colors have relevance?
+// Incorporate Image context,make images more prominent?
+// dehighlight south east states 
 
 /* STARFIELD  */
 (function initStars() {
