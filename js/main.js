@@ -11,6 +11,7 @@
 // Do the marker colors have relevance?
 // Incorporate Image context,make images more prominent?
 // dehighlight south east states 
+// fix astronaut birth places button and Did You Know buttons?
 
 /* STARFIELD  */
 (function initStars() {
