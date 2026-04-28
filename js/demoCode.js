@@ -129,7 +129,7 @@
         locImage: "Mercury_Atlas6_1962.jpg", //caption copied from NASA: This is a view of the Mercury-Atlas 6 spacecraft as it leaves the launch pad at Cape Canaveral, Florida. Onboard the spacecraft is astronaut John H. Glenn Jr., pilot of the MA-6 mission, on its way to a three-Earth-orbital mission, making Glenn the first American to fly a manned Earth-orbiting mission.
         infoImage: "Mercury_JohnGlennAtlas6_1962.jpg", //from NASA: A camera onboard the "Friendship 7" Mercury spacecraft photographs astronaut John H. Glenn Jr. during the Mercury-Atlas 6 spaceflight
         funFact:"After 10 postponements due to inclement weather and mechanical problems, John Glenn reached orbit a mere five minutes, one second after countdown."
-    },
+     },
     {
         title: "Gemini IV: First Walk in Space",
         description: "NASA astronaut Ed White became the first American to walk in space.",

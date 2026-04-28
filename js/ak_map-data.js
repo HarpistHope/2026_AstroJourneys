@@ -6,7 +6,8 @@ const SOUTH_STATES = new Set(['FL','GA','AL','MS','LA','TX','TN','SC','NC','VA',
 
 /* US States — detailed lat/lng polygons [lng, lat]
    20–50 points per state for smooth, realistic shapes */
-const US_STATES = [
+
+   const US_STATES = [
   /* ── SOUTHEAST (NASA Corridor) ── */
   ['FL', [
     [-87.63,30.86],[-87.05,30.42],[-85.49,30.30],[-85.00,29.99],

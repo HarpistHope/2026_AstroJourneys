@@ -281,3 +281,404 @@ const EVENTS = [
     ]
   }
 ];
+
+
+
+// Another possible structure? more event objects below
+// {
+//   id: string,
+//   title: string,
+//   subtitle: string,
+//   type: "event" | "mission" | "program" | "era" | "record",
+
+//   startYear: number,
+//   endYear: number | null,
+
+//   dateLabel: string, // human-readable original date text
+
+//   location: {
+//     name: string,
+//     coords: [lng, lat] | null
+//   },
+
+//   metrics: {
+//     distance: number | null,
+//     distanceUnit: "mi" | "km" | null,
+//     durationSec: number | null,
+//     altitude: number | null
+//   },
+
+//   people: string[],
+
+//   media: {
+//     hero: string | null,
+//     info: string[]
+//   },
+
+//   description: string,
+//   funFact: string | null
+// }
+
+// {
+//   id: "wright_1903",
+//   title: "First Powered Flight",
+//   subtitle: "Wilbur and Orville Wright",
+//   type: "event",
+
+//   startYear: 1903,
+//   endYear: null,
+//   dateLabel: "Dec 17, 1903",
+
+//   location: {
+//     name: "Kill Devil Hills, Kitty Hawk, NC",
+//     coords: [-75.6776147, 36.0321186]
+//   },
+
+//   metrics: {
+//     distance: 0.16,
+//     distanceUnit: "mi",
+//     durationSec: 59,
+//     altitude: 10
+//   },
+
+//   people: ["Wilbur Wright", "Orville Wright"],
+
+//   media: {
+//     hero: "WrightBros_FirstFlight_1903.jpg",
+//     info: ["WrightBros_GliderKited_1901.jpg"]
+//   },
+
+//   description: "First successful powered flight.",
+//   funFact: "The Wright brothers designed their own wind tunnel and engine."
+// },
+// {
+//   id: "nasa_1958",
+//   title: "NASA is Born",
+//   subtitle: null,
+//   type: "event",
+
+//   startYear: 1958,
+
+//   dateLabel: "Oct 1, 1958",
+
+//   location: {
+//     name: "Washington, DC",
+//     coords: [-77.0363849, 38.8950982]
+//   },
+
+//   metrics: {},
+
+//   people: [],
+
+//   media: {
+//     hero: "NASA_FirstHeadquarters1958.jpg",
+//     info: []
+//   },
+
+//   description: "NASA officially begins operations.",
+//   funFact: "Built on the foundation of NACA (founded 1915)."
+// },
+// {
+//   id: "mercury_7",
+//   title: "The Original Seven",
+//   subtitle: "First NASA Astronaut Class",
+//   type: "program",
+
+//   startYear: 1959,
+
+//   dateLabel: "Apr 9, 1959",
+
+//   location: {
+//     name: "Washington, DC",
+//     coords: [-77.0363849, 38.8950982]
+//   },
+
+//   people: [
+//     "John Glenn",
+//     "Alan Shepard",
+//     "Gus Grissom",
+//     "Scott Carpenter",
+//     "Gordon Cooper",
+//     "Deke Slayton",
+//     "Wally Schirra"
+//   ],
+
+//   media: {
+//     hero: "Mercury_Original7_1959.jpg",
+//     info: ["Mercury_Original7bw_1959.jpg"]
+//   },
+
+//   description: "NASA’s first astronaut selection.",
+//   funFact: null
+// },
+// {
+//   id: "mercury_program",
+//   title: "Project Mercury",
+//   subtitle: "First Human Spaceflight Program",
+//   type: "program",
+
+//   startYear: 1961,
+//   endYear: 1963,
+
+//   dateLabel: "1961–1963",
+
+//   location: {
+//     name: "Cape Canaveral, FL",
+//     coords: [-80.6, 28.5]
+//   },
+
+//   metrics: {
+//     durationSec: 34 * 3600
+//   },
+
+//   people: ["Alan Shepard", "John Glenn"],
+
+//   media: {
+//     hero: "Mercury_MissionControl_1962.jpg",
+//     info: []
+//   },
+
+//   description: "Proved humans can survive spaceflight.",
+//   funFact: "Six crewed missions proved basic human spaceflight viability."
+// },
+// {
+//   id: "shepard_1961",
+//   title: "First American in Space",
+//   subtitle: "Freedom 7",
+//   type: "mission",
+
+//   startYear: 1961,
+//   dateLabel: "May 5, 1961",
+
+//   location: {
+//     name: "Cape Canaveral, FL",
+//     coords: [-80.6, 28.5]
+//   },
+
+//   metrics: {
+//     durationSec: 928
+//   },
+
+//   people: ["Alan Shepard"],
+
+//   media: {
+//     hero: "Mercury_AlanShepard_1961.jpg",
+//     info: []
+//   },
+
+//   description: "First US human spaceflight.",
+//   funFact: null
+// },
+// {
+//   id: "glenn_1962",
+//   title: "First U.S. Orbit of Earth",
+//   subtitle: "Friendship 7",
+//   type: "mission",
+
+//   startYear: 1962,
+//   dateLabel: "Feb 20, 1962",
+
+//   location: {
+//     name: "Cape Canaveral, FL",
+//     coords: [-80.6, 28.5]
+//   },
+
+//   metrics: {
+//     durationSec: 17723
+//   },
+
+//   people: ["John Glenn"],
+
+//   media: {
+//     hero: "Mercury_Atlas6_1962.jpg",
+//     info: []
+//   },
+
+//   description: "First American orbital flight.",
+//   funFact: null
+// }, 
+// {
+//   id: "gemini_program",
+//   title: "Project Gemini",
+//   subtitle: "Spacewalks & docking",
+//   type: "program",
+
+//   startYear: 1961,
+//   endYear: 1966,
+
+//   dateLabel: "1961–1966",
+
+//   location: {
+//     name: "Houston, TX (MSC)",
+//     coords: [-95.0, 29.6]
+//   },
+
+//   metrics: {},
+
+//   people: [],
+
+//   media: {
+//     hero: "Gemini_MissionControlHouston_1965.jpg",
+//     info: []
+//   },
+
+//   description: "Bridged Mercury to Apollo.",
+//   funFact: null
+// },
+// {
+//   id: "white_eva_1965",
+//   title: "First American Spacewalk",
+//   subtitle: "Gemini IV",
+//   type: "mission",
+
+//   startYear: 1965,
+//   dateLabel: "June 3, 1965",
+
+//   location: {
+//     name: "Low Earth Orbit",
+//     coords: null
+//   },
+
+//   metrics: {
+//     durationSec: 97 * 3600 + 56 * 60 + 12
+//   },
+
+//   people: ["Ed White"],
+
+//   media: {
+//     hero: "Gemini_EdWhiteEVA_1965.jpg",
+//     info: []
+//   },
+
+//   description: "First U.S. EVA.",
+//   funFact: null
+// },
+// {
+//   id: "apollo1",
+//   title: "Apollo 1: Our First Loss",
+//   subtitle: "Launchpad fire tragedy",
+//   type: "mission",
+
+//   startYear: 1967,
+//   dateLabel: "Jan 27, 1967",
+
+//   location: {
+//     name: "Cape Canaveral, FL",
+//     coords: [-80.6, 28.5]
+//   },
+
+//   metrics: {},
+
+//   people: ["Gus Grissom", "Ed White", "Roger Chaffee"],
+
+//   media: {
+//     hero: "Apollo_Apollo1Crew_1966.jpg",
+//     info: []
+//   },
+
+//   description: "Fire during ground test killed three astronauts.",
+//   funFact: "Led to major redesign of Apollo safety systems."
+// },
+// {
+//   id: "apollo8",
+//   title: "First Humans to Orbit the Moon",
+//   subtitle: "Apollo 8",
+//   type: "mission",
+
+//   startYear: 1968,
+//   dateLabel: "Dec 21–27, 1968",
+
+//   location: {
+//     name: "Lunar Orbit",
+//     coords: null
+//   },
+
+//   metrics: {
+//     durationSec: 6 * 24 * 3600
+//   },
+
+//   people: ["Frank Borman", "James Lovell", "William Anders"],
+
+//   media: {
+//     hero: "Apollo8_Earthrise.jpg",
+//     info: []
+//   },
+
+//   description: "First crew to leave Earth orbit.",
+//   funFact: "Famous 'Earthrise' photo taken during this mission."
+// },
+// {
+//   id: "apollo11",
+//   title: "One Giant Leap",
+//   subtitle: "Moon Landing",
+//   type: "mission",
+
+//   startYear: 1969,
+//   dateLabel: "July 20, 1969",
+
+//   location: {
+//     name: "Moon",
+//     coords: null
+//   },
+
+//   metrics: {
+//     distance: 238855,
+//     distanceUnit: "mi"
+//   },
+
+//   people: ["Neil Armstrong", "Buzz Aldrin", "Michael Collins"],
+
+//   media: {
+//     hero: "apollo11.jpg",
+//     info: []
+//   },
+
+//   description: "First human landing on the Moon.",
+//   funFact: "Michael Collins remained in lunar orbit alone."
+// },
+// {
+//   id: "whitson_record",
+//   title: "Most Time in Space",
+//   type: "record",
+//   startYear: 2020,
+//   dateLabel: "Ongoing record",
+
+//   metrics: {
+//     durationSec: 665 * 24 * 3600
+//   }
+// },
+// {
+//   id: "artemis2",
+//   title: "Artemis II",
+//   subtitle: "Return to the Moon Era Begins",
+//   type: "mission",
+
+//   startYear: 2026,
+//   dateLabel: "April 2026",
+
+//   location: {
+//     name: "Deep Space / Lunar Trajectory",
+//     coords: null
+//   },
+
+//   metrics: {
+//     distance: 252756,
+//     distanceUnit: "mi",
+//     durationSec: 10 * 24 * 3600
+//   },
+
+//   people: [
+//     "Reid Wiseman",
+//     "Victor Glover",
+//     "Christina Koch",
+//     "Jeremy Hansen"
+//   ],
+
+//   media: {
+//     hero: "artemisII.jpg",
+//     info: []
+//   },
+
+//   description: "First crewed Artemis mission around the Moon.",
+//   funFact: "Marks humanity’s return to deep space after Apollo."
+// }];

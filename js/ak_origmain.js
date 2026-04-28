@@ -31,236 +31,116 @@
 
 
 /*  MAP PROJECTION  */
-// const VIEWS = {
-//   usa:   { ln0:-125, ln1:-66,  lt0:50,  lt1:23  },   // full continental US
-//   use:   { ln0:-98,  ln1:-66,  lt0:47,  lt1:24  },   // eastern US
-//   uss:   { ln0:-108, ln1:-74,  lt0:38,  lt1:24.5 },  // southeastern US 
-//   world: { ln0:-180, ln1:180,  lt0:82,  lt1:-56  }   // world
-// };
-
-// replacing VIEWS with projection presets to wrok better with d3 + geojson
-const PROJECTION_PRESETS = {
-  usa: () => d3.geoAlbers()
-    .center([0, 38])
-    .rotate([96, 0])
-    .parallels([29.5, 45.5])
-    .scale(1100),
-
-  use: () => d3.geoAlbers()
-    .center([0, 38])
-    .rotate([88, 0])
-    .parallels([29.5, 45.5])
-    .scale(1400),
-
-  uss: () => d3.geoAlbers()
-    .center([0, 32])
-    .rotate([90, 0])
-    .parallels([29.5, 45.5])
-    .scale(1600),
-
-  world: () => d3.geoNaturalEarth1()
-    .scale(MAP_W / 6.3)
+const VIEWS = {
+  usa:   { ln0:-125, ln1:-66,  lt0:50,  lt1:23  },   // full continental US
+  use:   { ln0:-98,  ln1:-66,  lt0:47,  lt1:24  },   // eastern US
+  uss:   { ln0:-108, ln1:-74,  lt0:38,  lt1:24.5 },  // southeastern US 
+  world: { ln0:-180, ln1:180,  lt0:82,  lt1:-56  }   // world
 };
 
 let MAP_W = 0, MAP_H = 0;
 
-// function project(lat, lng, view) {
-//   const v = VIEWS[view] || VIEWS.usa;
-//   const x = (lng - v.ln0) / (v.ln1 - v.ln0) * MAP_W;
-//   const y = (v.lt0 - lat) / (v.lt0 - v.lt1) * MAP_H;
-//   return [x, y];
-// }
-
-// global projection creation function
-let projection;
-
-function setProjection(view) {
-  const maker = PROJECTION_PRESETS[view] || PROJECTION_PRESETS.usa;
-  projection = maker();
-
-  //translate dimensions
-  projection.translate([MAP_W / 2, MAP_H / 2]);
+function project(lat, lng, view) {
+  const v = VIEWS[view] || VIEWS.usa;
+  const x = (lng - v.ln0) / (v.ln1 - v.ln0) * MAP_W;
+  const y = (v.lt0 - lat) / (v.lt0 - v.lt1) * MAP_H;
+  return [x, y];
 }
 
-// took this out to use global projection
-// function buildPathD(coords, view) {
-//   return coords.map((c, i) => {
-//     const [x, y] = projection(c);
-//     return `${i === 0 ? 'M' : 'L'}${x.toFixed(1)},${y.toFixed(1)}`;
-//   }).join('') + 'Z';
-// }
+function buildPathD(coords, view) {
+  return coords.map((c, i) => {
+    const [x, y] = project(c[1], c[0], view);
+    return `${i === 0 ? 'M' : 'L'}${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join('') + 'Z';
+}
+
 
 /* MAP RENDERING */
 let ACTIVE_TAB  = 'c'; // 'c' = centers, 'a' = astronauts
 let CURRENT_IDX = 0;
 
-// add geojson; delay start with READY, called here and in the boot
-let US_GEO = null;
-
-let READY = false;
-
-d3.json("data/us_48states.json").then(data => {
-  US_GEO = data;
-  READY = true;
-  console.log("STATE LIST:", data.features.map(f => f.properties.STUSPS));
-});
-
-// I changed drawMap() to use d3 methods, adapted from HKM's d3 lab
-function drawMap(view, eventMarkers = []) {
-  if (!US_GEO || !US_GEO.features) {
-    console.warn("US_GEO not ready yet — skipping drawMap()");
-    return;
-  }
-
-  // set projection first
-  setProjection(view);
-
-  // create map svg
-  const svg = d3.select("#map-svg");
-
-  const wrap = document.getElementById("map-wrap");
-  MAP_W = wrap.offsetWidth || 800;
+function drawMap(view, eventMarkers) {
+  const wrap = document.getElementById('map-wrap');
+  MAP_W = wrap.offsetWidth  || 800;
   MAP_H = wrap.offsetHeight || 500;
 
-  svg
-    .attr("viewBox", `0 0 ${MAP_W} ${MAP_H}`)
-    .attr("width", MAP_W)
-    .attr("height", MAP_H);
+  const svg = document.getElementById('map-svg');
+  svg.setAttribute('viewBox', `0 0 ${MAP_W} ${MAP_H}`);
+  svg.setAttribute('width',  MAP_W);
+  svg.setAttribute('height', MAP_H);
 
-  //ensure single group 
-  let g = svg.select("g.map-layer");
-  if (g.empty()) {
-    g = svg.append("g").attr("class", "map-layer");
+  let s = '';
+
+  //Ocean background
+  s += `<rect width="${MAP_W}" height="${MAP_H}" fill="#010a1a"/>`;
+
+  // Subtle grid
+  const gw = MAP_W / 10, gh = MAP_H / 7;
+  for (let gx = 0; gx <= MAP_W; gx += gw)
+    s += `<line x1="${gx.toFixed(0)}" y1="0" x2="${gx.toFixed(0)}" y2="${MAP_H}" stroke="rgba(0,212,255,0.03)" stroke-width="1"/>`;
+  for (let gy = 0; gy <= MAP_H; gy += gh)
+    s += `<line x1="0" y1="${gy.toFixed(0)}" x2="${MAP_W}" y2="${gy.toFixed(0)}" stroke="rgba(0,212,255,0.03)" stroke-width="1"/>`;
+
+  if (view === 'world') {
+    // World continents
+    WORLD_OUTLINES.forEach(pts => {
+      s += `<path d="${buildPathD(pts, view)}" class="world-land"/>`;
+    });
+    // Water labels
+    const labels = [
+      [30, -30, 'Atlantic Ocean'],
+      [10, 160, 'Pacific Ocean'],
+      [-15, 75, 'Indian Ocean']
+    ];
+    labels.forEach(([lat, lng, txt]) => {
+      const [lx, ly] = project(lat, lng, view);
+      s += `<text x="${lx.toFixed(0)}" y="${ly.toFixed(0)}" class="water-label" text-anchor="middle">${txt}</text>`;
+    });
+  } else {
+    // US States
+    US_STATES.forEach(([abbr, coords]) => {
+      const cls = SOUTH_STATES.has(abbr) ? 'state-south' : 'state-base';
+      s += `<path d="${buildPathD(coords, view)}" class="${cls}"/>`;
+    });
+    // Outer glow border
+    s += `<rect width="${MAP_W}" height="${MAP_H}" fill="none" stroke="rgba(0,212,255,0.055)" stroke-width="3"/>`;
+    // Water labels
+    if (view !== 'usa' || MAP_W > 600) {
+      const [gl_x, gl_y] = project(26, -89, view);
+      s += `<text x="${gl_x.toFixed(0)}" y="${gl_y.toFixed(0)}" class="water-label" text-anchor="middle">Gulf of Mexico</text>`;
+    }
+    if (view === 'usa') {
+      const [pa_x, pa_y] = project(40, -128, view);
+      s += `<text x="${pa_x.toFixed(0)}" y="${pa_y.toFixed(0)}" class="water-label" text-anchor="middle">Pacific Ocean</text>`;
+      const [at_x, at_y] = project(34, -64, view);
+      s += `<text x="${at_x.toFixed(0)}" y="${at_y.toFixed(0)}" class="water-label" text-anchor="middle">Atlantic</text>`;
+    }
   }
 
-  // const v = VIEWS[view] || VIEWS.usa;
-
-  // set up path
-  const path = d3.geoPath().projection(projection);
-
-  // use geojson to render states
-  g.selectAll("path.state")
-  .data(US_GEO.features, d => d.properties.STUSPS)
-    .join(
-      enter => enter.append("path")
-        .attr("class", d =>
-          SOUTH_STATES.has(d.properties.STUSPS)
-            ? "state-south state"
-            : "state-base state"
-        )
-        .attr("d", d => path(d)),
-
-      update => update.attr("d", d => path(d)),
-
-      exit => exit.remove()
-    );
-
-  // clear old markers, make new ones
-  g.selectAll("circle.map-dot").remove();
-
-  eventMarkers.forEach(m => {
-    const [x, y] = projection([m.lng, m.lat]);
-
-    if (!isFinite(x) || !isFinite(y)) return;
-
-    g.append("circle")
-      .attr("class", "map-dot")
-      .attr("cx", x)
-      .attr("cy", y)
-      .attr("r", 5)
-      .attr("fill", m.col || "#00d4ff")
-      .attr("data-l", m.label || "")
-      .attr("data-d", m.desc || "")
-      .attr("data-t", m.type || "");
+  // Permanent layer (centers or astronaut birthplaces)
+  const permList = ACTIVE_TAB === 'c' ? NASA_CENTERS : ASTRONAUT_BIRTHS;
+  permList.forEach(p => {
+    const [cx, cy] = project(p.lat, p.lng, view);
+    if (cx < -15 || cx > MAP_W + 15 || cy < -15 || cy > MAP_H + 15) return;
+    const col   = p.col || '#ffca28';
+    const label = p.abbr || p.name.split(' ')[0];
+    const desc  = ACTIVE_TAB === 'c' ? p.role : p.mission;
+    const tag   = ACTIVE_TAB === 'c' ? `NASA CENTER · ${p.state}` : `Born: ${p.born}`;
+    s += makeDot(cx, cy, col, 4.5, true, p.name, desc, tag, label, ACTIVE_TAB === 'a');
   });
 
+  // Event-specific markers 
+  eventMarkers.forEach(m => {
+    const [cx, cy] = project(m.lat, m.lng, view);
+    if (cx < -15 || cx > MAP_W + 15 || cy < -15 || cy > MAP_H + 15) return;
+    const short = (m.label || '').split(',')[0].trim().split(' ').slice(0, 2).join(' ');
+    s += makeDot(cx, cy, m.col, m.type === 'b' ? 5.5 : 7.5, false, m.label, m.desc,
+                 m.type === 'b' ? 'BIRTHPLACE' : 'NASA FACILITY', short, m.type === 'b');
+  });
+
+  svg.innerHTML = s;
   attachTooltips();
-
-  console.log("PROJECTION TEST:", projection([-100, 40]));
-} // end of drawMap()
-
-// function drawMap(view, eventMarkers) {
-//   const wrap = document.getElementById('map-wrap');
-//   MAP_W = wrap.offsetWidth  || 800;
-//   MAP_H = wrap.offsetHeight || 500;
-
-//   const svg = document.getElementById('map-svg');
-//   svg.setAttribute('viewBox', `0 0 ${MAP_W} ${MAP_H}`);
-//   svg.setAttribute('width',  MAP_W);
-//   svg.setAttribute('height', MAP_H);
-
-//   let s = '';
-
-//   //Ocean background
-//   s += `<rect width="${MAP_W}" height="${MAP_H}" fill="#010a1a"/>`;
-
-//   // Subtle grid
-//   const gw = MAP_W / 10, gh = MAP_H / 7;
-//   for (let gx = 0; gx <= MAP_W; gx += gw)
-//     s += `<line x1="${gx.toFixed(0)}" y1="0" x2="${gx.toFixed(0)}" y2="${MAP_H}" stroke="rgba(0,212,255,0.03)" stroke-width="1"/>`;
-//   for (let gy = 0; gy <= MAP_H; gy += gh)
-//     s += `<line x1="0" y1="${gy.toFixed(0)}" x2="${MAP_W}" y2="${gy.toFixed(0)}" stroke="rgba(0,212,255,0.03)" stroke-width="1"/>`;
-
-//   if (view === 'world') {
-//     // World continents
-//     WORLD_OUTLINES.forEach(pts => {
-//       s += `<path d="${buildPathD(pts, view)}" class="world-land"/>`;
-//     });
-//     // Water labels
-//     const labels = [
-//       [30, -30, 'Atlantic Ocean'],
-//       [10, 160, 'Pacific Ocean'],
-//       [-15, 75, 'Indian Ocean']
-//     ];
-//     labels.forEach(([lat, lng, txt]) => {
-//       const [lx, ly] = project(lat, lng, view);
-//       s += `<text x="${lx.toFixed(0)}" y="${ly.toFixed(0)}" class="water-label" text-anchor="middle">${txt}</text>`;
-//     });
-//   } else {
-//     // US States
-//     US_STATES.forEach(([abbr, coords]) => {
-//       const cls = SOUTH_STATES.has(abbr) ? 'state-south' : 'state-base';
-//       s += `<path d="${buildPathD(coords, view)}" class="${cls}"/>`;
-//     });
-//     // Outer glow border
-//     s += `<rect width="${MAP_W}" height="${MAP_H}" fill="none" stroke="rgba(0,212,255,0.055)" stroke-width="3"/>`;
-//     // Water labels
-//     if (view !== 'usa' || MAP_W > 600) {
-//       const [gl_x, gl_y] = project(26, -89, view);
-//       s += `<text x="${gl_x.toFixed(0)}" y="${gl_y.toFixed(0)}" class="water-label" text-anchor="middle">Gulf of Mexico</text>`;
-//     }
-//     if (view === 'usa') {
-//       const [pa_x, pa_y] = project(40, -128, view);
-//       s += `<text x="${pa_x.toFixed(0)}" y="${pa_y.toFixed(0)}" class="water-label" text-anchor="middle">Pacific Ocean</text>`;
-//       const [at_x, at_y] = project(34, -64, view);
-//       s += `<text x="${at_x.toFixed(0)}" y="${at_y.toFixed(0)}" class="water-label" text-anchor="middle">Atlantic</text>`;
-//     }
-//   }
-
-//   // Permanent layer (centers or astronaut birthplaces)
-//   const permList = ACTIVE_TAB === 'c' ? NASA_CENTERS : ASTRONAUT_BIRTHS;
-//   permList.forEach(p => {
-//     const [cx, cy] = project(p.lat, p.lng, view);
-//     if (cx < -15 || cx > MAP_W + 15 || cy < -15 || cy > MAP_H + 15) return;
-//     const col   = p.col || '#ffca28';
-//     const label = p.abbr || p.name.split(' ')[0];
-//     const desc  = ACTIVE_TAB === 'c' ? p.role : p.mission;
-//     const tag   = ACTIVE_TAB === 'c' ? `NASA CENTER · ${p.state}` : `Born: ${p.born}`;
-//     s += makeDot(cx, cy, col, 4.5, true, p.name, desc, tag, label, ACTIVE_TAB === 'a');
-//   });
-
-//   // Event-specific markers 
-//   eventMarkers.forEach(m => {
-//     const [cx, cy] = project(m.lat, m.lng, view);
-//     if (cx < -15 || cx > MAP_W + 15 || cy < -15 || cy > MAP_H + 15) return;
-//     const short = (m.label || '').split(',')[0].trim().split(' ').slice(0, 2).join(' ');
-//     s += makeDot(cx, cy, m.col, m.type === 'b' ? 5.5 : 7.5, false, m.label, m.desc,
-//                  m.type === 'b' ? 'BIRTHPLACE' : 'NASA FACILITY', short, m.type === 'b');
-//   });
-
-//   svg.innerHTML = s;
-//   attachTooltips();
-// }
+}
 
 function makeDot(x, y, col, r, perm, lbl, desc, tag, shortLabel, isBirth) {
   const opacity = perm ? 0.72 : 1;
@@ -677,18 +557,8 @@ document.getElementById('btn-start').addEventListener('click', () => {
   document.getElementById('landing').classList.add('out');
   document.getElementById('app').classList.add('on');
   buildTimeline();
-
-  const wait = () => {
-  if (!US_GEO) return setTimeout(wait, 50);
-  if (!READY) return setTimeout(wait, 50);
-  goTo(0, true);
-};
-
-  wait();
+  setTimeout(() => goTo(0, true), 120);
 });
-
-//   setTimeout(() => goTo(0, true), 120);
-// });
 
 document.getElementById('btn-reset').addEventListener('click', () => {
   document.getElementById('app').classList.remove('on');
@@ -714,5 +584,3 @@ window.addEventListener('resize', () => {
   if (document.getElementById('app').classList.contains('on'))
     drawMap(EVENTS[CURRENT_IDX].mapView, EVENTS[CURRENT_IDX].markers);
 });
-
-window.switchTab = switchTab;
