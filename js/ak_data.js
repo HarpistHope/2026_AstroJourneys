@@ -61,7 +61,7 @@ const EVENTS = [
     dyk:  null,
     dist: 116,
     distLabel: '116 miles — Suborbital Arc',
-    photos: ['https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Alan_Shepard_in_spacesuit.jpg/480px-Alan_Shepard_in_spacesuit.jpg',
+    photos: ['img/Mercury_AlanShepard_Freedom7Capsule_1961.jpg',
              'https://upload.wikimedia.org/wikipedia/commons/4/47/Alan_Shepard_in_spacesuit.jpg'],
     photoCap: 'Alan Shepard suited for Freedom 7, May 1961 (NASA)',
     emoji: '🚀',
