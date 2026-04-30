@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>AstroJourneys — Giant Leaps</title>
+<style>
+
+:root{
+  --cyan:#00d4ff;--gold:#ffca28;--red:#ff3d21;--green:#00e5a0;--pur:#b06fff;
+  --bg:#020810;--panel:rgba(3,9,22,.98);--bdr:rgba(0,212,255,.16);
+  --fm:'Courier New',Courier,monospace;
+  --fo:'Impact','Arial Black',sans-serif;
+  --fb:'Arial Narrow',Arial,sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:var(--fb);color:#eef4ff;}
+canvas#starfield{position:fixed;inset:0;z-index:0;pointer-events:none;}
+
+/* LANDING */
+#landing{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse 130% 90% at 50% 55%,#071436,#020810);transition:opacity .9s,transform .9s;}
+#landing.out{opacity:0;transform:scale(1.06);pointer-events:none;}
+.land-badge{font-family:var(--fm);font-size:.72rem;letter-spacing:.35rem;color:var(--cyan);border:1px solid rgba(0,212,255,.3);padding:6px 22px;margin-bottom:28px;}
+.land-title{font-family:var(--fo);font-size:clamp(3rem,9vw,7rem);font-weight:900;line-height:.88;text-align:center;background:linear-gradient(155deg,#fff 0%,#bfe0ff 28%,var(--cyan) 65%,#0060ff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 55px rgba(0,175,255,.35));}
+.land-sub{font-family:var(--fo);font-size:clamp(.7rem,1.5vw,.95rem);letter-spacing:.3rem;color:var(--gold);margin:12px 0 28px;}
+.land-desc{max-width:450px;text-align:center;font-size:1.06rem;font-weight:300;line-height:1.72;color:rgba(170,200,255,.68);margin-bottom:44px;}
+.land-btn{font-family:var(--fo);font-size:.86rem;font-weight:700;letter-spacing:.2rem;color:#010c1e;background:linear-gradient(135deg,var(--cyan),#0060ff);border:none;padding:16px 52px;cursor:pointer;clip-path:polygon(14px 0%,100% 0%,calc(100% - 14px) 100%,0% 100%);box-shadow:0 0 55px rgba(0,180,255,.5);transition:all .25s;}
+.land-btn:hover{transform:translateY(-4px);box-shadow:0 0 80px rgba(0,200,255,.8);}
+.orbit-wrap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:-1;overflow:hidden;}
+.orbit-ring{position:absolute;border-radius:50%;border:1px solid rgba(0,212,255,.08);}
+.orbit-ring:nth-child(1){width:200px;height:200px;border-color:rgba(0,212,255,.2);animation:spinR 14s linear infinite;}
+.orbit-ring:nth-child(2){width:380px;height:380px;animation:spinR 27s linear infinite reverse;}
+.orbit-ring:nth-child(3){width:580px;height:580px;animation:spinR 44s linear infinite;}
+.orbit-dot{position:absolute;width:7px;height:7px;border-radius:50%;background:var(--cyan);top:-3.5px;left:calc(50% - 3.5px);box-shadow:0 0 10px var(--cyan);}
+@keyframes spinR{to{transform:rotate(360deg);}}
+
+/* APP */
+#app{position:fixed;inset:0;z-index:100;display:grid;grid-template-rows:60px 1fr 84px;grid-template-columns:1fr 420px;opacity:0;pointer-events:none;transition:opacity .5s .1s;}
+#app.on{opacity:1;pointer-events:all;}
+
+/* TOPBAR */
+#topbar{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:rgba(2,7,18,.99);border-bottom:1px solid var(--bdr);z-index:20;}
+.tb-left{display:flex;align-items:center;gap:12px;}
+.nasa-mark{font-family:var(--fo);font-size:1.05rem;font-weight:900;color:var(--red);letter-spacing:.18rem;text-shadow:0 0 18px rgba(255,61,33,.45);}
+.tb-divider{width:1px;height:28px;background:linear-gradient(to bottom,transparent,var(--cyan),transparent);}
+.tb-title{font-family:var(--fm);font-size:.58rem;color:var(--cyan);letter-spacing:.14rem;opacity:.7;}
+.tb-center{display:flex;flex-direction:column;align-items:center;}
+.tb-year{font-family:var(--fo);font-size:1.45rem;font-weight:700;color:var(--gold);line-height:1;}
+.tb-event{font-size:.8rem;color:rgba(170,205,255,.8);}
+.reset-btn{font-family:var(--fm);font-size:.58rem;letter-spacing:.12rem;color:var(--red);background:transparent;border:1px solid rgba(255,61,33,.3);padding:7px 16px;cursor:pointer;clip-path:polygon(7px 0%,100% 0%,calc(100% - 7px) 100%,0% 100%);transition:all .2s;}
+.reset-btn:hover{background:rgba(255,61,33,.1);border-color:var(--red);}
+
+/* MAP */
+#map-wrap{position:relative;overflow:hidden;border-right:1px solid var(--bdr);background:#010b1d;cursor:grab;}
+#map-wrap:active{cursor:grabbing;}
+#map-svg{position:absolute;top:0;left:0;display:block;}
+.s-base{fill:#0d2244;stroke:#0d2244;stroke-width:0;}
+.s-dim{fill:#0d2244;stroke:#0d2244;stroke-width:0;}
+.s-hl{fill:#0d2244;stroke:#0d2244;stroke-width:0;}
+.s-lbl{font-family:'Arial Narrow',Arial,sans-serif;font-size:11px;fill:rgba(160,200,255,.55);font-weight:600;pointer-events:none;text-anchor:middle;}
+.world-land{fill:#0a1a30;stroke:#1a3060;stroke-width:.5px;}
+.water-label{font-family:var(--fm);font-size:11px;fill:rgba(0,212,255,.28);letter-spacing:1.8px;}
+.map-corner{position:absolute;width:22px;height:22px;pointer-events:none;z-index:5;}
+.mc-tl{top:10px;left:10px;border-top:2px solid rgba(0,212,255,.4);border-left:2px solid rgba(0,212,255,.4);}
+.mc-tr{top:10px;right:10px;border-top:2px solid rgba(0,212,255,.4);border-right:2px solid rgba(0,212,255,.4);}
+.mc-bl{bottom:34px;left:10px;border-bottom:2px solid rgba(0,212,255,.4);border-left:2px solid rgba(0,212,255,.4);}
+.mc-br{bottom:34px;right:10px;border-bottom:2px solid rgba(0,212,255,.4);border-right:2px solid rgba(0,212,255,.4);}
+#map-hud{position:absolute;bottom:12px;left:12px;z-index:5;font-family:var(--fm);font-size:.52rem;color:rgba(0,212,255,.4);letter-spacing:.12rem;pointer-events:none;}
+#map-tabs{position:absolute;top:10px;right:10px;z-index:6;display:flex;gap:4px;}
+.map-tab{font-family:var(--fm);font-size:.54rem;letter-spacing:.08rem;color:rgba(0,212,255,.64);background:rgba(2,8,20,.92);border:1px solid rgba(0,212,255,.22);padding:5px 10px;cursor:pointer;transition:all .2s;text-transform:uppercase;}
+.map-tab.on{color:#010c1e;background:var(--cyan);border-color:var(--cyan);}
+/* Zoom buttons */
+#zoom-btns{position:absolute;bottom:52px;right:12px;z-index:6;display:flex;flex-direction:column;gap:4px;}
+.zbtn{font-family:var(--fo);font-size:1rem;font-weight:900;color:var(--cyan);background:rgba(2,8,20,.92);border:1px solid rgba(0,212,255,.28);width:34px;height:34px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.zbtn:hover{background:rgba(0,212,255,.15);border-color:var(--cyan);}
+/* Legend */
+#map-legend{position:absolute;bottom:14px;right:12px;z-index:8;background:rgba(2,8,22,.94);border:1px solid rgba(0,212,255,.2);padding:10px 13px;min-width:190px;box-shadow:0 4px 22px rgba(0,0,0,.5);}
+.legend-title{font-family:var(--fm);font-size:.56rem;color:var(--cyan);letter-spacing:.14rem;margin-bottom:9px;opacity:.75;}
+.legend-item{display:flex;align-items:center;gap:8px;font-family:var(--fm);font-size:.56rem;color:rgba(180,215,255,.72);margin-bottom:5px;}
+.legend-item:last-child{margin-bottom:0;}
+.ldot{display:inline-flex;align-items:center;justify-content:center;width:12px;height:12px;border-radius:50%;font-size:8px;color:#020c20;flex-shrink:0;}
+#map-scan{position:absolute;inset:0;z-index:4;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,212,255,.007) 3px,rgba(0,212,255,.007) 4px);}
+#map-tooltip{position:absolute;z-index:20;background:rgba(3,10,28,.97);border:1px solid var(--cyan);padding:10px 13px;max-width:228px;pointer-events:none;display:none;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);box-shadow:0 0 22px rgba(0,212,255,.22);}
+#map-tooltip.on{display:block;}
+.tip-title{font-family:var(--fm);font-size:.68rem;color:var(--cyan);margin-bottom:4px;}
+.tip-body{font-size:.9rem;line-height:1.5;color:rgba(185,218,255,.88);}
+.tip-tag{display:inline-block;font-family:var(--fm);font-size:.54rem;color:var(--gold);border:1px solid rgba(255,202,40,.3);padding:2px 7px;margin-top:5px;}
+
+/* RIGHT PANEL */
+#panel{display:flex;flex-direction:column;background:var(--panel);overflow:hidden;}
+#dist-wrap{padding:8px 10px 6px;border-bottom:1px solid var(--bdr);flex-shrink:0;}
+.section-label{font-family:var(--fm);font-size:.52rem;letter-spacing:.16rem;color:var(--cyan);opacity:.6;margin-bottom:4px;}
+#info-wrap{flex:1;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(0,212,255,.14) transparent;}
+#info-wrap::-webkit-scrollbar{width:3px;}
+#info-wrap::-webkit-scrollbar-thumb{background:rgba(0,212,255,.2);}
+.event-body{padding:10px 14px;}
+.event-name{font-family:var(--fo);font-size:.92rem;font-weight:700;color:#eef4ff;line-height:1.22;margin-bottom:3px;}
+.event-meta{font-family:var(--fm);font-size:.57rem;color:var(--gold);letter-spacing:.1rem;margin-bottom:8px;}
+.event-desc{font-size:.9rem;font-weight:300;line-height:1.65;color:rgba(185,215,255,.82);margin-bottom:10px;}
+.fact-block{background:linear-gradient(135deg,rgba(0,212,255,.055),rgba(0,50,200,.03));border:1px solid rgba(0,212,255,.18);border-left:3px solid var(--cyan);padding:9px 11px;margin-bottom:10px;}
+.fact-label{font-family:var(--fm);font-size:.54rem;color:var(--cyan);letter-spacing:.12rem;margin-bottom:4px;}
+.fact-text{font-size:.84rem;font-weight:300;line-height:1.6;color:rgba(185,215,255,.88);}
+.loc-adv{background:linear-gradient(135deg,rgba(0,229,160,.07),rgba(0,212,255,.04));border:1px solid rgba(0,229,160,.22);border-left:3px solid var(--green);padding:8px 11px;margin-bottom:10px;}
+.loc-adv-label{font-family:var(--fm);font-size:.52rem;color:var(--green);letter-spacing:.1rem;margin-bottom:4px;}
+.loc-adv-txt{font-size:.82rem;font-weight:300;line-height:1.58;color:rgba(170,240,210,.9);}
+.dyk-btn{display:flex;align-items:center;gap:8px;width:100%;font-family:var(--fm);font-size:.58rem;letter-spacing:.1rem;color:var(--gold);background:rgba(255,202,40,.055);border:1px solid rgba(255,202,40,.26);padding:9px 13px;cursor:pointer;margin-bottom:8px;transition:all .2s;animation:dykP 3.5s ease-in-out infinite;}
+.dyk-btn:hover{background:rgba(255,202,40,.14);border-color:var(--gold);}
+@keyframes dykP{0%,100%{box-shadow:0 0 7px rgba(255,202,40,.1);}50%{box-shadow:0 0 22px rgba(255,202,40,.44);}}
+.dyk-panel{display:none;background:linear-gradient(135deg,rgba(255,202,40,.065),rgba(0,212,255,.03));border:1px solid rgba(255,202,40,.26);padding:12px;margin-bottom:10px;font-size:.86rem;font-weight:300;line-height:1.62;color:rgba(255,238,170,.95);}
+.dyk-panel.on{display:block;}
+.fade-content{transition:opacity .28s ease;}
+.fade-content.fading{opacity:0;}
+
+/* TIMELINE */
+#timeline{grid-column:1/-1;display:flex;align-items:center;gap:12px;padding:0 18px;background:rgba(2,7,18,.99);border-top:1px solid var(--bdr);}
+.nav-btn{font-family:var(--fo);font-size:.6rem;font-weight:700;letter-spacing:.12rem;color:var(--cyan);background:transparent;border:1px solid rgba(0,212,255,.28);padding:9px 17px;cursor:pointer;clip-path:polygon(9px 0%,100% 0%,calc(100% - 9px) 100%,0% 100%);transition:all .2s;flex-shrink:0;}
+.nav-btn:hover:not(:disabled){background:rgba(0,212,255,.1);border-color:var(--cyan);}
+.nav-btn:disabled{opacity:.22;cursor:default;}
+#tl-track{flex:1;position:relative;height:42px;display:flex;align-items:center;}
+.tl-line{position:absolute;left:0;right:0;height:2px;top:50%;transform:translateY(-50%);background:rgba(0,212,255,.1);}
+#tl-fill{position:absolute;height:2px;top:50%;left:0;transform:translateY(-50%);background:var(--cyan);transition:width .5s ease;box-shadow:0 0 10px var(--cyan);}
+#tl-nodes{position:absolute;inset:0;}
+.tl-node{position:absolute;top:50%;transform:translate(-50%,-50%);width:10px;height:10px;border-radius:50%;border:2px solid rgba(0,212,255,.28);background:var(--bg);cursor:pointer;transition:all .2s;z-index:2;}
+.tl-node:hover{border-color:var(--cyan);transform:translate(-50%,-50%) scale(1.6);}
+.tl-node.on{border-color:var(--cyan);background:var(--cyan);box-shadow:0 0 11px var(--cyan);transform:translate(-50%,-50%) scale(1.4);}
+.tl-node.done{border-color:rgba(0,212,255,.5);background:rgba(0,212,255,.2);}
+.tl-year{position:absolute;top:calc(100% + 5px);left:50%;transform:translateX(-50%);font-family:var(--fm);font-size:.46rem;color:rgba(0,212,255,.48);white-space:nowrap;pointer-events:none;}
+.tl-node.on .tl-year{color:var(--cyan);}
+
+</style>
+</head>
+<body>
+<canvas id="starfield"></canvas>
+<div id="landing">
+  <div class="orbit-wrap">
+    <div class="orbit-ring"><div class="orbit-dot"></div></div>
+    <div class="orbit-ring"><div class="orbit-dot" style="top:auto;bottom:-3.5px"></div></div>
+    <div class="orbit-ring"></div>
+  </div>
+  <div class="land-badge">NASA &middot; Human Spaceflight &middot; 1958&ndash;2026</div>
+  <h1 class="land-title">GIANT<br>LEAPS</h1>
+  <p class="land-sub">Small Steps &nbsp;&middot;&nbsp; Giant Leaps &nbsp;&middot;&nbsp; Infinite Frontier</p>
+  <p class="land-desc">From Alan Shepard&rsquo;s 15-minute flight to Artemis and beyond; 68 years of human spaceflight through interactive maps, orbital distance tracking, and real mission stories.</p>
+  <button class="land-btn" id="btn-start">&#9654;&nbsp; BEGIN JOURNEY</button>
+</div>
+<div id="app">
+  <div id="topbar">
+    <div class="tb-left">
+      <span class="nasa-mark">NASA</span>
+      <div class="tb-divider"></div>
+      <span class="tb-title">Giant Leaps &middot; Human Spaceflight 1958&ndash;2026</span>
+    </div>
+    <div class="tb-center">
+      <div class="tb-year" id="year-display">1958</div>
+      <div class="tb-event" id="event-display">NASA Founded</div>
+    </div>
+    <button class="reset-btn" id="btn-reset">&#8617; Reset</button>
+  </div>
+  <div id="map-wrap">
+    <svg id="map-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div id="map-scan"></div>
+    <div class="map-corner mc-tl"></div>
+    <div class="map-corner mc-tr"></div>
+    <div class="map-corner mc-bl"></div>
+    <div class="map-corner mc-br"></div>
+    <div id="map-hud">NASA OPERATIONS CORRIDOR &middot; SOUTHEASTERN USA</div>
+    <div id="map-tabs">
+      <div class="map-tab on" id="tab-c" onclick="switchTab('c')">NASA Centers</div>
+      <div class="map-tab"   id="tab-a" onclick="switchTab('a')">Astronauts</div>
+    </div>
+    <div id="zoom-btns">
+      <button class="zbtn" id="zbtn-in" title="Zoom In">+</button>
+      <button class="zbtn" id="zbtn-out" title="Zoom Out">&#8722;</button>
+      <button class="zbtn" id="zbtn-rst" title="Reset View" style="font-size:.65rem">&#8635;</button>
+    </div>
+    <div id="map-legend">
+      <div class="legend-title">&#9660; MARKER KEY</div>
+      <div class="legend-item"><span class="ldot" style="background:#ff3d21;box-shadow:0 0 7px #ff3d21"></span>Launch / Mission HQ</div>
+      <div class="legend-item"><span class="ldot" style="background:#00d4ff;box-shadow:0 0 7px #00d4ff"></span>Mission Control</div>
+      <div class="legend-item"><span class="ldot" style="background:#ffca28;box-shadow:0 0 7px #ffca28"></span>Propulsion / Testing</div>
+      <div class="legend-item"><span class="ldot" style="background:#00e5a0;box-shadow:0 0 7px #00e5a0"></span>Manufacturing / Research</div>
+      <div class="legend-item"><span class="ldot" style="background:#b06fff;box-shadow:0 0 7px #b06fff"></span>Science / Technology</div>
+      <div class="legend-item"><span class="ldot star" style="background:#ffca28;box-shadow:0 0 7px #ffca28">&#9733;</span>Astronaut Birthplace</div>
+      <div class="legend-item" id="legend-intl" style="display:none"><span class="ldot" style="background:#00e5a0;box-shadow:0 0 7px #00e5a0"></span>Intl. Partner Site</div>
+    </div>
+    <div id="map-tooltip">
+      <div class="tip-title" id="tip-title"></div>
+      <div class="tip-body"  id="tip-body"></div>
+      <div class="tip-tag"   id="tip-tag"></div>
+    </div>
+  </div>
+  <div id="panel">
+    <div id="dist-wrap">
+      <div class="section-label">&#10022; ORBITAL DISTANCE TRACKER &mdash; JOURNEY FROM EARTH</div>
+      <svg id="dist-svg" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block"></svg>
+    </div>
+    <div id="info-wrap" class="fade-content">
+      <div id="info-inner"></div>
+    </div>
+  </div>
+  <div id="timeline">
+    <button class="nav-btn" id="btn-prev" disabled>&#9668; PREV</button>
+    <div id="tl-track">
+      <div class="tl-line"></div>
+      <div id="tl-fill"></div>
+      <div id="tl-nodes"></div>
+    </div>
+    <button class="nav-btn" id="btn-next">NEXT &#9658;</button>
+  </div>
+</div>
+<script>
+/* ak_data.js — Mission events, NASA centers, astronaut birthplaces
+   All events include dyk (Did You Know) content
+   Location advantage added to each event marker
+*/
+
+/* ━━━━━━━━━━━━━━━━ NASA CENTERS ━━━━━━━━━━━━━━━━ */
+var NASA_CENTERS = [
+  { lat:28.573, lng:-80.649, name:'Kennedy Space Center',       abbr:'KSC',  state:'FL', role:'Launch site for ALL crewed NASA missions since 1961',                     col:'#ff3d21' },
+  { lat:29.559, lng:-95.089, name:'Johnson Space Center',       abbr:'JSC',  state:'TX', role:'Mission Control & astronaut training — heart of human spaceflight',        col:'#00d4ff' },
+  { lat:30.390, lng:-89.090, name:'Stennis Space Center',       abbr:'SSC',  state:'MS', role:'Rocket engine testing — Saturn V, Shuttle & SLS all tested here',          col:'#ffca28' },
+  { lat:35.402, lng:-86.671, name:'Marshall Space Flight Ctr',  abbr:'MSFC', state:'AL', role:'Propulsion engineering — birthplace of Saturn V and SLS',                  col:'#ffca28' },
+  { lat:29.978, lng:-90.054, name:'Michoud Assembly Facility',  abbr:'MAF',  state:'LA', role:'Manufacturing — Shuttle tanks & SLS core stage built here',                col:'#00e5a0' },
+  { lat:38.883, lng:-77.016, name:'NASA Headquarters',          abbr:'HQ',   state:'DC', role:'Central administration, policy, and budget since 1958',                    col:'#ff3d21' },
+  { lat:38.991, lng:-76.848, name:'Goddard Space Flight Ctr',   abbr:'GSFC', state:'MD', role:'Earth science, Hubble & James Webb telescope operations',                  col:'#b06fff' },
+  { lat:37.098, lng:-76.384, name:'Langley Research Center',    abbr:'LaRC', state:'VA', role:"NASA's oldest center — aeronautics research since 1917",                   col:'#b06fff' },
+  { lat:41.977, lng:-87.901, name:'Glenn Research Center',      abbr:'GRC',  state:'OH', role:'Propulsion, power systems & communications research',                      col:'#00d4ff' },
+  { lat:37.416, lng:-122.053,name:'Ames Research Center',       abbr:'ARC',  state:'CA', role:'Aeronautics, astrobiology & high-performance computing',                   col:'#00e5a0' },
+  { lat:34.959, lng:-117.189,name:'Armstrong Flight Research',  abbr:'AFRC', state:'CA', role:'Advanced aircraft & experimental vehicle flight testing',                  col:'#00e5a0' },
+  { lat:32.303, lng:-106.768,name:'White Sands Test Facility',  abbr:'WSTF', state:'NM', role:'Propulsion & hazardous materials testing',                                 col:'#00e5a0' },
+];
+
+/* ━━━━━━━━━━━━━━━━ ASTRONAUT BIRTHPLACES ━━━━━━━━━━━━━━━━ */
+var ASTRONAUT_BIRTHS = [
+  { lat:40.564, lng:-84.194, name:'Neil Armstrong',    mission:'Apollo 11 — 1st Human on the Moon',            born:'Wapakoneta, OH' },
+  { lat:40.807, lng:-74.153, name:'Buzz Aldrin',       mission:'Apollo 11 — 2nd Human on the Moon',            born:'Glen Ridge, NJ' },
+  { lat:42.887, lng:-71.275, name:'Alan Shepard',      mission:'Freedom 7 — 1st American in Space',            born:'East Derry, NH' },
+  { lat:39.962, lng:-82.999, name:'John Glenn',        mission:'Friendship 7 — 1st American to Orbit',         born:'Cambridge, OH' },
+  { lat:41.499, lng:-81.694, name:'Jim Lovell',        mission:'Apollo 13 — Saved crew from disaster',         born:'Cleveland, OH' },
+  { lat:29.424, lng:-98.493, name:'Ed White',          mission:'Gemini IV — 1st American Spacewalk',           born:'San Antonio, TX' },
+  { lat:34.052, lng:-118.243,name:'Sally Ride',        mission:'STS-7 — 1st American Woman in Space',          born:'Los Angeles, CA' },
+  { lat:34.606, lng:-86.983, name:'Mae Jemison',       mission:'STS-47 — 1st Black Woman in Space',            born:'Decatur, AL' },
+  { lat:38.731, lng:-86.474, name:'Gus Grissom',       mission:'Mercury / Gemini pioneer',                     born:'Mitchell, IN' },
+  { lat:42.232, lng:-83.352, name:'Christina Koch',    mission:'Artemis II — record female spaceflight 328 days', born:'Grand Rapids, MI' },
+  { lat:34.058, lng:-117.288,name:'Victor Glover',     mission:'Artemis II — 1st Black astronaut to Moon orbit',  born:'Pomona, CA' },
+  { lat:40.735, lng:-74.172, name:'Jared Isaacman',    mission:'Polaris Dawn — 1st commercial spacewalk 2024', born:'Westfield, NJ' },
+];
+
+/* ━━━━━━━━━━━━━━━━ SOUTH STATES SET (for map highlighting) ━━━━━━━━━━━━━━━━ */
+var SOUTH_STATES = new Set(['FL','GA','AL','MS','LA','TX','SC','TN','AR','NC','VA','KY']);
+
+/* ━━━━━━━━━━━━━━━━ EVENTS ━━━━━━━━━━━━━━━━ */
+var EVENTS = [
+
+  /* ── 1958 ── */
+  {
+    year:1958, name:'NASA Founded',
+    meta:'Washington D.C. · July 29, 1958',
+    desc:'President Eisenhower signed the National Aeronautics and Space Act into law, driven by Cold War urgency after Sputnik shocked the world in October 1957. Eight thousand scientists and engineers — inherited from the old NACA — immediately began the greatest adventure in human history.',
+    fact:"NASA was created just 11 months after Sputnik. Its first annual budget was $100 million (today it's ~$25 billion). Within 3 years it had launched an American into space.",
+    dyk:"🏛️ NASA almost didn't exist. Congress initially wanted a military space agency, not a civilian one. President Eisenhower insisted on a civilian agency to project peaceful intentions. NASA's founding document, the Space Act of 1958, remains the legal foundation for all US human spaceflight today.",
+    locAdv:"Washington D.C. was chosen for NASA HQ for direct Congressional oversight and proximity to policy makers — critical for securing the massive budgets needed to reach the Moon.",
+    dist:0, distLabel:'Earth Surface · 0 miles',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/e/e5/NASA_logo.svg'],
+    photoStyle:'object-fit:contain;background:#010d22;padding:22px;',
+    photoCap:'NASA — established July 29, 1958',
+    emoji:'🏛️',
+    mapView:'usa',
+    markers:[
+      { lat:38.883, lng:-77.016, label:'NASA HQ · Washington D.C.', desc:'Signed into law by President Eisenhower. NASA absorbed 8,000 employees from NACA.',       col:'#ff3d21', type:'c' }
+    ]
+  },
+
+  /* ── 1961 ── */
+  {
+    year:1961, name:'Freedom 7 — 1st American in Space',
+    meta:'Cape Canaveral, FL · May 5, 1961',
+    desc:"Alan Shepard climbed into a capsule barely bigger than a phone booth and rode a Redstone rocket 116 miles into space. His 15-minute flight proved humans could survive space travel. Kennedy watched from the White House — and days later declared America would land on the Moon before the decade was out.",
+    fact:"Shepard waited in the capsule 4 hours due to weather and technical delays. He famously radioed: 'Why don't you fix your little problem and light this candle!' He reached 5,134 mph and experienced 5 full minutes of weightlessness.",
+    dyk:"🚀 The Redstone rocket that launched Shepard was originally designed as a nuclear ballistic missile. NASA's engineers had to convince military officials to let them use it for a human flight. The capsule was so small that Shepard had to be carefully folded inside — engineers called it 'wearing the spacecraft.'",
+    locAdv:"Cape Canaveral's location at 28.5° latitude — as far south as possible in the continental US — gives rockets a crucial speed boost from Earth's rotation, reducing fuel needed to reach orbit by ~900 mph.",
+    dist:116, distLabel:'116 miles — Suborbital Arc',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Alan_Shepard_in_spacesuit.jpg/480px-Alan_Shepard_in_spacesuit.jpg'],
+    photoCap:'Alan Shepard suited for Freedom 7, May 1961 (NASA)',
+    emoji:'🚀',
+    mapView:'usa-e',
+    markers:[
+      { lat:28.573, lng:-80.649, label:'Cape Canaveral · LC-5',          desc:"America's Space Age began here at 9:34 AM on May 5, 1961.", col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston JSC · Mission Control',  desc:'Tracked every second of the historic 15-minute suborbital flight.',         col:'#00d4ff', type:'c' },
+      { lat:42.887, lng:-71.275, label:'East Derry, NH · Shepard born',  desc:'Alan Bartlett Shepard Jr. born November 18, 1923.',                         col:'#ffca28', type:'b' }
+    ]
+  },
+
+  /* ── 1962 ── */
+  {
+    year:1962, name:'Friendship 7 — 1st American Orbit',
+    meta:'Cape Canaveral, FL · February 20, 1962',
+    desc:"John Glenn circled Earth three times in 4 hours 55 minutes. A faulty sensor mid-flight suggested his heat shield might be loose potentially fatal on reentry. Glenn kept his cool, trusted his training, and splashed down safely. Australians in Perth turned on all their city lights so he could see them from orbit. He could.",
+    fact:"Glenn orbited at 17,500 mph, crossing 3 continents. He later served 24 years as a US Senator for Ohio. In 1998, at age 77, he flew again aboard Space Shuttle Discovery the oldest person ever in space.",
+    dyk:"🌍 The Perth, Australia 'City of Lights' moment became one of the most beloved stories in spaceflight history. As Glenn passed over at night, the entire city switched on their lights — residents, farms, and even ships in the harbor. Glenn confirmed he could see them clearly from 100 miles up. Perth still calls itself the 'City of Light.'",
+    locAdv:"The Atlas rocket's trajectory from Cape Canaveral was calculated to pass over tracking stations in Bermuda, the Canary Islands, and Australia,a global network that made orbital missions possible.",
+    dist:162, distLabel:'162 miles — Earth Orbit',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/John_Glenn_-_restoration.jpg/480px-John_Glenn_-_restoration.jpg'],
+    photoCap:'John Glenn, Friendship 7, February 1962 (NASA)',
+    emoji:'🌍',
+    mapView:'usa-e',
+    markers:[
+      { lat:28.573, lng:-80.649, label:'Cape Canaveral · LC-14',        desc:'Atlas rocket lifted Glenn to orbit at 9:47 AM, February 20, 1962.', col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston · Mission Control',     desc:'Mission Control managed the life-threatening heat shield alarm.', col:'#00d4ff', type:'c' },
+      { lat:39.962, lng:-82.999, label:'Cambridge, OH · Glenn born',    desc:'John Herschel Glenn Jr. born July 18, 1921.', col:'#ffca28', type:'b' }
+    ]
+  },
+
+  /* ── 1965 ── */
+  {
+    year:1965, name:'Gemini IV — 1st American Spacewalk',
+    meta:'Cape Canaveral, FL · June 3, 1965',
+    desc:"Ed White floated free outside Gemini IV for 23 glorious minutes over the Pacific Ocean, 100 miles up. He used a small handheld oxygen jet gun to maneuver and called it 'the most comfortable part of the mission.' Flight Director Chris Kraft eventually had to order him back inside. White said re-entering was 'the saddest moment of my life.'",
+    fact:"White's jet gun ran out of fuel with 10 minutes of EVA remaining and he had to pull himself back via the tether. He died in the Apollo 1 launchpad fire on January 27, 1967 alongside Gus Grissom and Roger Chaffee a tragedy that reshaped NASA safety culture.",
+    dyk:"🧑‍🚀 White's spacewalk was unplanned until 3 days before launch. NASA only decided to add the EVA after Alexei Leonov's Soviet spacewalk 10 weeks earlier. Engineers hastily added a handheld maneuvering unit. The photos White took with one hand while floating free became some of the most iconic images in space history.",
+    locAdv:"Launch Complex 19 at Cape Canaveral was specifically built for the Gemini program two pads in parallel that enabled NASA to rapidly fly 10 crewed Gemini missions in just 20 months, learning the skills needed for Apollo.",
+    dist:175, distLabel:'175 miles — Gemini Orbit',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Ed_White_first_American_spacewalk.jpg/480px-Ed_White_first_American_spacewalk.jpg'],
+    photoCap:'Ed White — 1st American spacewalk, Gemini IV, June 1965 (NASA)',
+    emoji:'🧑‍🚀',
+    mapView:'usa-e',
+    markers:[
+      { lat:28.573, lng:-80.649, label:'KSC · Launch Complex 19',        desc:'Gemini IV launched June 3, 1965 with Ed White and Jim McDivitt.', col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston · Mission Control',      desc:"Chris Kraft's team guided the 4-day Gemini IV mission from JSC.",  col:'#00d4ff', type:'c' },
+      { lat:29.424, lng:-98.493, label:'San Antonio, TX · White born',   desc:'Edward Higgins White II born November 14, 1930.',                  col:'#ffca28', type:'b' }
+    ]
+  },
+
+  /* ── 1969 ── */
+  {
+    year:1969, name:'Apollo 11 — First Moon Landing',
+    meta:'Sea of Tranquility · July 20, 1969',
+    desc:"'The Eagle has landed.' At 4:17 PM EDT on July 20, 1969, Neil Armstrong and Buzz Aldrin touched down on the Moon while Michael Collins orbited above. Six hours later, Armstrong stepped onto the lunar surface: 'One small step for man, one giant leap for mankind.' An estimated 600 million people watched one-fifth of all humanity.",
+    fact:"The Apollo Guidance Computer had 64KB of memory a billion times less than today's smartphones. Armstrong manually piloted around a boulder field with only 20 seconds of fuel remaining. The crew left a plaque: 'We came in peace for all mankind.'",
+    dyk:"🌕 The Apollo 11 lunar module's single ascent engine had one start switch. If it failed, Armstrong and Aldrin would be stranded on the Moon with no rescue possible. NASA engineer Don Eyles stayed up 36 hours straight writing a software patch when a computer alarm triggered during landing. He fixed it. It worked. Nobody told the astronauts how close they came.",
+    locAdv:"Kennedy Space Center's massive VAB (Vehicle Assembly Building) was built specifically for Saturn V at 526 feet tall, it's one of the largest buildings on Earth by volume. Its coastal location allowed finished rockets to be floated by barge from Michoud in Louisiana.",
+    dist:238855, distLabel:'238,855 miles — The Moon',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Aldrin_Apollo_11_original.jpg/480px-Aldrin_Apollo_11_original.jpg'],
+    photoCap:'Buzz Aldrin on the lunar surface — July 20, 1969 (NASA / Neil Armstrong)',
+    emoji:'🌕',
+    mapView:'usa-s',
+    markers:[
+      { lat:28.573, lng:-80.649, label:'KSC · Launch Complex 39A',       desc:'Apollo 11 launched July 16, 1969 the most watched event in history.',   col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston · Mission Control',      desc:'"Houston, Tranquility Base here. The Eagle has landed." July 20, 1969.', col:'#ffca28', type:'c' },
+      { lat:30.390, lng:-89.090, label:'Stennis SC · MS',                desc:'All Saturn V first-stage F-1 engines tested here before every Apollo mission.', col:'#00e5a0', type:'c' },
+      { lat:29.978, lng:-90.054, label:'Michoud · New Orleans, LA',      desc:'Saturn V S-IC first stage the most powerful rocket stage ever built manufactured here.', col:'#00e5a0', type:'c' },
+      { lat:40.564, lng:-84.194, label:'Wapakoneta, OH · Armstrong born',desc:'Neil Alden Armstrong born August 5, 1930.',  col:'#ffca28', type:'b' },
+      { lat:40.807, lng:-74.153, label:'Glen Ridge, NJ · Aldrin born',   desc:'Buzz Aldrin born January 20, 1930.',          col:'#ffca28', type:'b' }
+    ]
+  },
+
+  /* ── 1970 ── */
+  {
+    year:1970, name:'Apollo 13 — Farthest Humans Ever',
+    meta:'Lunar Far Side · April 14–15, 1970',
+    desc:"'Houston, we've had a problem.' An oxygen tank exploded 200,000 miles from Earth. Commander Jim Lovell, Jack Swigert, and Fred Haise powered down to near-darkness, used the lunar module as a lifeboat, and navigated home by starlight. Mission Control worked 87 consecutive hours. All three splashed down alive.",
+    fact:"The crew reached 248,655 miles from Earth while looping the lunar far side the farthest any human has EVER traveled from our planet. Temperature dropped to near freezing. They survived on 6 oz of water per day. This distance record stood 52 years until Artemis I broke it in 2022.",
+    dyk:"🏆 ALL-TIME HUMAN DISTANCE RECORD: Apollo 13's 248,655-mile record held for 52 years the longest-standing record in spaceflight history. The crew had to manually navigate using Earth and the Moon as reference points, like ancient mariners using stars, because most instruments were off to conserve power. The CO₂ scrubber fix built from a sock, cardboard, and a plastic bag saved their lives.",
+    locAdv:"Mission Control's location in Houston was chosen partly because of its proximity to Gulf Coast manufacturing and NASA's human spaceflight teams. During Apollo 13, 22 separate Mission Control shifts worked around the clock to bring the crew home the greatest team rescue in engineering history.",
+    dist:248655, distLabel:'248,655 mi · ★ FARTHEST HUMANS EVER ★',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Apollo_13_original.jpg/480px-Apollo_13_original.jpg'],
+    photoCap:'Apollo 13 lunar module Aquarius — the lifeboat that saved three lives (NASA)',
+    emoji:'💥',
+    mapView:'usa-s',
+    markers:[
+      { lat:28.573, lng:-80.649, label:'Kennedy Space Center',           desc:'Apollo 13 launched April 11, 1970. Explosion struck 56 hours into flight.', col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston · Mission Control',      desc:'"Houston, we\'ve had a problem." 87 hours of non-stop crisis management.', col:'#ffca28', type:'c' },
+      { lat:41.499, lng:-81.694, label:'Cleveland, OH · Lovell born',    desc:'James Arthur Lovell Jr. born March 25, 1928.', col:'#ffca28', type:'b' }
+    ]
+  },
+
+  /* ── 1972 ── */
+  {
+    year:1972, name:'Apollo 17 — Last Footprints on the Moon',
+    meta:'Taurus-Littrow Valley · December 1972',
+    desc:"Gene Cernan and geologist Harrison Schmitt spent 3 days exploring the lunar surface while Ron Evans orbited above. On December 14, Cernan paused at the ladder: 'As I take these last steps from the surface for some time to come I believe history will record that America's challenge of today has forged man's destiny of tomorrow.' Then he climbed in. The hatch closed.",
+    fact:"The 'Blue Marble' — the first photograph of a fully lit Earth was taken by the Apollo 17 crew from 28,000 miles away on December 7, 1972. It is the most reproduced photograph in human history. It launched the environmental movement. No human has returned to the Moon's surface since.",
+    dyk:"🌎 The Blue Marble photo changed how humanity sees Earth. Before Apollo 17, there was no single photograph showing our entire planet fully illuminated. The photo was so powerful that Greenpeace used it, the first Earth Day was inspired partly by it, and it appeared on the cover of the Whole Earth Catalog. Cernan was the last human to walk on the Moon and whispered his daughter's initials (TDC) into the lunar dust before leaving.",
+    locAdv:"Apollo 17 was the only night launch in Apollo history the Saturn V lit up the sky so brightly it was visible from 500 miles away. Cernan, Schmitt, and Evans drove the Lunar Rover a record 22 miles across the Taurus-Littrow Valley, collecting 243 pounds of Moon rocks.",
+    dist:238855, distLabel:'238,855 miles — The Moon',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/The_Earth_seen_from_Apollo_17.jpg/480px-The_Earth_seen_from_Apollo_17.jpg'],
+    photoCap:'"The Blue Marble" Earth from Apollo 17, December 7, 1972 (NASA)',
+    emoji:'🌎',
+    mapView:'usa-s',
+    markers:[
+      { lat:28.573, lng:-80.649, label:'KSC · LC-39A Night Launch',    desc:'Apollo 17 launched December 7, 1972 only Apollo night launch, seen 500 miles away.', col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston JSC · Mission Control',  desc:"Mission Control watched Cernan take humanity's last steps on the Moon.",                  col:'#00d4ff', type:'c' }
+    ]
+  },
+
+  /* ── 1981 ── */
+  {
+    year:1981, name:'Space Shuttle — First Flight STS-1',
+    meta:'Kennedy Space Center · April 12, 1981',
+    desc:"Space Shuttle Columbia roared to life on April 12, 1981 — exactly 20 years after Gagarin's first flight. John Young and Bob Crippen rode the world's first reusable spacecraft into orbit, opening 30 years of Shuttle operations: 135 missions, the International Space Station built, Hubble Space Telescope deployed, and an entire generation of astronauts.",
+    fact:"The Shuttle's three main engines always ran at 109% of rated thrust. They could drain an Olympic swimming pool in 25 seconds. The orbiter landed as a 240,000-pound unpowered glider — no engine, no second chance, no go-around. Pilots had one shot.",
+    dyk:"🛸 The Space Shuttle was the world's first reusable spacecraft — but it was never meant to fly 135 missions. NASA originally projected each orbiter would fly up to 100 times before retirement. Columbia flew only 27 times. The heat shield's ceramic tiles — 24,000 of them on each orbiter — had to be hand-inspected between every single flight. Each tile was unique, like a fingerprint.",
+    locAdv:"The Shuttle's solid rocket boosters were manufactured in Utah and shipped by rail to the Kennedy Space Center. The external tank was built at Michoud in New Orleans and floated by barge around Florida. This supply chain touched five Gulf Coast states — making the Shuttle a true product of southeastern America.",
+    dist:250, distLabel:'250 miles — Low Earth Orbit',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/STS-1_launch.jpg/480px-STS-1_launch.jpg'],
+    photoCap:'Space Shuttle Columbia · STS-1, April 12, 1981 (NASA)',
+    emoji:'🛸',
+    mapView:'usa-s',
+    markers:[
+      { lat:28.573, lng:-80.649, label:'KSC · LC-39A — Shuttle Launch',  desc:'Home of all 135 Shuttle missions. Vehicle stack stood 184 feet tall.',      col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston JSC · Mission Control',  desc:'All 135 Shuttle missions controlled from Mission Control in Houston.',       col:'#00d4ff', type:'c' },
+      { lat:30.390, lng:-89.090, label:'Stennis SC · Mississippi',       desc:'Over 1,100 Shuttle main engine hot-fire tests performed at Stennis.',        col:'#ffca28', type:'c' },
+      { lat:29.978, lng:-90.054, label:'Michoud · New Orleans, LA',      desc:'All 135 Shuttle External Tanks manufactured and tested at Michoud.',         col:'#00e5a0', type:'c' },
+      { lat:35.402, lng:-86.671, label:'Marshall SFC · Huntsville, AL',  desc:'Marshall designed and managed all Shuttle propulsion systems.',              col:'#ffca28', type:'c' }
+    ]
+  },
+
+  /* ── 1998 ── */
+  {
+    year:1998, name:'International Space Station',
+    meta:'Low Earth Orbit · November 20, 1998',
+    desc:"Russia's Zarya module launched November 20, 1998, beginning humanity's greatest engineering collaboration. Sixteen nations built a football-field-sized laboratory 254 miles above Earth. Continuously inhabited since November 2, 2000 humanity has now lived in space for over 25 consecutive years without interruption.",
+    fact:"ISS astronauts see 16 sunrises every single day, orbiting at 17,500 mph every 90 minutes. The station spans 357 feet across wider than a football field. Over 280 people from 23 countries have visited. You can spot it with the naked eye it's the third-brightest object in the night sky after the Sun and Moon.",
+    dyk:"🛰️ The ISS is the most expensive object ever built by humans $150 billion across all participating nations. It was assembled piece by piece over 13 years and 42 assembly flights. The station's science has given us water-purification technology, improved cancer treatments, and fire-resistant textiles. Every single water molecule aboard is recycled including sweat and urine achieving 93% water recovery efficiency.",
+    locAdv:"The ISS orbit was carefully chosen at 51.6° inclination steep enough to fly over most partner nations (US, Russia, Europe, Japan, Canada) while still allowing launch from multiple sites around the world. It passes over 90% of Earth's populated areas.",
+    dist:254, distLabel:'254 miles — ISS Orbital Altitude',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/International_Space_Station_after_undocking_of_STS-132.jpg/800px-International_Space_Station_after_undocking_of_STS-132.jpg'],
+    photoCap:'The International Space Station from Space Shuttle Atlantis (NASA)',
+    emoji:'🛰️',
+    mapView:'world',
+    markers:[
+      { lat:28.573, lng:-80.649, label:'Kennedy Space Center',         desc:'All US ISS modules launched from KSC aboard Space Shuttles.', col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston JSC · ISS Control',   desc:'ISS Flight Control Room in Houston monitors the station 24/7/365.', col:'#00d4ff', type:'c' },
+      { lat:45.965, lng: 63.305, label:'Baikonur · Kazakhstan',       desc:"Russia's historic launch site all Soyuz crew missions to ISS depart here.", col:'#ffca28', type:'c' },
+      { lat:36.130, lng:138.360, label:'JAXA · Tsukuba, Japan',       desc:"Japan's Space Center controls the ISS Kibo laboratory module.", col:'#00e5a0', type:'c' }
+    ]
+  },
+
+  /* ── 2022 ── */
+  {
+    year:2022, name:'Artemis I — New Distance Record',
+    meta:'Kennedy Space Center · November 16, 2022',
+    desc:"NASA's Space Launch System the most powerful rocket ever built lit up the Florida night on November 16, 2022. The uncrewed Orion capsule traveled 268,553 miles from Earth on a 26 day journey around the Moon, breaking Apollo 13's 52-year distance record. The mission ended with a perfect splashdown on December 11, confirming Orion is ready for crew.",
+    fact:"SLS produced 8.8 million pounds of thrust at liftoff 15% more than the Saturn V, the previous record holder. The 322-foot rocket burned through 733,000 gallons of propellant in 8 minutes. Orion flew farther from Earth than any spacecraft designed to carry humans.",
+    dyk:"🌙 Artemis I carried 10 small CubeSat satellites as secondary payloads, including one searching for water ice at lunar poles. The Orion capsule experienced re-entry temperatures of 5,000°F — half the temperature of the Sun's surface — and its heat shield worked flawlessly. The night launch was visible from 100 miles away across Florida.",
+    locAdv:"Pad 39B at Kennedy Space Center was rebuilt specifically for SLS — requiring removal of the Shuttle era lightning towers and installation of a new flame trench drainage system. The mobile launcher tower, standing 380 feet tall, is the tallest structure ever used for a NASA rocket.",
+    dist:268553, distLabel:'268,553 mi · Spacecraft Distance Record 🏆',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Artemis_I_Launch_-_NHQ202211160006.jpg/480px-Artemis_I_Launch_-_NHQ202211160006.jpg'],
+    photoCap:'Artemis I night launch · November 16, 2022 · Kennedy Space Center (NASA)',
+    emoji:'🌙',
+    mapView:'usa-s',
+    markers:[
+      { lat:28.573, lng:-80.649, label:'KSC · LC-39B — Artemis Launch', desc:'SLS launched from Pad 39B — same complex family as Saturn V.',         col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston JSC · Artemis Control', desc:'JSC manages all Artemis mission operations and crew training.',         col:'#00d4ff', type:'c' },
+      { lat:30.390, lng:-89.090, label:'Stennis SC · Engine Testing',   desc:'SLS core stage engines hot-fire tested for 8+ continuous minutes.',    col:'#ffca28', type:'c' },
+      { lat:29.978, lng:-90.054, label:'Michoud · SLS Core Stage',      desc:'SLS core stage — backbone of every Artemis mission — built here.',    col:'#00e5a0', type:'c' },
+      { lat:35.402, lng:-86.671, label:'Marshall SFC · Huntsville',     desc:'Marshall leads all SLS rocket design, development, and engineering.', col:'#ffca28', type:'c' }
+    ]
+  },
+
+  /* ── 2024 ── */
+  {
+    year:2024, name:'Polaris Dawn — Commercial Spacewalk',
+    meta:'Kennedy Space Center · September 10, 2024',
+    desc:"SpaceX and the Polaris program made history on September 12, 2024 when Jared Isaacman and Sarah Gillis performed the first-ever commercial spacewalk from a Dragon capsule orbiting at 870 miles altitude — the highest crewed flight since the Apollo era. All four crew members spent 5 days in orbit in brand-new SpaceX EVA suits.",
+    fact:"At 870 miles altitude, Polaris Dawn crossed directly through the Van Allen radiation belt — a zone of intense particle radiation that most crewed missions deliberately avoid. The crew received a radiation dose roughly equivalent to 24 chest X-rays. The mission proved private astronauts can conduct complex EVA operations.",
+    dyk:"⭐ Polaris Dawn had the fastest pace of any private spaceflight mission. Isaacman and Gillis became the first people to perform a spacewalk without an airlock — the Dragon hatch simply opened to space and they floated out, tethered to the capsule. The suits they wore were designed entirely by SpaceX — the first non-NASA spacesuit used for an actual spacewalk in US spaceflight history.",
+    locAdv:"SpaceX's Pad 39A at Kennedy Space Center — the same pad that launched Apollo 11 to the Moon — is now leased by SpaceX and has launched more crewed missions than any other pad in history. Its proximity to SpaceX's Hawthorne, CA design facility and Cape facilities creates an integrated rapid-launch capability.",
+    dist:870, distLabel:'870 miles — Highest Crewed Orbit Since Apollo',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Polaris_Dawn_mission_patch.png/480px-Polaris_Dawn_mission_patch.png'],
+    photoCap:'Polaris Dawn mission patch — first commercial spacewalk, September 2024',
+    emoji:'⭐',
+    mapView:'usa-s',
+    markers:[
+      { lat:28.573, lng:-80.649, label:'KSC · LC-39A — SpaceX Pad',     desc:'SpaceX Falcon 9 launched Polaris Dawn from Pad 39A on September 10, 2024.', col:'#00d4ff', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston JSC',                   desc:'NASA supported the mission; crew also trained with SpaceX in California.',   col:'#00e5a0', type:'c' },
+      { lat:40.735, lng:-74.172, label:'Westfield, NJ · Isaacman born', desc:'Mission commander Jared Isaacman born February 11, 1983.',                   col:'#ffca28', type:'b' }
+    ]
+  },
+
+  /* ── 2025 ── */
+  {
+    year:2025, name:'Artemis II — First Crew to Moon Since 1972',
+    meta:'Kennedy Space Center · 2025–2026',
+    desc:"Four astronauts — Reid Wiseman, Victor Glover, Christina Koch, and Canadian Jeremy Hansen — will fly around the Moon aboard NASA's Orion capsule atop the Space Launch System. This is the first crewed lunar voyage since Apollo 17 in December 1972 — over 53 years ago. Victor Glover will become the first Black astronaut to travel to the Moon.",
+    fact:"Christina Koch holds the record for the longest single spaceflight by a woman: 328 consecutive days on the ISS in 2019–2020. Jeremy Hansen of Canada will be the first non-American to travel to the Moon. The crew will travel farther than any humans since Apollo 13's 1970 distance record.",
+    dyk:"🌕 For the first time since December 1972 — over 53 years — humans will leave Earth orbit and travel to the Moon. Artemis II is the pathfinder for Artemis III, which will land astronauts on the lunar south pole to search for water ice that could support permanent human presence. If water ice is confirmed in useful quantities, it changes everything — rocket fuel, drinking water, and oxygen can all be made from lunar ice.",
+    locAdv:"The Artemis crew trains at both Johnson Space Center in Houston (mission simulations, EVA training in the Neutral Buoyancy Lab) and at Kennedy Space Center (launch vehicle familiarization and emergency egress procedures). The Gulf Coast corridor from KSC to Marshall to Michoud to Stennis to JSC represents the complete Artemis supply chain.",
+    dist:238855, distLabel:'238,855 miles — First Crew to Moon Since 1972',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/e/e5/NASA_logo.svg'],
+    photoStyle:'object-fit:contain;background:#010d22;padding:22px;',
+    photoCap:'Artemis II crew: Wiseman, Glover, Koch, Hansen — returning humans to the Moon (NASA)',
+    emoji:'🌕',
+    mapView:'usa-s',
+    markers:[
+      { lat:28.573, lng:-80.649, label:'KSC · LC-39B — Artemis II',     desc:'Artemis II launches from Pad 39B on the Space Launch System.',              col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston JSC · Crew Training',   desc:'All 4 Artemis II astronauts train at Johnson Space Center in Houston.',    col:'#00d4ff', type:'c' },
+      { lat:30.390, lng:-89.090, label:'Stennis · Engine Certification', desc:'Artemis II SLS engines tested and certified at Stennis.',                  col:'#ffca28', type:'c' },
+      { lat:35.402, lng:-86.671, label:'Marshall SFC · Huntsville, AL', desc:'Marshall leads all SLS rocket development for Artemis.',                   col:'#00e5a0', type:'c' },
+      { lat:29.978, lng:-90.054, label:'Michoud · New Orleans, LA',     desc:'SLS core stage for Artemis II manufactured at Michoud.',                   col:'#00e5a0', type:'c' },
+      { lat:42.232, lng:-83.352, label:'Grand Rapids, MI · Koch born',  desc:'Christina Koch — record-holding female astronaut, Artemis II crew.',       col:'#ffca28', type:'b' },
+      { lat:34.058, lng:-117.288,label:'Pomona, CA · Glover born',      desc:'Victor Glover — 1st Black astronaut to travel to the Moon.',               col:'#ffca28', type:'b' }
+    ]
+  }
+
+];
+
+/* main.js — NASA Giant Leaps Application Logic
+   Improvements:
+   1. Year-specific location highlighting — only relevant markers shown bright
+   2. Color legend for marker types
+   3. Bigger, more impressive distance tracker
+   4. Did You Know for every event
+*/
+
+/* ━━━━━━━━━━━━━━━━ STARFIELD ━━━━━━━━━━━━━━━━ */
+(function initStars() {
+  var canvas = document.getElementById('starfield');
+  var ctx = canvas.getContext('2d');
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+  var stars = [];
+  for (var i = 0; i < 280; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.3 + 0.2,
+      a: Math.random(),
+      speed: Math.random() * 0.005 + 0.002
+    });
+  }
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(function(s) {
+      s.a += s.speed;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(185,215,255,' + Math.abs(Math.sin(s.a)) + ')';
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ━━━━━━━━━━━━━━━━ US STATE DATA ━━━━━━━━━━━━━━━━ */
+/* [abbr, southState, [ [lng,lat], ... ]] */
+
+/* ━━━━━━━━━━━━━━━━ STARFIELD ━━━━━━━━━━━━━━━━ */
+(function(){
+  var c=document.getElementById('starfield'),x=c.getContext('2d');
+  c.width=window.innerWidth;c.height=window.innerHeight;
+  var S=[];for(var i=0;i<280;i++)S.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.3+.2,a:Math.random(),s:Math.random()*.005+.002});
+  (function t(){x.clearRect(0,0,c.width,c.height);S.forEach(function(s){s.a+=s.s;x.beginPath();x.arc(s.x,s.y,s.r,0,Math.PI*2);x.fillStyle='rgba(185,215,255,'+Math.abs(Math.sin(s.a))+')';x.fill();});requestAnimationFrame(t);})();
+})();
+
+/* ━━━━━━━━━━━━━━━━ DETAILED US STATE SHAPES ━━━━━━━━━━━━━━━━ */
+var US_STATES=[
+  ['ME',0,[[-70.7,47.1],[-69.2,47.4],[-68.9,47.2],[-68.2,47.4],[-67.8,47.1],[-67.8,45.7],[-67.4,45.6],[-67.5,45.1],[-68.0,44.8],[-68.2,44.3],[-69.3,44.0],[-70.2,43.6],[-70.8,43.2],[-71.0,43.4],[-71.0,43.7],[-71.1,45.3],[-70.7,47.1]]],
+  ['NH',0,[[-72.6,42.7],[-72.0,43.0],[-72.0,45.0],[-71.5,45.0],[-71.1,45.3],[-71.0,43.7],[-71.0,43.4],[-70.8,43.2],[-70.9,43.4],[-71.2,42.7],[-72.6,42.7]]],
+  ['VT',0,[[-73.3,44.8],[-72.9,45.0],[-72.5,45.0],[-72.0,45.0],[-72.0,43.0],[-72.5,43.0],[-73.3,43.6],[-73.3,44.8]]],
+  ['MA',0,[[-73.5,42.1],[-70.6,41.6],[-70.0,42.1],[-69.9,41.6],[-70.9,41.5],[-71.8,41.6],[-71.8,42.0],[-73.5,42.1]]],
+  ['RI',0,[[-71.8,42.0],[-71.4,42.0],[-71.2,41.7],[-71.9,41.3],[-71.9,41.6],[-71.8,42.0]]],
+  ['CT',0,[[-73.5,42.1],[-72.1,42.1],[-71.8,42.0],[-71.8,41.6],[-72.5,41.0],[-73.6,41.0],[-73.5,42.1]]],
+  ['NY',0,[[-79.8,42.3],[-75.1,41.6],[-73.5,42.1],[-72.1,42.1],[-72.5,45.0],[-72.9,45.0],[-73.3,44.8],[-74.7,45.0],[-75.2,44.9],[-76.2,43.5],[-76.8,43.6],[-77.8,43.6],[-79.0,42.9],[-79.8,42.3]]],
+  ['NJ',0,[[-75.6,39.0],[-75.6,39.5],[-74.2,39.0],[-73.9,40.5],[-74.0,41.4],[-75.1,41.6],[-75.6,39.0]]],
+  ['PA',0,[[-80.5,39.7],[-79.5,39.7],[-76.9,39.7],[-75.6,39.5],[-75.1,41.6],[-79.8,42.3],[-80.5,42.3],[-80.5,39.7]]],
+  ['DE',0,[[-75.8,38.5],[-75.0,38.5],[-75.0,39.8],[-75.8,39.7],[-75.8,38.5]]],
+  ['MD',0,[[-79.5,39.7],[-76.9,39.7],[-75.8,39.7],[-75.0,38.5],[-75.2,38.0],[-76.3,38.0],[-77.0,38.7],[-77.1,38.9],[-78.4,39.5],[-79.5,39.7]]],
+  ['VA',0,[[-83.7,36.6],[-80.3,36.5],[-77.3,36.5],[-76.0,36.6],[-75.2,38.0],[-77.0,38.7],[-77.1,38.9],[-78.4,39.5],[-79.5,39.7],[-80.5,39.7],[-82.3,37.3],[-83.7,36.6]]],
+  ['WV',0,[[-82.6,38.2],[-80.5,39.7],[-80.5,42.3],[-80.5,40.6],[-78.9,40.0],[-77.8,39.1],[-77.1,38.9],[-77.0,38.7],[-76.3,38.0],[-75.2,38.0],[-79.5,37.9],[-80.3,37.3],[-82.6,37.3],[-82.6,38.2]]],
+  ['NC',0,[[-84.3,35.0],[-83.1,35.0],[-81.1,35.2],[-80.3,34.8],[-79.5,34.7],[-77.9,34.1],[-76.5,34.6],[-75.8,35.2],[-75.4,35.8],[-76.0,36.6],[-77.3,36.5],[-80.3,36.5],[-83.7,36.6],[-84.3,35.0]]],
+  ['SC',1,[[-83.4,35.0],[-81.0,35.2],[-80.3,34.8],[-79.5,34.7],[-78.5,33.9],[-79.7,32.5],[-80.4,32.5],[-81.1,32.2],[-82.0,32.1],[-83.4,35.0]]],
+  ['GA',1,[[-85.6,35.0],[-84.3,35.0],[-83.4,35.0],[-82.0,32.1],[-81.1,32.2],[-80.4,32.5],[-81.4,30.7],[-82.0,30.6],[-82.1,30.4],[-83.1,29.7],[-84.0,29.7],[-85.0,30.0],[-85.0,31.0],[-85.1,31.2],[-85.6,35.0]]],
+  ['FL',1,[[-87.6,30.3],[-85.1,31.2],[-85.0,31.0],[-85.0,30.0],[-84.0,29.7],[-83.1,29.7],[-82.1,30.4],[-82.0,30.6],[-81.4,30.7],[-80.4,32.5],[-81.1,32.2],[-80.7,28.5],[-80.3,27.2],[-80.0,26.3],[-80.0,25.8],[-80.1,25.1],[-80.4,25.1],[-80.7,25.0],[-81.2,24.7],[-81.8,24.6],[-82.1,25.2],[-81.7,25.8],[-82.6,27.4],[-83.1,29.5],[-84.9,29.7],[-87.6,30.3]]],
+  ['AL',1,[[-88.5,35.0],[-85.6,35.0],[-85.1,31.2],[-87.6,30.3],[-87.4,30.4],[-87.4,30.7],[-88.0,30.9],[-88.1,31.9],[-88.5,35.0]]],
+  ['MS',1,[[-91.6,35.0],[-88.5,35.0],[-88.1,31.9],[-88.0,30.9],[-89.2,30.2],[-89.6,30.2],[-89.7,30.2],[-90.9,30.2],[-91.0,29.7],[-89.6,29.2],[-89.2,28.9],[-90.5,29.0],[-91.2,29.2],[-91.7,29.5],[-91.6,35.0]]],
+  ['TN',1,[[-90.3,36.5],[-88.1,36.7],[-86.6,36.7],[-85.3,36.6],[-84.5,36.6],[-83.7,36.6],[-82.3,37.3],[-80.5,39.7],[-80.3,36.5],[-81.7,36.6],[-83.7,36.6],[-84.3,35.0],[-85.6,35.0],[-88.5,35.0],[-90.3,36.5]]],
+  ['KY',0,[[-89.6,37.0],[-88.1,37.9],[-87.5,37.9],[-85.4,38.7],[-84.2,39.0],[-83.1,38.7],[-82.6,38.2],[-80.5,40.6],[-80.5,39.7],[-80.3,36.5],[-83.7,36.6],[-84.5,36.6],[-85.3,36.6],[-86.6,36.7],[-88.1,36.7],[-89.6,37.0]]],
+  ['OH',0,[[-84.8,41.7],[-82.4,41.7],[-80.5,42.3],[-80.5,40.6],[-82.6,38.2],[-83.1,38.7],[-84.2,39.0],[-84.8,41.7]]],
+  ['IN',0,[[-88.1,41.8],[-84.8,41.7],[-84.2,39.0],[-85.4,38.7],[-87.5,37.9],[-87.5,41.8],[-88.1,41.8]]],
+  ['IL',0,[[-91.5,40.5],[-88.1,41.8],[-87.5,41.8],[-87.5,37.9],[-88.1,37.9],[-88.4,37.1],[-89.1,37.0],[-89.6,37.0],[-91.5,40.5]]],
+  ['WI',0,[[-92.9,46.8],[-90.1,46.3],[-88.1,46.9],[-86.8,45.3],[-87.2,45.5],[-87.1,44.2],[-86.3,43.1],[-86.8,41.8],[-88.1,41.8],[-91.5,40.5],[-91.2,43.5],[-92.9,46.8]]],
+  ['MI',0,[[-86.8,41.8],[-82.4,41.7],[-82.9,42.9],[-82.4,43.2],[-83.0,43.7],[-84.0,44.0],[-83.3,44.4],[-82.6,45.4],[-85.7,45.4],[-86.2,44.3],[-87.1,44.2],[-86.8,41.8]]],
+  ['MN',0,[[-97.2,49.0],[-95.2,49.4],[-93.4,48.6],[-92.1,48.1],[-91.6,47.0],[-90.1,46.3],[-92.9,46.8],[-95.3,46.9],[-96.6,46.3],[-97.2,49.0]]],
+  ['IA',0,[[-96.6,46.3],[-95.3,46.9],[-92.9,46.8],[-91.2,43.5],[-90.6,40.9],[-91.5,40.5],[-95.9,40.5],[-96.6,46.3]]],
+  ['MO',0,[[-95.8,40.0],[-91.7,40.6],[-91.5,40.5],[-89.6,37.0],[-88.4,37.1],[-88.1,37.9],[-89.6,37.1],[-90.2,36.5],[-94.6,36.5],[-94.6,40.0],[-95.8,40.0]]],
+  ['AR',1,[[-94.6,36.5],[-90.2,36.5],[-89.6,37.1],[-88.4,37.1],[-89.1,37.0],[-89.6,37.0],[-90.3,36.5],[-91.7,29.5],[-91.6,35.0],[-94.1,33.0],[-94.6,34.0],[-94.6,36.5]]],
+  ['LA',1,[[-94.1,33.0],[-91.7,29.5],[-91.2,29.2],[-90.5,29.0],[-89.2,28.9],[-89.0,29.2],[-89.2,29.4],[-89.6,29.9],[-89.2,30.2],[-88.0,30.9],[-87.4,30.4],[-87.6,30.3],[-88.5,35.0],[-91.6,35.0],[-94.1,33.0]]],
+  ['TX',1,[[-106.7,31.9],[-104.0,29.3],[-103.0,29.0],[-101.4,29.8],[-100.2,28.2],[-99.2,26.4],[-97.4,25.9],[-97.1,26.0],[-96.9,26.1],[-96.5,27.8],[-95.9,28.4],[-94.7,29.7],[-93.8,29.8],[-93.2,30.1],[-93.6,30.9],[-93.8,31.6],[-94.1,33.0],[-94.6,36.5],[-100.0,36.5],[-103.0,36.5],[-106.6,37.0],[-106.7,31.9]]],
+  ['OK',0,[[-103.0,36.5],[-100.0,36.5],[-94.6,36.5],[-94.6,34.0],[-96.5,34.0],[-97.8,33.7],[-99.2,34.2],[-100.0,34.6],[-103.0,36.5]]],
+  ['KS',0,[[-102.1,40.0],[-94.6,40.0],[-94.6,36.5],[-100.0,36.5],[-103.0,36.5],[-102.1,40.0]]],
+  ['NE',0,[[-104.1,43.0],[-102.1,43.0],[-102.1,40.0],[-103.0,36.5],[-104.1,41.0],[-104.1,43.0]]],
+  ['SD',0,[[-104.1,45.9],[-96.6,45.9],[-96.5,45.3],[-96.6,46.3],[-104.1,45.9]]],
+  ['ND',0,[[-104.1,49.0],[-97.2,49.0],[-96.6,46.3],[-96.5,45.3],[-96.6,45.9],[-104.1,45.9],[-104.1,49.0]]],
+  ['MT',0,[[-116.1,49.0],[-111.1,49.0],[-104.1,49.0],[-104.1,45.9],[-111.1,44.5],[-116.1,44.4],[-116.1,49.0]]],
+  ['WY',0,[[-111.1,45.0],[-104.1,45.0],[-104.1,41.0],[-111.1,41.0],[-111.1,45.0]]],
+  ['CO',0,[[-109.1,41.0],[-102.1,41.0],[-102.1,37.0],[-109.1,37.0],[-109.1,41.0]]],
+  ['NM',0,[[-109.1,37.0],[-103.0,37.0],[-103.0,31.3],[-106.6,31.9],[-108.2,31.3],[-109.1,31.3],[-109.1,37.0]]],
+  ['AZ',0,[[-114.8,37.0],[-109.1,37.0],[-109.1,31.3],[-111.1,31.3],[-114.8,32.5],[-114.8,37.0]]],
+  ['UT',0,[[-114.1,42.0],[-111.1,42.0],[-111.1,37.0],[-114.1,37.0],[-114.1,42.0]]],
+  ['NV',0,[[-120.0,42.0],[-114.1,42.0],[-114.1,35.0],[-120.0,39.0],[-120.0,42.0]]],
+  ['ID',0,[[-117.2,49.0],[-111.1,49.0],[-111.1,42.0],[-114.1,42.0],[-117.0,44.1],[-117.2,46.4],[-117.2,49.0]]],
+  ['WA',0,[[-124.7,49.0],[-117.2,49.0],[-117.2,46.4],[-117.0,44.1],[-119.0,45.9],[-122.0,45.6],[-124.0,46.3],[-124.7,48.2],[-124.7,49.0]]],
+  ['OR',0,[[-124.6,46.3],[-124.0,46.3],[-122.0,45.6],[-119.0,45.9],[-117.0,44.1],[-117.2,46.4],[-117.2,42.0],[-120.0,42.0],[-124.6,42.0],[-124.6,46.3]]],
+  ['CA',0,[[-124.2,42.0],[-120.0,42.0],[-120.0,39.0],[-114.6,35.0],[-114.8,32.5],[-117.1,32.5],[-117.3,33.2],[-118.5,34.0],[-120.5,34.5],[-121.9,36.3],[-122.4,37.4],[-123.3,38.1],[-123.9,39.0],[-124.2,40.0],[-124.2,42.0]]],
+];
+
+/* World outlines for ISS global view */
+var WORLD=[
+  /* North America */
+  [[-168,71],[-140,70],[-130,59],[-110,47],[-95,49],[-75,47],[-67,47],[-65,44],[-60,46],
+   [-63,46],[-66,45],[-70,43],[-74,41],[-80,31],[-81,25],[-83,10],[-90,15],[-88,18],
+   [-84,10],[-77,8],[-77,12],[-85,16],[-90,20],[-92,19],[-97,22],[-97,26],[-97,29],
+   [-100,22],[-105,21],[-110,24],[-118,32],[-122,37],[-124,47],[-124,49],[-130,54],
+   [-137,59],[-142,60],[-153,59],[-160,59],[-166,60],[-168,71]],
+  /* Greenland */
+  [[-73,83],[-50,83],[-18,76],[-18,68],[-25,63],[-45,60],[-57,61],[-68,70],[-73,83]],
+  /* Iceland */
+  [[-24,66],[-13,66],[-13,63],[-24,63],[-24,66]],
+  /* South America */
+  [[-80,12],[-75,11],[-62,12],[-55,6],[-50,0],[-50,-5],[-35,-5],[-34,-10],[-39,-15],
+   [-39,-22],[-51,-29],[-52,-34],[-58,-38],[-65,-42],[-66,-56],[-68,-55],[-72,-48],
+   [-75,-40],[-80,-35],[-80,-22],[-78,-12],[-78,-5],[-80,1],[-80,12]],
+  /* Europe (detailed) */
+  [[-10,36],[-6,37],[-2,38],[3,40],[10,44],[12,44],[14,41],[16,39],[18,40],[20,39],
+   [24,38],[28,37],[30,36],[32,37],[28,42],[32,47],[32,52],[24,56],[22,60],[25,64],
+   [28,70],[30,70],[25,68],[20,65],[15,64],[5,58],[0,52],[-5,48],[-10,44],[-10,36]],
+  /* Scandinavia */
+  [[5,58],[10,58],[12,56],[18,59],[20,60],[25,64],[28,70],[26,71],[20,70],[15,70],
+   [14,65],[10,63],[5,58]],
+  /* UK + Ireland */
+  [[-8,52],[-3,52],[2,52],[2,51],[-1,50],[-5,50],[-6,52],[-2,53],[1,54],[-1,56],
+   [-6,58],[-8,56],[-8,52]],
+  /* Africa (detailed) */
+  [[-18,15],[-17,13],[-15,11],[-15,5],[-8,5],[-8,10],[-8,15],[-5,10],[2,6],[10,5],
+   [16,4],[24,4],[32,4],[40,10],[42,12],[44,12],[50,12],[52,12],[50,5],[44,0],
+   [40,-5],[36,-20],[35,-22],[32,-30],[29,-31],[27,-34],[18,-35],[15,-35],[12,-30],
+   [10,-18],[10,-5],[8,4],[2,5],[-5,5],[-8,5],[-15,5],[-18,15]],
+  /* Madagascar */
+  [[44,-12],[50,-12],[50,-25],[44,-25],[44,-12]],
+  /* Asia (detailed) */
+  [[25,38],[30,36],[36,36],[42,37],[48,38],[52,35],[58,22],[60,22],[62,25],[66,25],
+   [70,22],[72,20],[78,8],[80,10],[82,14],[80,20],[80,28],[84,28],[88,26],[92,22],
+   [98,18],[100,5],[104,2],[108,2],[106,10],[110,20],[115,22],[120,25],[122,30],
+   [126,34],[130,35],[132,34],[130,32],[132,30],[135,34],[138,36],[142,38],[145,44],
+   [142,48],[135,55],[130,53],[128,52],[122,47],[120,50],[115,55],[110,53],[105,52],
+   [100,50],[95,52],[90,50],[85,48],[80,44],[75,43],[70,42],[65,42],[60,43],[55,44],
+   [50,45],[45,43],[42,43],[38,45],[35,47],[30,47],[25,47],[25,38]],
+  /* Japan main islands */
+  [[130,31],[131,33],[132,33],[133,35],[134,35],[135,35],[136,36],[137,37],[138,38],
+   [140,38],[141,40],[141,42],[143,44],[145,44],[145,43],[144,42],[142,40],[141,38],
+   [140,36],[137,35],[135,34],[133,34],[130,33],[130,31]],
+  /* Hokkaido */
+  [[141,42],[143,44],[145,44],[144,43],[141,42]],
+  /* Korea */
+  [[124,34],[126,34],[128,36],[129,36],[129,38],[126,38],[124,36],[124,34]],
+  /* Russia (Siberia detailed) */
+  [[30,70],[40,68],[50,70],[60,70],[70,68],[80,70],[90,72],[100,73],[110,72],[120,70],
+   [130,68],[140,65],[145,60],[142,55],[135,48],[132,46],[130,42],[132,38],[136,46],
+   [135,52],[140,56],[145,48],[150,52],[155,58],[160,60],[164,62],[168,65],[170,63],
+   [172,64],[170,72],[160,72],[150,73],[140,74],[130,73],[120,72],[110,73],[100,75],
+   [90,73],[80,73],[70,73],[60,73],[50,72],[40,70],[30,70]],
+  /* Australia (detailed) */
+  [[114,-22],[115,-30],[118,-34],[122,-34],[127,-34],[130,-32],[132,-32],[136,-36],
+   [140,-36],[144,-38],[148,-38],[150,-36],[152,-30],[154,-26],[151,-24],[150,-22],
+   [145,-18],[142,-14],[136,-12],[130,-16],[125,-14],[122,-18],[114,-22]],
+  /* New Zealand North */
+  [[172,-36],[175,-36],[178,-38],[176,-40],[172,-40],[172,-36]],
+  /* New Zealand South */
+  [[166,-44],[168,-44],[172,-44],[172,-46],[168,-48],[166,-46],[166,-44]],
+  /* Sri Lanka */
+  [[80,10],[82,10],[82,6],[80,6],[80,10]],
+  /* Philippines main */
+  [[120,18],[122,18],[124,16],[122,14],[120,10],[118,10],[118,14],[120,18]],
+  /* Borneo */
+  [[108,4],[116,6],[118,6],[118,2],[116,0],[112,-2],[108,0],[108,4]],
+  /* Sumatra */
+  [[96,4],[104,4],[106,2],[104,0],[100,-4],[96,-2],[96,4]],
+  /* Java */
+  [[106,-6],[108,-6],[112,-8],[114,-8],[108,-8],[106,-6]],
+];
+
+/* State label centroids [abbr, lat, lng] */
+var STATE_LABELS=[
+  ['ME',45.4,-69.0],['NH',43.7,-71.6],['VT',44.0,-72.7],['MA',42.3,-71.8],['RI',41.7,-71.5],['CT',41.6,-72.7],
+  ['NY',42.9,-75.6],['NJ',40.2,-74.6],['PA',41.2,-77.2],['DE',39.0,-75.4],['MD',39.0,-76.7],
+  ['VA',37.5,-79.5],['WV',38.6,-80.6],['NC',35.6,-79.4],['SC',33.8,-80.9],['GA',32.7,-83.4],
+  ['FL',28.5,-82.5],['AL',32.8,-86.8],['MS',32.7,-89.7],['TN',35.9,-86.3],['KY',37.5,-85.3],
+  ['OH',40.4,-82.8],['IN',40.0,-86.3],['IL',40.0,-89.2],['WI',44.5,-89.8],['MI',43.3,-84.5],
+  ['MN',46.4,-93.1],['IA',42.0,-93.5],['MO',38.4,-92.5],['AR',34.8,-92.2],['LA',31.2,-91.8],
+  ['TX',31.5,-99.3],['OK',35.6,-97.5],['KS',38.5,-98.4],['NE',41.5,-99.9],['SD',44.4,-100.2],
+  ['ND',47.5,-100.4],['MT',47.0,-110.0],['WY',43.0,-107.6],['CO',39.0,-105.5],['NM',34.5,-106.1],
+  ['AZ',34.3,-111.7],['UT',39.5,-111.1],['NV',39.0,-116.8],['ID',44.5,-114.1],
+  ['WA',47.4,-120.5],['OR',44.0,-120.5],['CA',37.3,-119.6],
+];
+
+/* ━━━━━━━━━━━━━━━━ STATE & PAN/ZOOM ━━━━━━━━━━━━━━━━ */
+var ACTIVE_TAB='c', CURRENT_IDX=0;
+var MAP_W=0, MAP_H=0;
+/* Pan/zoom state */
+var panX=0, panY=0, scale=1;
+var isDragging=false, dragStartX=0, dragStartY=0, dragPanX=0, dragPanY=0;
+
+/* ━━━━━━━━━━━━━━━━ ALBERS EQUAL-AREA CONIC PROJECTION ━━━━━━━━━━━━━━━━
+   Standard parallels: 29.5°N and 45.5°N  (standard US Albers)
+   Central meridian:  -96°  Central latitude: 37.5°N
+*/
+var RAD = Math.PI / 180;
+var PHI1 = 29.5 * RAD, PHI2 = 45.5 * RAD;
+var LAM0 = -96 * RAD, PHI0 = 37.5 * RAD;
+var N_alb = (Math.sin(PHI1) + Math.sin(PHI2)) / 2;
+var C_alb = Math.cos(PHI1)*Math.cos(PHI1) + 2*N_alb*Math.sin(PHI1);
+var RHO0_alb = Math.sqrt(C_alb - 2*N_alb*Math.sin(PHI0)) / N_alb;
+
+function albersProject(lat, lng) {
+  var phi = lat * RAD, lam = lng * RAD;
+  var rho = Math.sqrt(C_alb - 2*N_alb*Math.sin(phi)) / N_alb;
+  var theta = N_alb * (lam - LAM0);
+  return [rho * Math.sin(theta), RHO0_alb - rho * Math.cos(theta)];
+}
+
+/* Fit Albers to screen — compute scale/offset once per resize */
+var albScale=1, albOffX=0, albOffY=0;
+function calibrateAlbers() {
+  var corners = [
+    [-124.7,49.0],[-66.9,47.5],[-124.7,24.5],[-66.9,24.5],
+    [-80.5,25.0],[-124.2,32.5]
+  ];
+  var pts = corners.map(function(c){ return albersProject(c[1],c[0]); });
+  var xs = pts.map(function(p){return p[0];}), ys = pts.map(function(p){return p[1];});
+  var mnX=Math.min.apply(null,xs), mxX=Math.max.apply(null,xs);
+  var mnY=Math.min.apply(null,ys), mxY=Math.max.apply(null,ys);
+  var pad = 30;
+  var sx = (MAP_W - pad*2)/(mxX-mnX), sy = (MAP_H - pad*2)/(mxY-mnY);
+  albScale = Math.min(sx,sy);
+  albOffX = pad + (MAP_W - pad*2 - (mxX-mnX)*albScale)/2 - mnX*albScale;
+  albOffY = pad + (MAP_H - pad*2 - (mxY-mnY)*albScale)/2 + mnY*albScale + (mxY-mnY)*albScale;
+}
+
+function project(lat, lng, view) {
+  if(view === 'world') {
+    var v = {ln0:-180,ln1:180,lt0:80,lt1:-55};
+    return [(lng-v.ln0)/(v.ln1-v.ln0)*MAP_W, (v.lt0-lat)/(v.lt0-v.lt1)*MAP_H];
+  }
+  var p = albersProject(lat, lng);
+  var sx = p[0]*albScale + albOffX + panX;
+  var sy = -p[1]*albScale + albOffY + panY;
+  /* apply zoom around map center */
+  var cx=MAP_W/2, cy=MAP_H/2;
+  return [cx + (sx-cx)*scale, cy + (sy-cy)*scale];
+}
+
+function buildPathD(coords, view) {
+  var d='';
+  coords.forEach(function(c,i){
+    var pt=project(c[1],c[0],view);
+    d+=(i===0?'M':'L')+pt[0].toFixed(1)+','+pt[1].toFixed(1);
+  });
+  return d+'Z';
+}
+
+/* ━━━━━━━━━━━━━━━━ ZOOM & PAN ━━━━━━━━━━━━━━━━ */
+function resetView(){panX=0;panY=0;scale=1;}
+
+function initPanZoom(){
+  var wrap=document.getElementById('map-wrap');
+
+  wrap.addEventListener('mousedown',function(e){
+    isDragging=true; dragStartX=e.clientX; dragStartY=e.clientY;
+    dragPanX=panX; dragPanY=panY;
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove',function(e){
+    if(!isDragging)return;
+    panX=dragPanX+(e.clientX-dragStartX);
+    panY=dragPanY+(e.clientY-dragStartY);
+    drawMap(EVENTS[CURRENT_IDX].mapView,EVENTS[CURRENT_IDX].markers);
+  });
+  document.addEventListener('mouseup',function(){isDragging=false;});
+
+  // Touch pan
+  var lastTX=0,lastTY=0;
+  wrap.addEventListener('touchstart',function(e){
+    if(e.touches.length===1){lastTX=e.touches[0].clientX;lastTY=e.touches[0].clientY;}
+  },{passive:true});
+  wrap.addEventListener('touchmove',function(e){
+    if(e.touches.length===1){
+      panX+=e.touches[0].clientX-lastTX;panY+=e.touches[0].clientY-lastTY;
+      lastTX=e.touches[0].clientX;lastTY=e.touches[0].clientY;
+      drawMap(EVENTS[CURRENT_IDX].mapView,EVENTS[CURRENT_IDX].markers);
+    }
+  },{passive:true});
+
+  // Scroll wheel zoom
+  wrap.addEventListener('wheel',function(e){
+    e.preventDefault();
+    var factor = e.deltaY < 0 ? 1.12 : 0.89;
+    scale = Math.min(6, Math.max(0.5, scale*factor));
+    drawMap(EVENTS[CURRENT_IDX].mapView,EVENTS[CURRENT_IDX].markers);
+  },{passive:false});
+
+  // Zoom buttons
+  document.getElementById('zbtn-in').addEventListener('click',function(){scale=Math.min(6,scale*1.25);drawMap(EVENTS[CURRENT_IDX].mapView,EVENTS[CURRENT_IDX].markers);});
+  document.getElementById('zbtn-out').addEventListener('click',function(){scale=Math.max(0.5,scale/1.25);drawMap(EVENTS[CURRENT_IDX].mapView,EVENTS[CURRENT_IDX].markers);});
+  document.getElementById('zbtn-rst').addEventListener('click',function(){resetView();drawMap(EVENTS[CURRENT_IDX].mapView,EVENTS[CURRENT_IDX].markers);});
+}
+
+/* ━━━━━━━━━━━━━━━━ DRAW MAP ━━━━━━━━━━━━━━━━ */
+function drawMap(view, eventMarkers) {
+  var wrap=document.getElementById('map-wrap');
+  MAP_W=wrap.offsetWidth||800; MAP_H=wrap.offsetHeight||500;
+  var svg=document.getElementById('map-svg');
+  svg.setAttribute('width',MAP_W); svg.setAttribute('height',MAP_H);
+  svg.setAttribute('viewBox','0 0 '+MAP_W+' '+MAP_H);
+  svg.style.width=MAP_W+'px'; svg.style.height=MAP_H+'px';
+
+  calibrateAlbers();
+
+  var relevantStates=new Set(); /* highlighting disabled */
+
+  var s='';
+  s+='<rect width="'+MAP_W+'" height="'+MAP_H+'" fill="#010a1a"/>';
+
+  // Subtle grid
+  for(var gx=0;gx<=MAP_W;gx+=MAP_W/10) s+='<line x1="'+gx.toFixed(0)+'" y1="0" x2="'+gx.toFixed(0)+'" y2="'+MAP_H+'" stroke="rgba(0,212,255,0.025)" stroke-width="1"/>';
+  for(var gy=0;gy<=MAP_H;gy+=MAP_H/7) s+='<line x1="0" y1="'+gy.toFixed(0)+'" x2="'+MAP_W+'" y2="'+gy.toFixed(0)+'" stroke="rgba(0,212,255,0.025)" stroke-width="1"/>';
+
+  if(view==='world'){
+    WORLD.forEach(function(pts){s+='<path d="'+buildPathD(pts,view)+'" class="world-land"/>';});
+    [[30,-30,'Atlantic'],[10,160,'Pacific'],[-15,75,'Indian Ocean']].forEach(function(l){
+      var pt=project(l[0],l[1],view);
+      s+='<text x="'+pt[0].toFixed(0)+'" y="'+pt[1].toFixed(0)+'" class="water-label" text-anchor="middle">'+l[2]+'</text>';
+    });
+    document.getElementById('legend-intl').style.display='flex';
+  } else {
+    // Draw all US states — two-pass to eliminate gaps
+    // Pass 1: solid fills no stroke
+    US_STATES.forEach(function(st){
+      s+='<path d="'+buildPathD(st[2],view)+'" fill="#0d2244" stroke="none"/>';
+    });
+    // Pass 2: thin borders drawn on top
+    US_STATES.forEach(function(st){
+      s+='<path d="'+buildPathD(st[2],view)+'" fill="none" stroke="rgba(35,90,160,0.65)" stroke-width="0.7"/>';
+    });
+    // State abbreviation labels — bigger, clearer
+    STATE_LABELS.forEach(function(lb){
+      var pt=project(lb[1],lb[2],view);
+      if(pt[0]<0||pt[0]>MAP_W||pt[1]<0||pt[1]>MAP_H) return;
+      s+='<text x="'+pt[0].toFixed(1)+'" y="'+pt[1].toFixed(1)+'" class="s-lbl" style="opacity:0.55;font-size:11px;fill:rgba(150,190,230,0.55)">'+lb[0]+'</text>';
+    });
+    // Gulf label
+    var gl=project(26,-89,view);
+    s+='<text x="'+gl[0].toFixed(0)+'" y="'+gl[1].toFixed(0)+'" class="water-label" text-anchor="middle">Gulf of Mexico</text>';
+    document.getElementById('legend-intl').style.display='none';
+  }
+
+  s+='<rect width="'+MAP_W+'" height="'+MAP_H+'" fill="none" stroke="rgba(0,212,255,0.07)" stroke-width="2"/>';
+
+  // Permanent layer dimmed
+  var permList=ACTIVE_TAB==='c'?NASA_CENTERS:ASTRONAUT_BIRTHS;
+  permList.forEach(function(p){
+    var pt=project(p.lat,p.lng,view);
+    var x=pt[0],y=pt[1];
+    if(x<-20||x>MAP_W+20||y<-20||y>MAP_H+20) return;
+    var isRel=eventMarkers.some(function(m){return Math.abs(m.lat-p.lat)<0.05&&Math.abs(m.lng-p.lng)<0.05;});
+    if(isRel) return;
+    var col=p.col||'#ffca28';
+    s+='<g opacity="0.2"><circle class="map-dot" cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="3.5" fill="'+col+'" stroke="rgba(255,255,255,0.2)" stroke-width="0.8" style="cursor:pointer" data-l="'+esc(p.name)+'" data-d="'+esc(ACTIVE_TAB==='c'?p.role:p.mission)+'" data-t="'+esc(ACTIVE_TAB==='c'?('📍 '+p.state):('🏠 '+p.born))+'"/></g>';
+  });
+
+  // Event markers — bright
+  eventMarkers.forEach(function(m){
+    var pt=project(m.lat,m.lng,view);
+    var x=pt[0],y=pt[1];
+    if(x<-20||x>MAP_W+20||y<-20||y>MAP_H+20) return;
+    var r=m.type==='b'?6:8.5, dur='2.2s';
+    var lb=(m.label||'').split('·')[0].trim().split(' ').slice(0,3).join(' ');
+    s+='<g>';
+    s+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+r+'" fill="none" stroke="'+m.col+'" stroke-width="2"><animate attributeName="r" values="'+r+';'+(r+16)+';'+r+'" dur="'+dur+'" repeatCount="indefinite"/><animate attributeName="opacity" values="0.9;0;0.9" dur="'+dur+'" repeatCount="indefinite"/></circle>';
+    s+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+r+'" fill="none" stroke="'+m.col+'" stroke-width="1"><animate attributeName="r" values="'+r+';'+(r+8)+';'+r+'" dur="'+dur+'" begin="0.7s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0;0.5" dur="'+dur+'" begin="0.7s" repeatCount="indefinite"/></circle>';
+    s+='<circle class="map-dot" cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+r+'" fill="'+m.col+'" stroke="rgba(255,255,255,0.65)" stroke-width="1.5" style="cursor:pointer;filter:drop-shadow(0 0 6px '+m.col+')" data-l="'+esc(m.label)+'" data-d="'+esc(m.desc)+'" data-t="'+esc(m.type==='b'?'★ BIRTHPLACE':'▶ NASA FACILITY')+'"/>';
+    if(m.type==='b') s+='<text x="'+x.toFixed(1)+'" y="'+(y+4.5).toFixed(1)+'" text-anchor="middle" font-size="'+(r*1.05).toFixed(1)+'" fill="#020c20" style="pointer-events:none;font-weight:bold">★</text>';
+    s+='<text x="'+(x+r+5).toFixed(1)+'" y="'+(y+4).toFixed(1)+'" font-family="Courier New,monospace" font-size="9.5" fill="'+m.col+'" opacity="0.95" style="pointer-events:none;font-weight:bold;text-shadow:0 0 4px #000">'+lb+'</text>';
+    s+='</g>';
+  });
+
+  svg.innerHTML=s;
+  attachTooltips();
+}
+
+function esc(s){ return (s||'').replace(/"/g,"'"); }
+
+function attachTooltips(){
+  var tip=document.getElementById('map-tooltip');
+  document.getElementById('map-svg').querySelectorAll('.map-dot').forEach(function(dot){
+    dot.addEventListener('mouseenter',function(e){
+      document.getElementById('tip-title').textContent=dot.dataset.l;
+      document.getElementById('tip-body').textContent=dot.dataset.d;
+      document.getElementById('tip-tag').textContent=dot.dataset.t;
+      var wr=document.getElementById('map-wrap').getBoundingClientRect();
+      var tx=e.clientX-wr.left+14, ty=e.clientY-wr.top-12;
+      if(tx+240>MAP_W) tx=e.clientX-wr.left-252;
+      if(ty+100>MAP_H) ty=e.clientY-wr.top-100;
+      tip.style.left=tx+'px'; tip.style.top=ty+'px'; tip.classList.add('on');
+    });
+    dot.addEventListener('mouseleave',function(){tip.classList.remove('on');});
+  });
+}
+
+function switchTab(t){
+  ACTIVE_TAB=t;
+  document.getElementById('tab-c').classList.toggle('on',t==='c');
+  document.getElementById('tab-a').classList.toggle('on',t==='a');
+  document.getElementById('map-hud').textContent=t==='a'?'ASTRONAUT BIRTHPLACES · HOVER STARS FOR INFO':'NASA CENTERS · SOUTHEASTERN OPERATIONS CORRIDOR';
+  drawMap(EVENTS[CURRENT_IDX].mapView,EVENTS[CURRENT_IDX].markers);
+}
+
+/* ━━━━━━━━━━━━━━━━ DISTANCE TRACKER — DEEP SPACE INFOGRAPHIC ━━━━━━━━━━━━━━━━
+   Inspired by: Earth center-left, objects placed at scaled log distances
+   with connecting lines, labels above/below like the reference image.
+*/
+function renderDistTracker(idx){
+  var svgEl=document.getElementById('dist-svg');
+  var W=svgEl.parentElement.offsetWidth||420, H=290;
+  svgEl.setAttribute('viewBox','0 0 '+W+' '+H);
+  svgEl.style.height=H+'px';
+
+  var cur=EVENTS[idx];
+  var MAX_D=270000, logMax=Math.log10(MAX_D+1);
+  var mc=cur.dist>=248000?'#ff3d21':cur.dist>=200000?'#ffca28':cur.dist>=800?'#00e5a0':'#00d4ff';
+
+  /* Earth is at x=EX, centered vertically */
+  var EX=75, EY=H/2, ER=34;
+
+  /* All notable points we always show */
+  var POINTS=[
+    {dist:254,    lbl:'ISS',       sub:'254 mi',       col:'#00d4ff', r:8,  emoji:'🛰️',  ya:-1},
+    {dist:870,    lbl:'POLARIS',   sub:'870 mi',        col:'#00e5a0', r:9,  emoji:'⭐',  ya:1},
+    {dist:238855, lbl:'THE MOON',  sub:'238,855 mi',    col:'#c8d8f0', r:22, emoji:'🌕',  ya:-1},
+    {dist:268553, lbl:'ARTEMIS I', sub:'268,553 mi ★',  col:'#00e5a0', r:14, emoji:'🚀',  ya:1},
+  ];
+
+  /* Compute x positions using log scale stretched across available width */
+  var SCENE_W = W - EX - 30;
+  POINTS.forEach(function(p){
+    p.x = EX + ER + 8 + (Math.log10(p.dist+1)/logMax)*SCENE_W * 0.88;
+  });
+
+  var s='<defs>';
+  s+='<radialGradient id="bgG" cx="30%" cy="50%"><stop offset="0%" stop-color="#0a1a35"/><stop offset="100%" stop-color="#010814"/></radialGradient>';
+  s+='<radialGradient id="eG" cx="38%" cy="32%"><stop offset="0%" stop-color="#6ab4ff"/><stop offset="40%" stop-color="#1560d8"/><stop offset="100%" stop-color="#020e28"/></radialGradient>';
+  s+='<radialGradient id="eGl" cx="50%" cy="50%"><stop offset="0%" stop-color="rgba(80,150,255,0.4)"/><stop offset="100%" stop-color="rgba(0,0,0,0)"/></radialGradient>';
+  s+='<radialGradient id="moonG" cx="35%" cy="30%"><stop offset="0%" stop-color="#d8e4f4"/><stop offset="50%" stop-color="#8a9db8"/><stop offset="100%" stop-color="#2a3545"/></radialGradient>';
+  s+='<filter id="glo"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>';
+  s+='<filter id="glo2"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>';
+  s+='<filter id="glo3"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>';
+  s+='</defs>';
+
+  /* Space background */
+  s+='<rect width="'+W+'" height="'+H+'" fill="url(#bgG)"/>';
+
+  /* Stars — scattered, varied sizes */
+  var starseed=[[8,12,0.9],[22,55,0.7],[58,9,1.1],[95,22,0.6],[130,8,0.8],[160,45,0.7],[200,18,1.0],[240,35,0.6],[290,12,0.9],[330,50,0.7],[370,22,0.8],[395,40,0.6],[42,78,0.5],[88,68,0.8],[145,75,0.6],[195,82,0.9],[260,65,0.7],[310,80,0.5],[355,72,0.8],[18,130,0.7],[70,125,0.9],[120,118,0.6],[175,140,0.8],[230,128,0.5],[280,145,0.7],[340,135,0.9],[380,150,0.6],[50,175,0.8],[100,168,0.6],[155,180,0.9],[210,172,0.7],[265,185,0.5],[315,178,0.8],[360,195,0.6],[25,218,0.9],[75,228,0.7],[125,240,0.5],[185,222,0.8],[235,245,0.6],[285,235,0.9],[335,250,0.7],[375,240,0.5]];
+  starseed.forEach(function(p){s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+p[2]+'" fill="white" opacity="'+(0.06+p[2]*0.09)+'"/>';});
+
+  /* Faint nebula-like glow in background */
+  s+='<ellipse cx="'+(W*0.65)+'" cy="'+(H*0.4)+'" rx="120" ry="60" fill="rgba(0,50,120,0.08)"/>';
+  s+='<ellipse cx="'+(W*0.82)+'" cy="'+(H*0.6)+'" rx="80" ry="50" fill="rgba(0,80,80,0.07)"/>';
+
+  /* Dashed baseline line from Earth to far right */
+  s+='<line x1="'+(EX+ER)+'" y1="'+EY+'" x2="'+(W-15)+'" y2="'+EY+'" stroke="rgba(255,255,255,0.12)" stroke-width="1" stroke-dasharray="6,5"/>';
+
+  /* DRAW EACH POINT */
+  POINTS.forEach(function(p){
+    var isActive=(Math.abs(p.dist-cur.dist)<2||
+      (cur.dist>=248000&&cur.dist<268000&&p.dist===248000)||
+      (cur.dist>=268000&&p.dist===268553)||
+      (cur.dist>=200000&&cur.dist<248000&&p.dist===238855)||
+      (cur.dist>=800&&cur.dist<200000&&p.dist===870)||
+      (cur.dist>=100&&cur.dist<800&&p.dist===254)||
+      (cur.dist===0&&false));
+    // Special: if current event dist matches exactly
+    if(cur.dist===p.dist) isActive=true;
+
+    var op=isActive?1:0.28;
+    var px=p.x, py=EY;
+
+    /* Connecting arrow line */
+    s+='<line x1="'+(EX+ER*0.7)+'" y1="'+EY+'" x2="'+(px-p.r-4)+'" y2="'+EY+'" stroke="rgba(255,255,255,'+(isActive?0.55:0.12)+')" stroke-width="'+(isActive?1.5:0.8)+'" marker-end="url(#arr)" opacity="'+op+'"/>';
+
+    /* Object glow */
+    if(isActive){
+      s+='<circle cx="'+px+'" cy="'+py+'" r="'+(p.r+12)+'" fill="'+p.col+'" opacity="0.12" filter="url(#glo3)"/>';
+    }
+
+    /* Moon gets special rendering */
+    if(p.dist===238855){
+      s+='<circle cx="'+px+'" cy="'+py+'" r="'+p.r+'" fill="url(#moonG)" opacity="'+op+'" '+(isActive?'filter="url(#glo2)"':'')+'/>';
+      /* Moon surface detail craters */
+      if(op>0.5){
+        s+='<circle cx="'+(px-7)+'" cy="'+(py-8)+'" r="4" fill="rgba(0,0,0,0.25)"/>';
+        s+='<circle cx="'+(px+5)+'" cy="'+(py+6)+'" r="3" fill="rgba(0,0,0,0.2)"/>';
+        s+='<circle cx="'+(px-2)+'" cy="'+(py+4)+'" r="2" fill="rgba(0,0,0,0.18)"/>';
+      }
+    } else {
+      /* Other objects */
+      s+='<circle cx="'+px+'" cy="'+py+'" r="'+p.r+'" fill="'+p.col+'" opacity="'+op+'" '+(isActive?'filter="url(#glo2)"':'')+'/>';
+      /* ISS detail */
+      if(p.dist===254&&isActive){
+        s+='<rect x="'+(px-8)+'" y="'+(py-2.5)+'" width="16" height="5" rx="1" fill="rgba(200,230,255,0.9)" opacity="0.9"/>';
+        s+='<rect x="'+(px-2.5)+'" y="'+(py-8)+'" width="5" height="16" rx="1" fill="rgba(200,230,255,0.9)" opacity="0.9"/>';
+        s+='<rect x="'+(px-11)+'" y="'+(py-1.5)+'" width="7" height="3" fill="rgba(100,180,255,0.8)" opacity="0.9"/>';
+        s+='<rect x="'+(px+4)+'" y="'+(py-1.5)+'" width="7" height="3" fill="rgba(100,180,255,0.8)" opacity="0.9"/>';
+      }
+    }
+
+    /* Label above/below depending on ya flag */
+    var labelY = p.ya<0 ? py-p.r-22 : py+p.r+22;
+    var subY   = p.ya<0 ? labelY+13  : labelY+13;
+
+    s+='<text x="'+px+'" y="'+labelY+'" text-anchor="middle" font-family="Impact,Arial Black,sans-serif" font-size="11" fill="'+p.col+'" opacity="'+op+'" letter-spacing="1">'+p.lbl+'</text>';
+    s+='<text x="'+px+'" y="'+subY+'" text-anchor="middle" font-family="Courier New,monospace" font-size="8" fill="rgba(255,255,255,'+(op*0.7)+')" opacity="'+op+'">'+p.sub+'</text>';
+
+    /* Vertical tick on baseline */
+    s+='<line x1="'+px+'" y1="'+(EY-3)+'" x2="'+px+'" y2="'+(EY+3)+'" stroke="rgba(255,255,255,'+(isActive?0.6:0.15)+')" stroke-width="1.5"/>';
+  });
+
+  /* ── CURRENT MISSION rocket dot if not already a POINT ── */
+  var knownDists=[0,254,870,238855,268553];
+  var isKnown=knownDists.indexOf(cur.dist)>-1;
+  if(cur.dist>0&&!isKnown){
+    var rx=EX+ER+8+(Math.log10(cur.dist+1)/logMax)*SCENE_W*0.88;
+    var ry=EY;
+    s+='<circle cx="'+rx+'" cy="'+ry+'" r="10" fill="none" stroke="'+mc+'" stroke-width="2"><animate attributeName="r" values="10;24;10" dur="2.3s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.9;0;0.9" dur="2.3s" repeatCount="indefinite"/></circle>';
+    s+='<circle cx="'+rx+'" cy="'+ry+'" r="7" fill="'+mc+'" stroke="white" stroke-width="1.5" filter="url(#glo)"/>';
+    s+='<text x="'+rx+'" y="'+(ry-20)+'" text-anchor="middle" font-family="Impact,Arial Black,sans-serif" font-size="10" fill="'+mc+'" letter-spacing="1">'+cur.name.split(' ')[0].toUpperCase()+'</text>';
+    s+='<text x="'+rx+'" y="'+(ry-8)+'" text-anchor="middle" font-family="Courier New,monospace" font-size="7.5" fill="rgba(255,255,255,0.6)">'+cur.dist+' mi</text>';
+    /* Line from Earth */
+    s+='<line x1="'+(EX+ER*0.7)+'" y1="'+EY+'" x2="'+(rx-9)+'" y2="'+EY+'" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>';
+  }
+
+  /* ── EARTH — rendered last so it's on top ── */
+  s+='<circle cx="'+EX+'" cy="'+EY+'" r="'+(ER+18)+'" fill="url(#eGl)"/>';
+  s+='<circle cx="'+EX+'" cy="'+EY+'" r="'+ER+'" fill="url(#eG)" stroke="rgba(100,170,255,0.5)" stroke-width="2" filter="url(#glo2)"/>';
+  /* Continent patches */
+  s+='<ellipse cx="'+(EX-12)+'" cy="'+(EY-10)+'" rx="11" ry="8" fill="rgba(0,130,55,0.65)"/>';
+  s+='<ellipse cx="'+(EX+6)+'" cy="'+(EY-5)+'" rx="8" ry="6" fill="rgba(0,120,50,0.60)"/>';
+  s+='<ellipse cx="'+(EX+8)+'" cy="'+(EY+10)+'" rx="6" ry="5" fill="rgba(0,110,45,0.55)"/>';
+  s+='<ellipse cx="'+(EX-8)+'" cy="'+(EY+10)+'" rx="9" ry="4" fill="rgba(0,100,40,0.55)"/>';
+  /* Atmosphere halo */
+  s+='<circle cx="'+EX+'" cy="'+EY+'" r="'+(ER+4)+'" fill="none" stroke="rgba(120,200,255,0.25)" stroke-width="4"/>';
+  /* Earth label */
+  s+='<text x="'+EX+'" y="'+(EY+ER+17)+'" text-anchor="middle" font-family="Impact,Arial Black,sans-serif" font-size="12" fill="rgba(180,220,255,0.8)" letter-spacing="2">EARTH</text>';
+
+  /* Current mission label at very bottom */
+  s+='<text x="'+(W/2)+'" y="'+(H-6)+'" text-anchor="middle" font-family="Impact,Arial Black,sans-serif" font-size="10" fill="'+mc+'">'+cur.distLabel+'</text>';
+
+  svgEl.innerHTML=s;
+}
+
+/* ━━━━━━━━━━━━━━━━ INFO RENDER ━━━━━━━━━━━━━━━━ */
+function renderInfo(ev){
+  var h='<div class="event-body">'
+    +'<div class="event-name">'+ev.name+'</div>'
+    +'<div class="event-meta">'+ev.meta+'</div>'
+    +'<div class="event-desc">'+ev.desc+'</div>'
+    +'<div class="fact-block"><div class="fact-label">★ Historical Fact</div><div class="fact-text">'+ev.fact+'</div></div>';
+  if(ev.locAdv) h+='<div class="loc-adv"><div class="loc-adv-label">📍 LOCATION ADVANTAGE</div><div class="loc-adv-txt">'+ev.locAdv+'</div></div>';
+  h+='<button class="dyk-btn" onclick="toggleDyk(this)">✦ &nbsp;Did You Know?</button>'
+    +'<div class="dyk-panel" id="dyk-panel">'+ev.dyk+'</div>'
+    +'</div>';
+  document.getElementById('info-inner').innerHTML=h;
+}
+
+window.toggleDyk=function(btn){
+  var p=document.getElementById('dyk-panel');
+  p.classList.toggle('on');
+  btn.innerHTML=p.classList.contains('on')?'✕ &nbsp;Close':'✦ &nbsp;Did You Know?';
+};
+
+/* ━━━━━━━━━━━━━━━━ TIMELINE ━━━━━━━━━━━━━━━━ */
+function buildTimeline(){
+  var nd=document.getElementById('tl-nodes');nd.innerHTML='';
+  EVENTS.forEach(function(ev,i){
+    var p=i/(EVENTS.length-1)*100;
+    var n=document.createElement('div');n.className='tl-node';n.style.left=p+'%';n.title=ev.year+' — '+ev.name;
+    n.innerHTML='<span class="tl-year">'+ev.year+'</span>';
+    (function(idx){n.addEventListener('click',function(){goTo(idx);});})(i);
+    nd.appendChild(n);
+  });
+}
+function updateTimeline(){
+  document.querySelectorAll('.tl-node').forEach(function(n,i){n.classList.toggle('on',i===CURRENT_IDX);n.classList.toggle('done',i<CURRENT_IDX);});
+  document.getElementById('tl-fill').style.width=(CURRENT_IDX/(EVENTS.length-1)*100)+'%';
+  document.getElementById('btn-prev').disabled=(CURRENT_IDX===0);
+  document.getElementById('btn-next').disabled=(CURRENT_IDX===EVENTS.length-1);
+}
+
+/* ━━━━━━━━━━━━━━━━ NAVIGATION ━━━━━━━━━━━━━━━━ */
+function goTo(idx,instant){
+  CURRENT_IDX=idx;
+  var ev=EVENTS[idx];
+  document.getElementById('year-display').textContent=ev.year;
+  document.getElementById('event-display').textContent=ev.name;
+  updateTimeline();
+  // Reset pan/zoom on event change for clean view
+  if(!instant){resetView();}
+  drawMap(ev.mapView,ev.markers);
+  renderDistTracker(idx);
+  document.getElementById('map-hud').textContent=
+    ACTIVE_TAB==='a'?'ASTRONAUT BIRTHPLACES · HOVER STARS FOR INFO':
+    ev.mapView==='world'?'GLOBAL VIEW · INTERNATIONAL PARTNER SITES':'NASA OPERATIONS CORRIDOR · SOUTHEASTERN USA';
+  var iw=document.getElementById('info-wrap');
+  if(instant){renderInfo(ev);return;}
+  iw.classList.add('fading');
+  setTimeout(function(){renderInfo(ev);iw.classList.remove('fading');},260);
+}
+
+/* ━━━━━━━━━━━━━━━━ BOOT ━━━━━━━━━━━━━━━━ */
+document.getElementById('btn-start').addEventListener('click',function(){
+  document.getElementById('landing').classList.add('out');
+  document.getElementById('app').classList.add('on');
+  buildTimeline();
+  setTimeout(function(){initPanZoom();goTo(0,true);},120);
+});
+document.getElementById('btn-reset').addEventListener('click',function(){
+  document.getElementById('app').classList.remove('on');
+  document.getElementById('landing').classList.remove('out');
+  CURRENT_IDX=0;resetView();
+});
+document.getElementById('btn-prev').addEventListener('click',function(){if(CURRENT_IDX>0)goTo(CURRENT_IDX-1);});
+document.getElementById('btn-next').addEventListener('click',function(){if(CURRENT_IDX<EVENTS.length-1)goTo(CURRENT_IDX+1);});
+document.addEventListener('keydown',function(e){
+  if(!document.getElementById('app').classList.contains('on'))return;
+  if(e.key==='ArrowRight'&&CURRENT_IDX<EVENTS.length-1)goTo(CURRENT_IDX+1);
+  if(e.key==='ArrowLeft'&&CURRENT_IDX>0)goTo(CURRENT_IDX-1);
+});
+window.addEventListener('resize',function(){
+  if(document.getElementById('app').classList.contains('on'))
+    drawMap(EVENTS[CURRENT_IDX].mapView,EVENTS[CURRENT_IDX].markers);
+});
+
+</script>
+</body>
+</html>
