@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <link rel="icon" type="image/png" href="img/rocketFavicon.png"/>
   <title>AstroJourneys!</title>
-  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/newstyle.css"/>
 </head>
 <body>
 
@@ -62,11 +62,24 @@
     <!-- HUD label -->
     <div id="map-hud">GEOSPATIAL VIEW &middot; NASA OPERATIONS</div>
 
-    <!-- Layer toggle tabs -->
+    <!-- Layer toggle tabs
     <div id="map-tabs">
       <div class="map-tab on" id="tab-c" onclick="switchTab('c')">NASA Centers</div>
       <div class="map-tab"    id="tab-a" onclick="switchTab('a')">Astronauts</div>
+    </div> -->
+
+    <div id="map-legend">
+      <div class="legend-title">&#9660; MARKER KEY</div>
+      <div class="legend-item"><span class="ldot" style="background:#ff3d21;box-shadow:0 0 7px #ff3d21"></span>Launch / Mission HQ</div>
+      <div class="legend-item"><span class="ldot" style="background:#00d4ff;box-shadow:0 0 7px #00d4ff"></span>Mission Control</div>
+      <div class="legend-item"><span class="ldot" style="background:#ffca28;box-shadow:0 0 7px #ffca28"></span>Propulsion / Testing</div>
+      <div class="legend-item"><span class="ldot" style="background:#00e5a0;box-shadow:0 0 7px #00e5a0"></span>Manufacturing / Research</div>
+      <div class="legend-item"><span class="ldot" style="background:#b06fff;box-shadow:0 0 7px #b06fff"></span>Science / Technology</div>
+      <div class="legend-item"><span class="ldot star" style="background:#ffca28;box-shadow:0 0 7px #ffca28">&#9733;</span>Astronaut Birthplace</div>
+      <div class="legend-item" id="legend-intl" style="display:none"><span class="ldot" style="background:#00e5a0;box-shadow:0 0 7px #00e5a0"></span>Intl. Partner Site</div>
     </div>
+
+
 
     <!-- Hover tooltip -->
     <div id="map-tooltip">
@@ -74,6 +87,7 @@
       <div class="tip-body"  id="tip-body"></div>
       <div class="tip-tag"   id="tip-tag"></div>
     </div>
+
   </div>
 
   <!-- ── RIGHT PANEL ── -->
@@ -115,8 +129,8 @@
 -->
 <script src="lib/d3.v7.js"></script>
 <script src="js/ak_map-data.js"></script>
-<script src="js/ak_data.js"></script>
-<script type="module" src="js/main.js"></script>
+<script src="js/kl_data.js"></script>
+<script type="module" src="js/newmain.js"></script>
 
 </body>
 </html>
