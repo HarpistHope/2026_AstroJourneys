@@ -996,7 +996,7 @@ function renderDistTracker(idx){
 
     /* Moon gets special rendering */
     if(p.dist===238855){
-      s+='<circle cx="'+px+'" cy="'+py+'" r="'+p.r+'" fill="url(#moonG)" opacity="'+op+'" '+(isActive?'filter="url(#glo2)"':'')+'/>';
+      s+='<circle cx="'+px+'" cy="'+py+'" r="'+p.r+'" fill="url(#moonG)" opacity="'+2+'" '+(isActive?'filter="url(#glo2)"':'')+'/>';
       /* Moon surface detail craters */
       if(op>0.5){
         s+='<circle cx="'+(px-7)+'" cy="'+(py-8)+'" r="4" fill="rgba(0,0,0,0.25)"/>';
