@@ -14,6 +14,14 @@
 // dehighlight south east states 
 // fix astronaut birth places button and Did You Know buttons?
 
+//Attempting to add d3.geoAlbers
+const d3Proj = d3.geoAlbersUsa()
+  .translate([0, 0])
+  .scale(1);
+
+let use_albers = true; // this way we can use d3 for the map projection and keep Akhila's project function for the tooltip and markers
+
+
 /* STARFIELD  */
 (function initStars() {
   const canvas = document.getElementById('starfield');
@@ -65,6 +73,12 @@ const MAP_COMPRESS = 0.94;
 
 // replace original project function to prevent maps/geojsons from strecthing with view changes
 function project(lat, lng, view) {
+  // if statement to use albers projection for USA views, original projection for world view
+  if (use_albers && (view === 'usa' || view === 'use' || view === 'uss')) {
+    const [x, y] = d3Proj([lng, lat]);
+    return [x, y];
+  }
+  
   const v = VIEWS[view] || VIEWS.usa;
 
   const lonSpan = v.ln1 - v.ln0;
@@ -187,6 +201,21 @@ function drawMap(view, eventMarkers) {
   svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
 
   let s = '';
+
+  // add Albers projection
+  if (use_albers && (view === 'usa')) {
+    const [[x0, y0], [x1, y1]] = d3Proj.fitExtent(
+      [[0,0], [MAP_W, MAP_H]],
+      { type: "FeatureCollection", features: US_STATES.map(([abbr, coords]) => ({
+        type: "Feature",
+        geometry: {
+          type: "Polygon",
+          coordinates: [coords]
+        }
+      }))
+    }
+    );
+  }
 
   //Ocean background
   s += `<rect width="${MAP_W}" height="${MAP_H}" fill="#010a1a"/>`;
