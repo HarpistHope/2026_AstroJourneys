@@ -14,12 +14,6 @@
 // dehighlight south east states 
 // fix astronaut birth places button and Did You Know buttons?
 
-//Attempting to add d3.geoAlbers
-const d3Proj = d3.geoAlbersUsa()
-
-let use_albers = true; // this way we can use d3 for the map projection and keep Akhila's project function for the tooltip and markers
-
-
 /* STARFIELD  */
 (function initStars() {
   const canvas = document.getElementById('starfield');
@@ -71,15 +65,6 @@ const MAP_COMPRESS = 0.94;
 
 // replace original project function to prevent maps/geojsons from strecthing with view changes
 function project(lat, lng, view) {
-  // if statement to use albers projection for USA views, original projection for world view
-  if (use_albers && (view === 'usa' || view === 'use' || view === 'uss')) {
-    const projected = d3Proj([lng, lat]);
-
-    if (!projected) return null;  
-
-    return projected;
-  }
-  
   const v = VIEWS[view] || VIEWS.usa;
 
   const lonSpan = v.ln1 - v.ln0;
@@ -117,7 +102,7 @@ let WORLD_OUTLINES = [];
 
 async function loadjsons() {
   const [usRes, worldRes] = await Promise.all([
-    fetch('data/us_48states.json'),
+    fetch('data/us_48states_albersShp.json'),
     fetch('data/worldcountries_eqEarth.json')
   ]);
 
@@ -129,51 +114,32 @@ async function loadjsons() {
 
   console.log('states loaded:', US_STATES.length);
   console.log('world loaded:', WORLD_OUTLINES.length);
-
-    const featureCollection = {
-    type: "FeatureCollection",
-    features: US_STATES
-  };
-
-  d3Proj.fitExtent([[0,0], [MAP_W, MAP_H]], featureCollection);
 };
 
 
 // convert states geojson to match existing format
-// function convertStates(usGeo) {
-//   const states = [];
-
-//   usGeo.features.forEach(f => {
-//     const abbr =
-//       f.properties.STUSPS ||
-//       f.properties.NAME;
-
-//     const geom = f.geometry;
-
-//     if (geom.type === 'Polygon') {
-//       states.push([abbr, geom.coordinates[0]]);
-//     }
-
-//     if (geom.type === 'MultiPolygon') {
-//       geom.coordinates.forEach(poly => {
-//         states.push([abbr, poly[0]]);
-//       });
-//     }
-//   });
-
-//   return states;
-// }
-// convert states geojson to match D3 geoPath format
 function convertStates(usGeo) {
-  return usGeo.features
-    .filter(f => f && f.geometry)
-    .map(f => ({
-      type: "Feature",
-      properties: {
-        abbr: f.properties.STUSPS || f.properties.NAME
-      },
-      geometry: f.geometry
-    }));
+  const states = [];
+
+  usGeo.features.forEach(f => {
+    const abbr =
+      f.properties.STUSPS ||
+      f.properties.NAME;
+
+    const geom = f.geometry;
+
+    if (geom.type === 'Polygon') {
+      states.push([abbr, geom.coordinates[0]]);
+    }
+
+    if (geom.type === 'MultiPolygon') {
+      geom.coordinates.forEach(poly => {
+        states.push([abbr, poly[0]]);
+      });
+    }
+  });
+
+  return states;
 }
 
 // convert world geojson to match existing format
@@ -222,19 +188,6 @@ function drawMap(view, eventMarkers) {
 
   let s = '';
 
-  // add Albers projection
-  if (use_albers && (view === 'usa' || view === 'use' || view === 'uss')) {
-    const featureCollection = {
-      type: "FeatureCollection", features: US_STATES.map(([abbr, coords]) => ({
-        type: "Feature",
-        geometry: {
-        type: "Polygon",
-        coordinates: [coords]
-        }      
-      }))
-      };
-    }
-
   //Ocean background
   s += `<rect width="${MAP_W}" height="${MAP_H}" fill="#010a1a"/>`;
 
@@ -261,23 +214,11 @@ function drawMap(view, eventMarkers) {
       s += `<text x="${lx.toFixed(0)}" y="${ly.toFixed(0)}" class="water-label" text-anchor="middle">${txt}</text>`;
     });
   } else {
-    const path = d3.geoPath(d3Proj);
-
-    US_STATES.forEach(f => {
-      const d = path(f);
-      if (!d) return;
-
-      const abbr = f.properties.abbr;
+    // US States
+    US_STATES.forEach(([abbr, coords]) => {
       const cls = SOUTH_STATES.has(abbr) ? 'state-south' : 'state-base';
-
-      s += `<path d="${d}" class="${cls}"/>`;
+      s += `<path d="${buildPathD(coords, view)}" class="${cls}"/>`;
     });
-    
-    // // US States
-    // US_STATES.forEach(([abbr, coords]) => {
-    //   const cls = SOUTH_STATES.has(abbr) ? 'state-south' : 'state-base';
-    //   s += `<path d="${buildPathD(coords, view)}" class="${cls}"/>`;
-    // });
     // Outer glow border
     s += `<rect width="${MAP_W}" height="${MAP_H}" fill="none" stroke="rgba(0, 213, 255, 0.12)" stroke-width="3"/>`;
     // Water labels
@@ -296,8 +237,7 @@ function drawMap(view, eventMarkers) {
   // Permanent layer (centers or astronaut birthplaces)
   const permList = ACTIVE_TAB === 'c' ? NASA_CENTERS : ASTRONAUT_BIRTHS;
   permList.forEach(p => {
-    // const [cx, cy] = project(p.lat, p.lng, view);
-    const [cx, cy] = d3Proj([p.lng, p.lat]);
+    const [cx, cy] = project(p.lat, p.lng, view);
     if (cx < -15 || cx > MAP_W + 15 || cy < -15 || cy > MAP_H + 15) return;
     const col   = p.col || '#ffca28';
     const label = p.abbr || p.name.split(' ')[0];
@@ -308,8 +248,7 @@ function drawMap(view, eventMarkers) {
 
   // Event-specific markers 
   eventMarkers.forEach(m => {
-    // const [cx, cy] = project(m.lat, m.lng, view);
-    const [cx, cy] = d3Proj([p.lng, p.lat]);
+    const [cx, cy] = project(m.lat, m.lng, view);
     if (cx < -15 || cx > MAP_W + 15 || cy < -15 || cy > MAP_H + 15) return;
     const short = (m.label || '').split(',')[0].trim().split(' ').slice(0, 2).join(' ');
     s += makeDot(cx, cy, m.col, m.type === 'b' ? 5.5 : 7.5, false, m.label, m.desc,
