@@ -16,8 +16,6 @@
 
 //Attempting to add d3.geoAlbers
 const d3Proj = d3.geoAlbersUsa()
-  .translate([0, 0])
-  .scale(1);
 
 let use_albers = true; // this way we can use d3 for the map projection and keep Akhila's project function for the tooltip and markers
 
@@ -206,7 +204,7 @@ function drawMap(view, eventMarkers) {
   if (use_albers && (view === 'usa' || view === 'use' || view === 'uss')) {
     const featureCollection = {
       type: "FeatureCollection", features: US_STATES.map(([abbr, coords]) => ({
-        ype: "Feature",
+        type: "Feature",
         geometry: {
         type: "Polygon",
         coordinates: [coords]
