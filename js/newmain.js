@@ -117,7 +117,7 @@ let WORLD_OUTLINES = [];
 
 async function loadjsons() {
   const [usRes, worldRes] = await Promise.all([
-    fetch('data/us_48states_albersShp.json'),
+    fetch('data/us_48states.json'),
     fetch('data/worldcountries_eqEarth.json')
   ]);
 
@@ -243,11 +243,29 @@ function drawMap(view, eventMarkers) {
       s += `<text x="${lx.toFixed(0)}" y="${ly.toFixed(0)}" class="water-label" text-anchor="middle">${txt}</text>`;
     });
   } else {
-    // US States
-    US_STATES.forEach(([abbr, coords]) => {
-      const cls = SOUTH_STATES.has(abbr) ? 'state-south' : 'state-base';
-      s += `<path d="${buildPathD(coords, view)}" class="${cls}"/>`;
-    });
+    const path = d3.geoPath(d3Proj);
+
+      US_STATES.forEach(([abbr, coords]) => {
+        const feature = {
+          type: "Feature",
+          geometry: {
+            type: "Polygon",
+            coordinates: [coords]
+          }
+        };
+
+        const d = path(feature);
+        if (!d) return;
+
+        const cls = SOUTH_STATES.has(abbr) ? 'state-south' : 'state-base';
+        s += `<path d="${d}" class="${cls}"/>`;
+      });
+    
+    // // US States
+    // US_STATES.forEach(([abbr, coords]) => {
+    //   const cls = SOUTH_STATES.has(abbr) ? 'state-south' : 'state-base';
+    //   s += `<path d="${buildPathD(coords, view)}" class="${cls}"/>`;
+    // });
     // Outer glow border
     s += `<rect width="${MAP_W}" height="${MAP_H}" fill="none" stroke="rgba(0, 213, 255, 0.12)" stroke-width="3"/>`;
     // Water labels
