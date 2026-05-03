@@ -203,19 +203,18 @@ function drawMap(view, eventMarkers) {
   let s = '';
 
   // add Albers projection
-  if (use_albers && (view === 'usa')) {
-    const [[x0, y0], [x1, y1]] = d3Proj.fitExtent(
-      [[0,0], [MAP_W, MAP_H]],
-      { type: "FeatureCollection", features: US_STATES.map(([abbr, coords]) => ({
-        type: "Feature",
+  if (use_albers && (view === 'usa' || view === 'use' || view === 'uss')) {
+    const featureCollection = {
+      type: "FeatureCollection", features: US_STATES.map(([abbr, coords]) => ({
+        ype: "Feature",
         geometry: {
-          type: "Polygon",
-          coordinates: [coords]
-        }
+        type: "Polygon",
+        coordinates: [coords]
+        }      
       }))
+      };
+      d3Proj.fitExtent([[0,0], [MAP_W, MAP_H]], featureCollection);
     }
-    );
-  }
 
   //Ocean background
   s += `<rect width="${MAP_W}" height="${MAP_H}" fill="#010a1a"/>`;
