@@ -73,8 +73,11 @@ const MAP_COMPRESS = 0.94;
 function project(lat, lng, view) {
   // if statement to use albers projection for USA views, original projection for world view
   if (use_albers && (view === 'usa' || view === 'use' || view === 'uss')) {
-    const [x, y] = d3Proj([lng, lat]);
-    return [x, y];
+    const projected = d3Proj([lng, lat]);
+
+    if (!projected) return null;  
+
+    return projected;
   }
   
   const v = VIEWS[view] || VIEWS.usa;
