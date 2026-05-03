@@ -102,7 +102,7 @@ let WORLD_OUTLINES = [];
 
 async function loadjsons() {
   const [usRes, worldRes] = await Promise.all([
-    fetch('data/us_48states_albersShp.json'),
+    fetch('data/us_48states.json'),
     fetch('data/worldcountries_eqEarth.json')
   ]);
 
