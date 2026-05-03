@@ -129,32 +129,51 @@ async function loadjsons() {
 
   console.log('states loaded:', US_STATES.length);
   console.log('world loaded:', WORLD_OUTLINES.length);
+
+    const featureCollection = {
+    type: "FeatureCollection",
+    features: US_STATES
+  };
+
+  d3Proj.fitExtent([[0,0], [MAP_W, MAP_H]], featureCollection);
 };
 
 
 // convert states geojson to match existing format
+// function convertStates(usGeo) {
+//   const states = [];
+
+//   usGeo.features.forEach(f => {
+//     const abbr =
+//       f.properties.STUSPS ||
+//       f.properties.NAME;
+
+//     const geom = f.geometry;
+
+//     if (geom.type === 'Polygon') {
+//       states.push([abbr, geom.coordinates[0]]);
+//     }
+
+//     if (geom.type === 'MultiPolygon') {
+//       geom.coordinates.forEach(poly => {
+//         states.push([abbr, poly[0]]);
+//       });
+//     }
+//   });
+
+//   return states;
+// }
+// convert states geojson to match D3 geoPath format
 function convertStates(usGeo) {
-  const states = [];
-
-  usGeo.features.forEach(f => {
-    const abbr =
-      f.properties.STUSPS ||
-      f.properties.NAME;
-
-    const geom = f.geometry;
-
-    if (geom.type === 'Polygon') {
-      states.push([abbr, geom.coordinates[0]]);
-    }
-
-    if (geom.type === 'MultiPolygon') {
-      geom.coordinates.forEach(poly => {
-        states.push([abbr, poly[0]]);
-      });
-    }
-  });
-
-  return states;
+  return usGeo.features
+    .filter(f => f && f.geometry)
+    .map(f => ({
+      type: "Feature",
+      properties: {
+        abbr: f.properties.STUSPS || f.properties.NAME
+      },
+      geometry: f.geometry
+    }));
 }
 
 // convert world geojson to match existing format
@@ -214,7 +233,6 @@ function drawMap(view, eventMarkers) {
         }      
       }))
       };
-      d3Proj.fitExtent([[0,0], [MAP_W, MAP_H]], featureCollection);
     }
 
   //Ocean background
@@ -245,21 +263,15 @@ function drawMap(view, eventMarkers) {
   } else {
     const path = d3.geoPath(d3Proj);
 
-      US_STATES.forEach(([abbr, coords]) => {
-        const feature = {
-          type: "Feature",
-          geometry: {
-            type: "Polygon",
-            coordinates: [coords]
-          }
-        };
+    US_STATES.forEach(f => {
+      const d = path(f);
+      if (!d) return;
 
-        const d = path(feature);
-        if (!d) return;
+      const abbr = f.properties.abbr;
+      const cls = SOUTH_STATES.has(abbr) ? 'state-south' : 'state-base';
 
-        const cls = SOUTH_STATES.has(abbr) ? 'state-south' : 'state-base';
-        s += `<path d="${d}" class="${cls}"/>`;
-      });
+      s += `<path d="${d}" class="${cls}"/>`;
+    });
     
     // // US States
     // US_STATES.forEach(([abbr, coords]) => {
@@ -284,7 +296,8 @@ function drawMap(view, eventMarkers) {
   // Permanent layer (centers or astronaut birthplaces)
   const permList = ACTIVE_TAB === 'c' ? NASA_CENTERS : ASTRONAUT_BIRTHS;
   permList.forEach(p => {
-    const [cx, cy] = project(p.lat, p.lng, view);
+    // const [cx, cy] = project(p.lat, p.lng, view);
+    const [cx, cy] = d3Proj([p.lng, p.lat]);
     if (cx < -15 || cx > MAP_W + 15 || cy < -15 || cy > MAP_H + 15) return;
     const col   = p.col || '#ffca28';
     const label = p.abbr || p.name.split(' ')[0];
@@ -295,7 +308,8 @@ function drawMap(view, eventMarkers) {
 
   // Event-specific markers 
   eventMarkers.forEach(m => {
-    const [cx, cy] = project(m.lat, m.lng, view);
+    // const [cx, cy] = project(m.lat, m.lng, view);
+    const [cx, cy] = d3Proj([p.lng, p.lat]);
     if (cx < -15 || cx > MAP_W + 15 || cy < -15 || cy > MAP_H + 15) return;
     const short = (m.label || '').split(',')[0].trim().split(' ').slice(0, 2).join(' ');
     s += makeDot(cx, cy, m.col, m.type === 'b' ? 5.5 : 7.5, false, m.label, m.desc,
