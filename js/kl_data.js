@@ -104,7 +104,7 @@ var EVENTS = [
 
   /* ── 1970 ── */
   {
-    year:1970, name:"Apollo 13 — 'Houston, we\'ve Had a Problem'",
+    year:1970, name:"Apollo 13 — 'Houston, We\'ve Had a Problem'",
     meta:'Lunar Far Side · April 14–15, 1970',
     desc:"'Houston, we've had a problem.' An oxygen tank exploded 56 hours into the flight, 200,000 miles from Earth. Commander Jim Lovell, Jack Swigert, and Fred Haise powered down to near-darkness, used the lunar module as a lifeboat, and navigated home by starlight. Mission Control worked 87 consecutive hours. All three splashed down alive.",
     fact:"The crew reached 248,655 miles from Earth while looping the lunar far side the farthest any human has EVER traveled from our planet. Temperature dropped to near freezing. They survived on 6 oz of water per day. This distance record stood 52 years until Artemis I broke it in 2022.",
