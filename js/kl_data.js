@@ -7,7 +7,7 @@ var EVENTS = [
     desc:'President Eisenhower signed the National Aeronautics and Space Act into law, driven by Cold War urgency after Sputnik shocked the world in October 1957. Eight thousand scientists and engineers — inherited from the old NACA — immediately began the greatest adventure in human history.',
     fact:"NASA was created just 11 months after Sputnik. Its first annual budget was $100 million (today it's ~$25 billion). Within 3 years it had launched an American into space.",
     dyk:"🏛️ NASA almost didn't exist. Congress initially wanted a military space agency, not a civilian one. President Eisenhower insisted on a civilian agency to project peaceful intentions. NASA's founding document, the Space Act of 1958, remains the legal foundation for all US human spaceflight today.",
-    locAdv:"Washington D.C. was chosen for NASA HQ for direct Congressional oversight and proximity to policy makers — critical for securing the massive budgets needed to reach the Moon.",
+    locAdv:"Signed into law by President Eisenhower. NASA absorbed 8,000 employees from NACA.",
     dist:0, distLabel:'Earth Surface · 0 miles',
     photos:['https://upload.wikimedia.org/wikipedia/commons/e/e5/NASA_logo.svg'],
     photoStyle:'object-fit:contain;background:#010d22;padding:22px;',
@@ -15,7 +15,7 @@ var EVENTS = [
     emoji:'🏛️',
     mapView:'usa',
     markers:[
-      { lat:38.883, lng:-77.016, label:'NASA HQ · Washington D.C.', desc:'Signed into law by President Eisenhower. NASA absorbed 8,000 employees from NACA.',       col:'#ff3d21', type:'c' }
+      { lat:38.883, lng:-77.016, label:'NASA HQ · Washington D.C.', desc:'Location Advantage: direct Congressional oversight and proximity to policy makers — critical for securing the massive budgets needed to reach the Moon.',       col:'#ff3d21', type:'c' }
     ]
   },
 
@@ -26,15 +26,15 @@ var EVENTS = [
     desc:"Alan Shepard climbed into a capsule barely bigger than a phone booth and rode a Redstone rocket 116 miles into space. His 15-minute flight proved humans could survive space travel. Kennedy watched from the White House — and days later declared America would land on the Moon before the decade was out.",
     fact:"Shepard waited in the capsule 4 hours due to weather and technical delays. He famously radioed: 'Why don't you fix your little problem and light this candle!' He reached 5,134 mph and experienced 5 full minutes of weightlessness.",
     dyk:"🚀 The Redstone rocket that launched Shepard was originally designed as a nuclear ballistic missile. NASA's engineers had to convince military officials to let them use it for a human flight. The capsule was so small that Shepard had to be carefully folded inside — engineers called it 'wearing the spacecraft.'",
-    locAdv:"Cape Canaveral's location at 28.5° latitude — as far south as possible in the continental US — gives rockets a crucial speed boost from Earth's rotation, reducing fuel needed to reach orbit by ~900 mph.",
+    locAdv:"America's Space Age began at Cape Canaveral's Launch Complex 5 at 9:34 AM on May 5, 1961. Several states away, Houston's Mission Control tracked every second of Shepard's historic 15-minute suborbital flight.",
     dist:116, distLabel:'116 miles — Suborbital Arc',
     photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Alan_Shepard_in_spacesuit.jpg/480px-Alan_Shepard_in_spacesuit.jpg'],
     photoCap:'Alan Shepard suited for Freedom 7, May 1961 (NASA)',
     emoji:'🚀',
     mapView:'usa-e',
     markers:[
-      { lat:28.573, lng:-80.649, label:'Cape Canaveral · LC-5',          desc:"America's Space Age began here at 9:34 AM on May 5, 1961.", col:'#ff3d21', type:'c' },
-      { lat:29.559, lng:-95.089, label:'Houston JSC · Mission Control',  desc:'Tracked every second of the historic 15-minute suborbital flight.',         col:'#00d4ff', type:'c' },
+      { lat:28.573, lng:-80.649, label:'Cape Canaveral · LC-5',          desc:"Location Advantage: Over-ocean launch safety; vehicle velocity boost from Earth's rotation, maximized at low latitudes", col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston JSC · Mission Control',  desc:'Location Advantage: Access to deep-water transport; Moderate climate; Nearby industrial industry and universities',         col:'#00d4ff', type:'c' },
       { lat:42.887, lng:-71.275, label:'East Derry, NH · Shepard born',  desc:'Alan Bartlett Shepard Jr. born November 18, 1923.',                         col:'#ffca28', type:'b' }
     ]
   },
@@ -46,15 +46,15 @@ var EVENTS = [
     desc:"John Glenn circled Earth three times in 4 hours 55 minutes. A faulty sensor mid-flight suggested his heat shield might be loose potentially fatal on reentry. Glenn kept his cool, trusted his training, and splashed down safely. Australians in Perth turned on all their city lights so he could see them from orbit. He could.",
     fact:"Glenn orbited at 17,500 mph, crossing 3 continents. He later served 24 years as a US Senator for Ohio. In 1998, at age 77, he flew again aboard Space Shuttle Discovery the oldest person ever in space.",
     dyk:"🌍 The Perth, Australia 'City of Lights' moment became one of the most beloved stories in spaceflight history. As Glenn passed over at night, the entire city switched on their lights — residents, farms, and even ships in the harbor. Glenn confirmed he could see them clearly from 100 miles up. Perth still calls itself the 'City of Light.'",
-    locAdv:"The Atlas rocket's trajectory from Cape Canaveral was calculated to pass over tracking stations in Bermuda, the Canary Islands, and Australia,a global network that made orbital missions possible.",
+    locAdv:"Atlas rocket lifted Glenn to orbit at 9:47 AM, February 20, 1962. The rocket's trajectory from Cape Canaveral was calculated to pass over tracking stations in Bermuda, the Canary Islands, and Australia, a global network that made orbital missions possible. Back in Houston, Mission Control managed the life-threatening heat shield alarm.",
     dist:162, distLabel:'162 miles — Earth Orbit',
     photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/John_Glenn_-_restoration.jpg/480px-John_Glenn_-_restoration.jpg'],
     photoCap:'John Glenn, Friendship 7, February 1962 (NASA)',
     emoji:'🌍',
     mapView:'usa-e',
     markers:[
-      { lat:28.573, lng:-80.649, label:'Cape Canaveral · LC-14',        desc:'Atlas rocket lifted Glenn to orbit at 9:47 AM, February 20, 1962.', col:'#ff3d21', type:'c' },
-      { lat:29.559, lng:-95.089, label:'Houston · Mission Control',     desc:'Mission Control managed the life-threatening heat shield alarm.', col:'#00d4ff', type:'c' },
+      { lat:28.573, lng:-80.649, label:'Cape Canaveral · LC-14',        desc:"Location Advantage: Over-ocean launch safety; vehicle velocity boost from Earth's rotation, maximized at low latitudes", col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston · Mission Control',     desc:'Location Advantage: Access to deep-water transport; Moderate climate; Nearby industrial industry and universities', col:'#00d4ff', type:'c' },
       { lat:39.962, lng:-82.999, label:'Cambridge, OH · Glenn born',    desc:'John Herschel Glenn Jr. born July 18, 1921.', col:'#ffca28', type:'b' }
     ]
   },
@@ -63,18 +63,18 @@ var EVENTS = [
   {
     year:1965, name:'Gemini IV — 1st American Spacewalk',
     meta:'Cape Canaveral, FL · June 3, 1965',
-    desc:"Ed White floated free outside Gemini IV for 23 glorious minutes over the Pacific Ocean, 100 miles up. He used a small handheld oxygen jet gun to maneuver and called it 'the most comfortable part of the mission.' Flight Director Chris Kraft eventually had to order him back inside. White said re-entering was 'the saddest moment of my life.'",
+    desc:"Gemini IV launched June 3, 1965 with Ed White and Jim McDivitt. Once in orbit, Ed White floated free outside Gemini IV for 23 glorious minutes over the Pacific Ocean, 100 miles up. He used a small handheld oxygen jet gun to maneuver and called it 'the most comfortable part of the mission.' Flight Director Chris Kraft eventually had to order him back inside. White said re-entering was 'the saddest moment of my life.'",
     fact:"White's jet gun ran out of fuel with 10 minutes of EVA remaining and he had to pull himself back via the tether. He died in the Apollo 1 launchpad fire on January 27, 1967 alongside Gus Grissom and Roger Chaffee a tragedy that reshaped NASA safety culture.",
     dyk:"🧑‍🚀 White's spacewalk was unplanned until 3 days before launch. NASA only decided to add the EVA after Alexei Leonov's Soviet spacewalk 10 weeks earlier. Engineers hastily added a handheld maneuvering unit. The photos White took with one hand while floating free became some of the most iconic images in space history.",
-    locAdv:"Launch Complex 19 at Cape Canaveral was specifically built for the Gemini program two pads in parallel that enabled NASA to rapidly fly 10 crewed Gemini missions in just 20 months, learning the skills needed for Apollo.",
+    locAdv:"Launch Complex 19 at Cape Canaveral was specifically built for the Gemini program. Two parallel pads enabled NASA to rapidly fly 10 crewed Gemini missions in just 20 months, rapidly learning the skills needed for Apollo.",
     dist:175, distLabel:'175 miles — Gemini Orbit',
     photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Ed_White_first_American_spacewalk.jpg/480px-Ed_White_first_American_spacewalk.jpg'],
     photoCap:'Ed White — 1st American spacewalk, Gemini IV, June 1965 (NASA)',
     emoji:'🧑‍🚀',
     mapView:'usa-e',
     markers:[
-      { lat:28.573, lng:-80.649, label:'KSC · Launch Complex 19',        desc:'Gemini IV launched June 3, 1965 with Ed White and Jim McDivitt.', col:'#ff3d21', type:'c' },
-      { lat:29.559, lng:-95.089, label:'Houston · Mission Control',      desc:"Chris Kraft's team guided the 4-day Gemini IV mission from JSC.",  col:'#00d4ff', type:'c' },
+      { lat:28.573, lng:-80.649, label:'Kennedy Space Center · Launch Complex 19',        desc:'Location Advantage: Low-latitude-launch velocity boost; Improved safety from over-ocean launches; Moderate climate; Nearby supporting infrastructure', col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston · Mission Control',      desc:"Location Advantage: Access to deep-water transport; Moderate climate; Nearby industrial industry and universities",  col:'#00d4ff', type:'c' },
       { lat:29.424, lng:-98.493, label:'San Antonio, TX · White born',   desc:'Edward Higgins White II born November 14, 1930.',                  col:'#ffca28', type:'b' }
     ]
   },
@@ -93,7 +93,7 @@ var EVENTS = [
     emoji:'🌕',
     mapView:'usa-s',
     markers:[
-      { lat:28.573, lng:-80.649, label:'KSC · Launch Complex 39A',       desc:'Apollo 11 launched July 16, 1969 the most watched event in history.',   col:'#ff3d21', type:'c' },
+      { lat:28.573, lng:-80.649, label:'Kennedy Space Center · Launch Complex 39A',       desc:'Apollo 11 launched July 16, 1969 the most watched event in history.',   col:'#ff3d21', type:'c' },
       { lat:29.559, lng:-95.089, label:'Houston · Mission Control',      desc:'"Houston, Tranquility Base here. The Eagle has landed." July 20, 1969.', col:'#ffca28', type:'c' },
       { lat:30.390, lng:-89.090, label:'Stennis SC · MS',                desc:'All Saturn V first-stage F-1 engines tested here before every Apollo mission.', col:'#00e5a0', type:'c' },
       { lat:29.978, lng:-90.054, label:'Michoud · New Orleans, LA',      desc:'Saturn V S-IC first stage the most powerful rocket stage ever built manufactured here.', col:'#00e5a0', type:'c' },
