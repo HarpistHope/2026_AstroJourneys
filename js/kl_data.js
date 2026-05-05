@@ -7,7 +7,7 @@ var EVENTS = [
     desc:'President Eisenhower signed the National Aeronautics and Space Act into law, driven by Cold War urgency after Sputnik shocked the world in October 1957. Eight thousand scientists and engineers — inherited from the old NACA — immediately began the greatest adventure in human history.',
     fact:"NASA was created just 11 months after Sputnik. Its first annual budget was $100 million (today it's ~$25 billion). Within 3 years it had launched an American into space.",
     dyk:"🏛️ NASA almost didn't exist. Congress initially wanted a military space agency, not a civilian one. President Eisenhower insisted on a civilian agency to project peaceful intentions. NASA's founding document, the Space Act of 1958, remains the legal foundation for all US human spaceflight today.",
-    locAdv:"Signed into law by President Eisenhower. NASA absorbed 8,000 employees from NACA.",
+    locAdv:"NASA was signed into law by President Eisenhower and absorbed 8,000 employees from NACA.",
     dist:0, distLabel:'Earth Surface · 0 miles',
     photos:['https://upload.wikimedia.org/wikipedia/commons/e/e5/NASA_logo.svg'],
     photoStyle:'object-fit:contain;background:#010d22;padding:22px;',
@@ -15,7 +15,7 @@ var EVENTS = [
     emoji:'🏛️',
     mapView:'usa',
     markers:[
-      { lat:38.883, lng:-77.016, label:'NASA HQ · Washington D.C.', desc:'Location Advantage: Direct Congressional oversight | Proximity to policy makers',       col:'#ff3d21', type:'c' }
+      { lat:38.883, lng:-77.016, label:'NASA HQ · Washington D.C.', desc:'Location Pros: Direct Congressional oversight | Proximity to policy makers',       col:'#ff3d21', type:'c' }
     ]
   },
 
@@ -33,8 +33,8 @@ var EVENTS = [
     emoji:'🚀',
     mapView:'usa-e',
     markers:[
-      { lat:28.573, lng:-80.649, label:'Cape Canaveral · LC-5',          desc:"Location Advantage: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes)", col:'#ff3d21', type:'c' },
-      { lat:29.559, lng:-95.089, label:'Houston JSC · Mission Control',  desc:'Location Advantage: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry',         col:'#00d4ff', type:'c' },
+      { lat:28.573, lng:-80.649, label:'Cape Canaveral · LC-5',          desc:"Location Pros: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes)", col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston JSC · Mission Control',  desc:'Location Pros: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry',         col:'#00d4ff', type:'c' },
       { lat:42.887, lng:-71.275, label:'East Derry, NH · Shepard born',  desc:'Alan Bartlett Shepard Jr. born November 18, 1923.',                         col:'#ffca28', type:'b' }
     ]
   },
@@ -53,8 +53,8 @@ var EVENTS = [
     emoji:'🌍',
     mapView:'usa-e',
     markers:[
-      { lat:28.573, lng:-80.649, label:'Cape Canaveral · LC-14',        desc:"Location Advantage: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes)", col:'#ff3d21', type:'c' },
-      { lat:29.559, lng:-95.089, label:'Houston · Mission Control',     desc:'Location Advantage: Access to deep-water transport | Moderate climate | Nearby industrial industry and universities', col:'#00d4ff', type:'c' },
+      { lat:28.573, lng:-80.649, label:'Cape Canaveral · LC-14',        desc:"Location Pros: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes)", col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston · Mission Control',     desc:'Location Pros: Access to deep-water transport | Moderate climate | Nearby industrial industry and universities', col:'#00d4ff', type:'c' },
       { lat:39.962, lng:-82.999, label:'Cambridge, OH · Glenn born',    desc:'John Herschel Glenn Jr. born July 18, 1921.', col:'#ffca28', type:'b' }
     ]
   },
@@ -73,8 +73,8 @@ var EVENTS = [
     emoji:'🧑‍🚀',
     mapView:'usa-e',
     markers:[
-      { lat:28.573, lng:-80.649, label:'Kennedy Space Center · Launch Complex 19',        desc:"Location Advantage: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry", col:'#ff3d21', type:'c' },
-      { lat:29.559, lng:-95.089, label:'Houston · Mission Control',      desc:"Location Advantage: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry",  col:'#00d4ff', type:'c' },
+      { lat:28.573, lng:-80.649, label:'Kennedy Space Center · Launch Complex 19',        desc:"Location Pros: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry", col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston · Mission Control',      desc:"Location Pros: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry",  col:'#00d4ff', type:'c' },
       { lat:29.424, lng:-98.493, label:'San Antonio, TX · White born',   desc:'Edward Higgins White II born November 14, 1930.',                  col:'#ffca28', type:'b' }
     ]
   },
@@ -93,10 +93,10 @@ var EVENTS = [
     emoji:'🌕',
     mapView:'usa-s',
     markers:[
-      { lat:28.573, lng:-80.649, label:'Kennedy Space Center · Launch Complex 39A', desc:"Location Advantage: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry",   col:'#ff3d21', type:'c' },
-      { lat:29.559, lng:-95.089, label:'Houston · Mission Control',      desc:'Location Advantage: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry', col:'#ffca28', type:'c' },
-      { lat:30.390, lng:-89.090, label:'Stennis Space Center · MS',      desc:'Location Advantage: Waterway transport access | Massive buffer zone to protect nearby communities from rocket testing noises and vibrations', col:'#00e5a0', type:'c' },
-      { lat:29.978, lng:-90.054, label:'Michoud Assembly Facility · New Orleans, LA',      desc:'Location Advantage: Deep-water port for transportation of rockets', col:'#00e5a0', type:'c' },
+      { lat:28.573, lng:-80.649, label:'Kennedy Space Center · Launch Complex 39A', desc:"Location Pros: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry",   col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston · Mission Control',      desc:'Location Pros: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry', col:'#ffca28', type:'c' },
+      { lat:30.390, lng:-89.090, label:'Stennis Space Center · MS',      desc:'Location Pros: Waterway transport access | Massive buffer zone to protect nearby communities from rocket testing noises and vibrations', col:'#00e5a0', type:'c' },
+      { lat:29.978, lng:-90.054, label:'Michoud Assembly Facility · New Orleans, LA',      desc:'Location Pros: Deep-water port for transportation of rockets', col:'#00e5a0', type:'c' },
       { lat:40.564, lng:-84.194, label:'Wapakoneta, OH · Armstrong born',desc:'Neil Alden Armstrong born August 5, 1930.',  col:'#ffca28', type:'b' },
       { lat:40.807, lng:-74.153, label:'Glen Ridge, NJ · Aldrin born',   desc:'Buzz Aldrin born January 20, 1930.',          col:'#ffca28', type:'b' }
     ]
@@ -116,8 +116,8 @@ var EVENTS = [
     emoji:'💥',
     mapView:'usa-s',
     markers:[
-      { lat:28.573, lng:-80.649, label:'Kennedy Space Center',           desc:"Location Advantage: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry", col:'#ff3d21', type:'c' },
-      { lat:29.559, lng:-95.089, label:'Houston · Mission Control',      desc:'Location Advantage: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry', col:'#ffca28', type:'c' },
+      { lat:28.573, lng:-80.649, label:'Kennedy Space Center',           desc:"Location Pros: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry", col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston · Mission Control',      desc:'Location Pros: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry', col:'#ffca28', type:'c' },
       { lat:41.499, lng:-81.694, label:'Cleveland, OH · Lovell born',    desc:'James Arthur Lovell Jr. born March 25, 1928.', col:'#ffca28', type:'b' }
     ]
   },
@@ -136,8 +136,8 @@ var EVENTS = [
     emoji:'🌎',
     mapView:'usa-s',
     markers:[
-      { lat:28.573, lng:-80.649, label:'Kennedy Space Center · LC-39A Night Launch',    desc:"Location Advantage: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry", col:'#ff3d21', type:'c' },
-      { lat:29.559, lng:-95.089, label:'Houston JSC · Mission Control',  desc:'Location Advantage: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry',                  col:'#00d4ff', type:'c' }
+      { lat:28.573, lng:-80.649, label:'Kennedy Space Center · LC-39A Night Launch',    desc:"Location Pros: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry", col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston JSC · Mission Control',  desc:'Location Pros: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry',                  col:'#00d4ff', type:'c' }
     ]
   },
 
@@ -155,11 +155,11 @@ var EVENTS = [
     emoji:'🛸',
     mapView:'usa-s',
     markers:[
-      { lat:28.573, lng:-80.649, label:'Kennedy Space Center · LC-39A — Shuttle Launch',  desc:"Location Advantage: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry",      col:'#ff3d21', type:'c' },
-      { lat:29.559, lng:-95.089, label:'Houston JSC · Mission Control',  desc:'Location Advantage: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry',       col:'#00d4ff', type:'c' },
-      { lat:30.390, lng:-89.090, label:'Stennis SC · Mississippi',       desc:'Over 1,100 Shuttle main engine hot-fire tests performed at Stennis.',        col:'#ffca28', type:'c' },
-      { lat:29.978, lng:-90.054, label:'Michoud · New Orleans, LA',      desc:'All 135 Shuttle External Tanks manufactured and tested at Michoud.',         col:'#00e5a0', type:'c' },
-      { lat:34.631, lng:-86.661, label:'Marshall SFC · Huntsville, AL',  desc:'Marshall designed and managed all Shuttle propulsion systems.',              col:'#ffca28', type:'c' }
+      { lat:28.573, lng:-80.649, label:'Kennedy Space Center · LC-39A — Shuttle Launch',  desc:"Location Pros: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry",      col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston JSC · Mission Control',  desc:'Location Pros: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry',       col:'#00d4ff', type:'c' },
+      { lat:30.390, lng:-89.090, label:'Stennis SC · Mississippi',       desc:'Location Pros: Waterway transport access | Massive buffer zone to protect nearby communities from rocket testing noises and vibrations',        col:'#ffca28', type:'c' },
+      { lat:29.978, lng:-90.054, label:'Michoud · New Orleans, LA',      desc:'Location Pros: Deep-water port for transportation of rockets',         col:'#00e5a0', type:'c' },
+      { lat:34.631, lng:-86.661, label:'Marshall Space Flight Center · Huntsville, AL',  desc:"Location Pros: Est. in 1960 within the U.S. Army's Redstone Arsenal (missile facility) | nearby missile and propulsion industry expertise",              col:'#ffca28', type:'c' }
     ]
   },
 
@@ -177,10 +177,10 @@ var EVENTS = [
     emoji:'🛰️',
     mapView:'world',
     markers:[
-      { lat:28.573, lng:-80.649, label:'Kennedy Space Center',         desc:"Location Advantage: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry", col:'#ff3d21', type:'c' },
-      { lat:29.559, lng:-95.089, label:'Houston JSC · ISS Control',   desc:'Location Advantage: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry', col:'#00d4ff', type:'c' },
-      { lat:45.965, lng: 63.305, label:'Baikonur · Kazakhstan',       desc:"Russia's historic launch site all Soyuz crew missions to ISS depart here.", col:'#ffca28', type:'c' },
-      { lat:36.130, lng:138.360, label:'JAXA · Tsukuba, Japan',       desc:"Japan's Space Center controls the ISS Kibo laboratory module.", col:'#00e5a0', type:'c' }
+      { lat:28.573, lng:-80.649, label:'Kennedy Space Center',         desc:"Location Pros: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry", col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston JSC · ISS Control',   desc:'Location Pros: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry', col:'#00d4ff', type:'c' },
+      { lat:45.965, lng: 63.305, label:'Baikonur Cosmodrome · Kazakhstan',       desc:"Location Pros: Relative low latitude | Surrounding desert allows safety and security | Nearby railway transport for rockets and parts", col:'#ffca28', type:'c' },
+      { lat:36.130, lng:138.360, label:'JAXA · Tsukuba, Japan',       desc:"Location Pros: Proximity to Tokyo | Surrounding industry, research institutes, and universities", col:'#00e5a0', type:'c' }
     ]
   },
 
@@ -191,18 +191,18 @@ var EVENTS = [
     desc:"NASA's Space Launch System, the most powerful rocket ever built, lit up the Florida night on November 16, 2022. The uncrewed Orion capsule traveled 268,553 miles from Earth on a 26 day journey around the Moon, breaking Apollo 13's 52-year distance record. The mission ended with a perfect splashdown on December 11, confirming Orion is ready for crew.",
     fact:"SLS produced 8.8 million pounds of thrust at liftoff 15% more than the Saturn V, the previous record holder. The 322-foot rocket burned through 733,000 gallons of propellant in 8 minutes. Orion flew farther from Earth than any spacecraft designed to carry humans.",
     dyk:"🌙 Artemis I carried 10 small CubeSat satellites as secondary payloads, including one searching for water ice at lunar poles. The Orion capsule experienced re-entry temperatures of 5,000°F — half the temperature of the Sun's surface — and its heat shield worked flawlessly. The night launch was visible from 100 miles away across Florida.",
-    locAdv:"SLS launched from Pad 39B — the same complex family as Saturn V. Pad 39B was rebuilt specifically for SLS — requiring removal of the Shuttle era lightning towers and installation of a new flame trench drainage system. The mobile launcher tower, standing 380 feet tall, is the tallest structure ever used for a NASA rocket.",
+    locAdv:"SLS launched from KSC's Pad 39B — the same complex family as Saturn V. Pad 39B was rebuilt specifically for SLS — requiring removal of the Shuttle era lightning towers and installation of a new flame trench drainage system. The mobile launcher tower, standing 380 feet tall, is the tallest structure ever used for a NASA rocket.",
     dist:268553, distLabel:'268,553 mi · Spacecraft Distance Record 🏆',
     photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Artemis_I_Launch_-_NHQ202211160006.jpg/480px-Artemis_I_Launch_-_NHQ202211160006.jpg'],
     photoCap:'Artemis I night launch · November 16, 2022 · Kennedy Space Center (NASA)',
     emoji:'🌙',
     mapView:'usa-s',
     markers:[
-      { lat:28.573, lng:-80.649, label:'Kennedy Space Center · LC-39B — Artemis Launch', desc:"Location Advantage: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry",         col:'#ff3d21', type:'c' },
-      { lat:29.559, lng:-95.089, label:'Houston JSC · Artemis Control', desc:'Location Advantage: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry',         col:'#00d4ff', type:'c' },
-      { lat:30.390, lng:-89.090, label:'Stennis SC · Engine Testing',   desc:'SLS core stage engines hot-fire tested for 8+ continuous minutes.',    col:'#ffca28', type:'c' },
-      { lat:29.978, lng:-90.054, label:'Michoud · SLS Core Stage',      desc:'SLS core stage — backbone of every Artemis mission — built here.',    col:'#00e5a0', type:'c' },
-      { lat:34.631, lng:-86.661, label:'Marshall SFC · Huntsville',     desc:'Marshall leads all SLS rocket design, development, and engineering.', col:'#ffca28', type:'c' }
+      { lat:28.573, lng:-80.649, label:'Kennedy Space Center · LC-39B — Artemis Launch', desc:"Location Pros: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry",         col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston JSC · Artemis Control', desc:'Location Pros: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry',         col:'#00d4ff', type:'c' },
+      { lat:30.390, lng:-89.090, label:'Stennis SC · Engine Testing',   desc:'Location Pros: Waterway transport access | Massive buffer zone to protect nearby communities from rocket testing noises and vibrations',    col:'#ffca28', type:'c' },
+      { lat:29.978, lng:-90.054, label:'Michoud · SLS Core Stage',      desc:'Location Pros: Deep-water port for transportation of rockets',    col:'#00e5a0', type:'c' },
+      { lat:34.631, lng:-86.661, label:'Marshall SFC · Huntsville',     desc:"Location Pros: Est. in 1960 within the U.S. Army's Redstone Arsenal (missile facility) | nearby missile and propulsion industry expertise", col:'#ffca28', type:'c' }
     ]
   },
 
@@ -220,8 +220,8 @@ var EVENTS = [
     emoji:'⭐',
     mapView:'usa-s',
     markers:[
-      { lat:28.573, lng:-80.649, label:'Kennedy Space Center · LC-39A — SpaceX Pad',     desc:"Location Advantage: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry", col:'#00d4ff', type:'c' },
-      { lat:29.559, lng:-95.089, label:'Houston JSC',                   desc:'Location Advantage: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry',   col:'#00e5a0', type:'c' },
+      { lat:28.573, lng:-80.649, label:'Kennedy Space Center · LC-39A — SpaceX Pad',     desc:"Location Pros: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry", col:'#00d4ff', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston JSC',                   desc:'Location Pros: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry',   col:'#00e5a0', type:'c' },
       { lat:40.735, lng:-74.172, label:'Westfield, NJ · Isaacman born', desc:'Mission commander Jared Isaacman born February 11, 1983.',                   col:'#ffca28', type:'b' }
     ]
   },
@@ -241,11 +241,11 @@ var EVENTS = [
     emoji:'🌕',
     mapView:'usa-s',
     markers:[
-      { lat:28.573, lng:-80.649, label:'KSC · LC-39B — Artemis II',     desc:"Location Advantage: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry",              col:'#ff3d21', type:'c' },
-      { lat:29.559, lng:-95.089, label:'Houston JSC · Crew Training',   desc:'Location Advantage: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry',    col:'#00d4ff', type:'c' },
-      { lat:30.390, lng:-89.090, label:'Stennis · Engine Certification', desc:'Artemis II SLS engines tested and certified at Stennis.',                  col:'#ffca28', type:'c' },
-      { lat:34.631, lng:-86.661, label:'Marshall SFC · Huntsville, AL', desc:'Marshall leads all SLS rocket development for Artemis.',                   col:'#00e5a0', type:'c' },
-      { lat:29.978, lng:-90.054, label:'Michoud · New Orleans, LA',     desc:'SLS core stage for Artemis II manufactured at Michoud.',                   col:'#00e5a0', type:'c' },
+      { lat:28.573, lng:-80.649, label:'KSC · LC-39B — Artemis II',     desc:"Location Pros: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry",              col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston JSC · Crew Training',   desc:'Location Pros: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry',    col:'#00d4ff', type:'c' },
+      { lat:30.390, lng:-89.090, label:'Stennis · Engine Certification', desc:'Location Pros: Waterway transport access | Massive buffer zone to protect nearby communities from rocket testing noises and vibrations',                  col:'#ffca28', type:'c' },
+      { lat:34.631, lng:-86.661, label:'Marshall SFC · Huntsville, AL', desc:"Location Pros: Est. in 1960 within the U.S. Army's Redstone Arsenal (missile facility) | nearby missile and propulsion industry expertise",                   col:'#00e5a0', type:'c' },
+      { lat:29.978, lng:-90.054, label:'Michoud · New Orleans, LA',     desc:'Location Pros: Deep-water port for transportation of rockets',                   col:'#00e5a0', type:'c' },
       { lat:42.232, lng:-83.352, label:'Grand Rapids, MI · Koch born',  desc:'Christina Koch — record-holding female astronaut, Artemis II crew.',       col:'#ffca28', type:'b' },
       { lat:34.058, lng:-117.288,label:'Pomona, CA · Glover born',      desc:'Victor Glover — 1st African American astronaut to travel to the Moon.',               col:'#ffca28', type:'b' }
     ]

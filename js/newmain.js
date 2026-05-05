@@ -303,7 +303,7 @@ function attachTooltips() {
   const tipG = document.getElementById('tip-tag');
 
   document.getElementById('map-svg').querySelectorAll('.map-dot').forEach(dot => {
-    dot.addEventListener('click', e => {
+    dot.addEventListener('mouseenter', e => {
       tipT.textContent = dot.dataset.l;
       tipB.textContent = dot.dataset.d;
       tipG.textContent = dot.dataset.t;
@@ -318,7 +318,7 @@ function attachTooltips() {
       tip.style.top  = ty + 'px';
       tip.classList.add('on');
     });
-    // dot.addEventListener('mouseleave', () => tip.classList.remove('on'));
+    dot.addEventListener('mouseleave', () => tip.classList.remove('on'));
   });
 }
 
@@ -714,7 +714,7 @@ function renderInfo(ev){
     +'<div class="event-meta">'+ev.meta+'</div>'
     +'<div class="event-desc">'+ev.desc+'</div>'
     +'<div class="fact-block"><div class="fact-label">★ Historical Fact</div><div class="fact-text">'+ev.fact+'</div></div>';
-  if(ev.locAdv) h+='<div class="loc-adv"><div class="loc-adv-label">📍 LOCATION ADVANTAGE</div><div class="loc-adv-txt">'+ev.locAdv+'</div></div>';
+  if(ev.locAdv) h+='<div class="loc-adv"><div class="loc-adv-label">📍 Of Note</div><div class="loc-adv-txt">'+ev.locAdv+'</div></div>';
   h+='<button class="dyk-btn" onclick="toggleDyk(this)">✦ &nbsp;Did You Know?</button>'
     +'<div class="dyk-panel" id="dyk-panel">'+ev.dyk+'</div>'
     +'</div>';
