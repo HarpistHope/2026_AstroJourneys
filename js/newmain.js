@@ -252,21 +252,37 @@ function drawMap(view, eventMarkers) {
     s += `<rect width="${MAP_W}" height="${MAP_H}" fill="none" stroke="rgba(0, 213, 255, 0.12)" stroke-width="3"/>`;
     // Water labels
     if (view !== 'usa' || MAP_W > 600) {
-      const [gl_x, gl_y] = project(26, -89, view);
+      const [gl_x, gl_y] = usProjection([-89, 26]); // lng, lat
       s += `<text x="${gl_x.toFixed(0)}" y="${gl_y.toFixed(0)}" class="water-label" text-anchor="middle">Gulf of Mexico</text>`;
     }
     if (view === 'usa') {
-      const [pa_x, pa_y] = project(40, -128, view);
+      const [pa_x, pa_y] = usProjection([-123, 38]); 
       s += `<text x="${pa_x.toFixed(0)}" y="${pa_y.toFixed(0)}" class="water-label" text-anchor="middle">Pacific Ocean</text>`;
-      const [at_x, at_y] = project(34, -64, view);
+
+      const [at_x, at_y] = usProjection([-70, 35]);
       s += `<text x="${at_x.toFixed(0)}" y="${at_y.toFixed(0)}" class="water-label" text-anchor="middle">Atlantic</text>`;
     }
+    // if (view !== 'usa' || MAP_W > 600) {
+    //   const [gl_x, gl_y] = project(26, -89, view);
+    //   s += `<text x="${gl_x.toFixed(0)}" y="${gl_y.toFixed(0)}" class="water-label" text-anchor="middle">Gulf of Mexico</text>`;
+    // }
+    // if (view === 'usa') {
+    //   const [pa_x, pa_y] = project(40, -128, view);
+    //   s += `<text x="${pa_x.toFixed(0)}" y="${pa_y.toFixed(0)}" class="water-label" text-anchor="middle">Pacific Ocean</text>`;
+    //   const [at_x, at_y] = project(34, -64, view);
+    //   s += `<text x="${at_x.toFixed(0)}" y="${at_y.toFixed(0)}" class="water-label" text-anchor="middle">Atlantic</text>`;
+    // }
   }
 
   // Permanent layer (centers or astronaut birthplaces)
   const permList = ACTIVE_TAB === 'c' ? NASA_CENTERS : ASTRONAUT_BIRTHS;
   permList.forEach(p => {
-    const [cx, cy] = project(p.lat, p.lng, view);
+    // const [cx, cy] = project(p.lat, p.lng, view);
+    // edit markers to use project for world, usProjection for US_STATES
+    const [cx, cy] =
+      view === 'world'
+        ? project(p.lat, p.lng, view)
+        : usProjection([p.lng, p.lat]);
     if (cx < -15 || cx > MAP_W + 15 || cy < -15 || cy > MAP_H + 15) return;
     const col   = p.col || '#ffca28';
     const label = p.abbr || p.name.split(' ')[0];
@@ -277,7 +293,12 @@ function drawMap(view, eventMarkers) {
 
   // Event-specific markers 
   eventMarkers.forEach(m => {
-    const [cx, cy] = project(m.lat, m.lng, view);
+    // const [cx, cy] = project(m.lat, m.lng, view);
+    // edit marker coordintates to use project for world, usProjection for US
+    const [cx, cy] =
+      view === 'world'
+        ? project(m.lat, m.lng, view)
+        : usProjection([m.lng, m.lat]);
     if (cx < -15 || cx > MAP_W + 15 || cy < -15 || cy > MAP_H + 15) return;
     const short = (m.label || '').split(',')[0].trim().split(' ').slice(0, 2).join(' ');
     s += makeDot(cx, cy, m.col, m.type === 'b' ? 5.5 : 7.5, false, m.label, m.desc,
