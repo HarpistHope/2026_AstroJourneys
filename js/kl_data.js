@@ -104,11 +104,11 @@ var EVENTS = [
 
   /* ── 1970 ── */
   {
-    year:1970, name:'Apollo 13 — Farthest Humans Ever',
+    year:1970, name:"Apollo 13 — 'Houston, we\'ve Had a Problem'",
     meta:'Lunar Far Side · April 14–15, 1970',
     desc:"'Houston, we've had a problem.' An oxygen tank exploded 200,000 miles from Earth. Commander Jim Lovell, Jack Swigert, and Fred Haise powered down to near-darkness, used the lunar module as a lifeboat, and navigated home by starlight. Mission Control worked 87 consecutive hours. All three splashed down alive.",
     fact:"The crew reached 248,655 miles from Earth while looping the lunar far side the farthest any human has EVER traveled from our planet. Temperature dropped to near freezing. They survived on 6 oz of water per day. This distance record stood 52 years until Artemis I broke it in 2022.",
-    dyk:"🏆 ALL-TIME HUMAN DISTANCE RECORD: Apollo 13's 248,655-mile record held for 52 years the longest-standing record in spaceflight history. The crew had to manually navigate using Earth and the Moon as reference points, like ancient mariners using stars, because most instruments were off to conserve power. The CO₂ scrubber fix built from a sock, cardboard, and a plastic bag saved their lives.",
+    dyk:"🏆 LONG-TIME HUMAN DISTANCE RECORD: Apollo 13's accidental 248,655-mile record (an incidental achievement of the emergency response trajectory) held for 52 years - the longest-standing record in spaceflight history. The crew had to manually navigate using Earth and the Moon as reference points, like ancient mariners using stars, because most instruments were off to conserve power. The CO₂ scrubber fix built from a sock, cardboard, and a plastic bag saved their lives.",
     locAdv:"Mission Control's location in Houston was chosen partly because of its proximity to Gulf Coast manufacturing and NASA's human spaceflight teams. During Apollo 13, 22 separate Mission Control shifts worked around the clock to bring the crew home the greatest team rescue in engineering history.",
     dist:248655, distLabel:'248,655 mi · ★ FARTHEST HUMANS EVER ★',
     photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Apollo_13_original.jpg/480px-Apollo_13_original.jpg'],
@@ -171,7 +171,8 @@ var EVENTS = [
     fact:"ISS astronauts see 16 sunrises every single day, orbiting at 17,500 mph every 90 minutes. The station spans 357 feet across wider than a football field. Over 280 people from 23 countries have visited. You can spot it with the naked eye it's the third-brightest object in the night sky after the Sun and Moon.",
     dyk:"🛰️ The ISS is the most expensive object ever built by humans $150 billion across all participating nations. It was assembled piece by piece over 13 years and 42 assembly flights. The station's science has given us water-purification technology, improved cancer treatments, and fire-resistant textiles. Every single water molecule aboard is recycled including sweat and urine achieving 93% water recovery efficiency.",
     locAdv:"The ISS orbit was carefully chosen at 51.6° inclination steep enough to fly over most partner nations (US, Russia, Europe, Japan, Canada) while still allowing launch from multiple sites around the world. It passes over 90% of Earth's populated areas.",
-    dist:254, distLabel:'254 miles — ISS Orbital Altitude',
+    // dist:254, distLabel:'254 miles — ISS Orbital Altitude', 
+    dist:254,    lbl:'ISS',       sub:'254 mi',       col:'#00d4ff', r:8,  emoji:'🛰️',  ya:-1,
     photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/International_Space_Station_after_undocking_of_STS-132.jpg/800px-International_Space_Station_after_undocking_of_STS-132.jpg'],
     photoCap:'The International Space Station from Space Shuttle Atlantis (NASA)',
     emoji:'🛰️',
@@ -226,25 +227,25 @@ var EVENTS = [
     ]
   },
 
-  /* ── 2025 ── */
+  /* ── 2026 ── */
   {
-    year:2025, name:'Artemis II — First Crew to Moon Since 1972',
-    meta:'Kennedy Space Center · 2025–2026',
-    desc:"Four astronauts — Reid Wiseman, Victor Glover, Christina Koch, and Canadian Jeremy Hansen — will fly around the Moon aboard NASA's Orion capsule atop the Space Launch System. This is the first crewed lunar voyage since Apollo 17 in December 1972 — over 53 years ago. Victor Glover will become the first Black astronaut to travel to the Moon.",
-    fact:"Christina Koch holds the record for the longest single spaceflight by a woman: 328 consecutive days on the ISS in 2019–2020. Jeremy Hansen of Canada will be the first non-American to travel to the Moon. The crew will travel farther than any humans since Apollo 13's 1970 distance record.",
-    dyk:"🌕 For the first time since December 1972 — over 53 years — humans will leave Earth orbit and travel to the Moon. Artemis II is the pathfinder for Artemis III, which will land astronauts on the lunar south pole to search for water ice that could support permanent human presence. If water ice is confirmed in useful quantities, it changes everything — rocket fuel, drinking water, and oxygen can all be made from lunar ice.",
+    year:2026, name:'Artemis II — First Crew to Moon Since 1972',
+    meta:'Kennedy Space Center · April 6, 2026',
+    desc:"Four astronauts — Reid Wiseman, Victor Glover, Christina Koch, and Canadian Jeremy Hansen — flew around the Moon aboard NASA's Orion capsule atop the Space Launch System. This was the first crewed lunar voyage since Apollo 17 in December 1972 — over 53 years ago. The crew stretched the boundary of human space exploration by traveling 252,756 miles from the Earth's surface - easily breaking Apollo 13's long-standing record by nearly 4,100 miles.",
+    fact:"Christina Koch is no stranger to pushing boundaries. Now the first woman to fly to the moon, she also holds the record for the longest single spaceflight by a woman: 328 consecutive days on the ISS in 2019–2020. Her crewmembers also set records during Artemis II's mission: Victor Glover became the first African American and Jeremy Hansen of Canada became the first non-American to travel to the Moon.",
+    dyk:"🌕 For the first time since December 1972 — over 53 years — humans left Earth orbit and traveled to the Moon. Artemis II is the pathfinder for Artemis III, which will land astronauts on the lunar south pole to search for water ice that could support permanent human presence. If water ice is confirmed in useful quantities, it changes everything — rocket fuel, drinking water, and oxygen can all be made from lunar ice.",
     locAdv:"The Artemis crew trains at both Johnson Space Center in Houston (mission simulations, EVA training in the Neutral Buoyancy Lab) and at Kennedy Space Center (launch vehicle familiarization and emergency egress procedures). The Gulf Coast corridor from KSC to Marshall to Michoud to Stennis to JSC represents the complete Artemis supply chain.",
     dist:238855, distLabel:'238,855 miles — First Crew to Moon Since 1972',
     photos:['https://upload.wikimedia.org/wikipedia/commons/e/e5/NASA_logo.svg'],
     photoStyle:'object-fit:contain;background:#010d22;padding:22px;',
-    photoCap:'Artemis II crew: Wiseman, Glover, Koch, Hansen — returning humans to the Moon (NASA)',
+    photoCap:'Artemis II crew: Wiseman, Glover, Koch, Hansen — returning humanity to the Moon (NASA)',
     emoji:'🌕',
     mapView:'usa-s',
     markers:[
       { lat:28.573, lng:-80.649, label:'KSC · LC-39B — Artemis II',     desc:'Artemis II launches from Pad 39B on the Space Launch System.',              col:'#ff3d21', type:'c' },
       { lat:29.559, lng:-95.089, label:'Houston JSC · Crew Training',   desc:'All 4 Artemis II astronauts train at Johnson Space Center in Houston.',    col:'#00d4ff', type:'c' },
       { lat:30.390, lng:-89.090, label:'Stennis · Engine Certification', desc:'Artemis II SLS engines tested and certified at Stennis.',                  col:'#ffca28', type:'c' },
-      { lat:35.402, lng:-86.671, label:'Marshall SFC · Huntsville, AL', desc:'Marshall leads all SLS rocket development for Artemis.',                   col:'#00e5a0', type:'c' },
+      { lat:34.631, lng:-86.661, label:'Marshall SFC · Huntsville, AL', desc:'Marshall leads all SLS rocket development for Artemis.',                   col:'#00e5a0', type:'c' },
       { lat:29.978, lng:-90.054, label:'Michoud · New Orleans, LA',     desc:'SLS core stage for Artemis II manufactured at Michoud.',                   col:'#00e5a0', type:'c' },
       { lat:42.232, lng:-83.352, label:'Grand Rapids, MI · Koch born',  desc:'Christina Koch — record-holding female astronaut, Artemis II crew.',       col:'#ffca28', type:'b' },
       { lat:34.058, lng:-117.288,label:'Pomona, CA · Glover born',      desc:'Victor Glover — 1st Black astronaut to travel to the Moon.',               col:'#ffca28', type:'b' }
