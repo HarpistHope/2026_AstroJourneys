@@ -43,6 +43,13 @@
   draw();
 })();
 
+// fetch geojsons as US_STATES and WORLD_OUTLINES
+let US_STATES = [];
+let WORLD_GEO = null;
+
+// declare global variables for d3 projections and paths
+let PROJECTIONS = {};
+let PATHS = {};
 
 /*  MAP PROJECTION  */
 const VIEWS = {
@@ -56,16 +63,31 @@ let MAP_W = 0, MAP_H = 0;
 
 const MAP_COMPRESS = 0.94;
 
+function getUSFeatures(view) {
+  if (view === "usa") return US_STATES;
+
+  if (view === "use") {
+    return US_STATES.filter(f => {
+      const c = d3.geoCentroid(f);
+      return c[0] > -98;
+    });
+  }
+
+  if (view === "uss") {
+    return US_STATES.filter(f => {
+      const c = d3.geoCentroid(f);
+      return c[1] < 38;
+    });
+  }
+
+  return US_STATES;
+}
 // function project(lat, lng, view) {
 //   const v = VIEWS[view] || VIEWS.usa;
 //   const x = (lng - v.ln0) / (v.ln1 - v.ln0) * MAP_W;
 //   const y = (v.lt0 - lat) / (v.lt0 - v.lt1) * MAP_H;
 //   return [x, y];
 // }
-
-// declare global variables for d3 projections and paths
-let PROJECTIONS = {};
-let PATHS = {};
 
 // // replace original project function to prevent maps/geojsons from strecthing with view changes
 // function project(lat, lng, view) {
@@ -100,9 +122,7 @@ let PATHS = {};
 //   }).join('') + 'Z';
 // }
 
-// fetch geojsons as US_STATES and WORLD_OUTLINES
-let US_STATES = [];
-let WORLD_GEO = null;
+
 
 async function loadjsons() {
   const [usRes, worldRes] = await Promise.all([
@@ -115,32 +135,31 @@ async function loadjsons() {
 
   // US_STATES will be the geojson features; WORLD_OUTLINES will be converted using convertWorld to match Akhila's existing format
   US_STATES = usGeo.features;
-
-  console.log('states loaded:', US_STATES.length);
-  console.log('world loaded:', WORLD_GEO.length);
 };
 
 // new projection function to build projections
 function buildProjections(width, height) {
-  // US Projection, fit to states
-  PROJECTIONS.usa = d3.geoAlbers()
-    .fitSize([width, height], {
+  const usGeo = {
+    type: "FeatureCollection",
+    features: US_STATES
+  };
+
+  Object.keys(VIEWS).forEach(view => {
+    const geo = {
       type: "FeatureCollection",
-      features: US_STATES
-    });
+      features: getUSFeatures(view)
+    };
 
-  PATHS.usa = d3.geoPath().projection(PROJECTIONS.usa);
+    PROJECTIONS[view] = d3.geoAlbers()
+      .fitSize([width, height], geo);
 
-  // world projection, fit to full globe
+    PATHS[view] = d3.geoPath().projection(PROJECTIONS[view]);
+  });
+
   PROJECTIONS.world = d3.geoNaturalEarth1()
-    .fitSize([width, height], WORLD_GEO);
+  .fitSize([width, height], WORLD_GEO);
 
-  PATHS.world = d3.geoPath().projection(PROJECTIONS.world);
-}
-
-// call projections, make sure the coordinate order matches geojson format (lng, lat)
-function projectPoint(lng, lat, view) {
-  return PROJECTIONS[view]([lng, lat]);
+PATHS.world = d3.geoPath().projection(PROJECTIONS.world);
 }
 
 // convert states geojson to match existing format
@@ -250,7 +269,7 @@ function drawMap(view, eventMarkers) {
       ? "state-south"
       : "state-base";
 
-      s += `<path d="${PATHS.usa(f)}" class="${cls}"/>`;
+      s += `<path d="${PATHS[view](f)}" class="${cls}"/>`;
     });
   }
   // if (view === 'world') {
