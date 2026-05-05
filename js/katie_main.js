@@ -63,9 +63,6 @@ const MAP_COMPRESS = 0.94;
 //   return [x, y];
 // }
 
-// declare global variables for US projection
-let usPath, usProjection;
-
 // replace original project function to prevent maps/geojsons from strecthing with view changes
 function project(lat, lng, view) {
   const v = VIEWS[view] || VIEWS.usa;
@@ -112,8 +109,7 @@ async function loadjsons() {
   const usGeo = await usRes.json();
   const worldGeo = await worldRes.json();
 
-  // US_STATES will be the geojson features; WORLD_OUTLINES will be converted using convertWorld to match Akhila's existing format
-  US_STATES = usGeo.features;
+  US_STATES = convertStates(usGeo);
   WORLD_OUTLINES = convertWorld(worldGeo);
 
   console.log('states loaded:', US_STATES.length);
@@ -122,29 +118,29 @@ async function loadjsons() {
 
 
 // convert states geojson to match existing format
-// function convertStates(usGeo) {
-//   const states = [];
+function convertStates(usGeo) {
+  const states = [];
 
-//   usGeo.features.forEach(f => {
-//     const abbr =
-//       f.properties.STUSPS ||
-//       f.properties.NAME;
+  usGeo.features.forEach(f => {
+    const abbr =
+      f.properties.STUSPS ||
+      f.properties.NAME;
 
-//     const geom = f.geometry;
+    const geom = f.geometry;
 
-//     if (geom.type === 'Polygon') {
-//       states.push([abbr, geom.coordinates[0]]);
-//     }
+    if (geom.type === 'Polygon') {
+      states.push([abbr, geom.coordinates[0]]);
+    }
 
-//     if (geom.type === 'MultiPolygon') {
-//       geom.coordinates.forEach(poly => {
-//         states.push([abbr, poly[0]]);
-//       });
-//     }
-//   });
+    if (geom.type === 'MultiPolygon') {
+      geom.coordinates.forEach(poly => {
+        states.push([abbr, poly[0]]);
+      });
+    }
+  });
 
-//   return states;
-// }
+  return states;
+}
 
 // convert world geojson to match existing format
 function convertWorld(worldGeo) {
@@ -184,20 +180,6 @@ function drawMap(view, eventMarkers) {
   MAP_W = wrap.offsetWidth  || 800;
   MAP_H = wrap.offsetHeight || 500;
 
-  // define US projection using geoAlbers()
-  usProjection = d3.geoAlbers();
-
-  // fit the projection to the lower 48 states using fitSize and the W/H dimensions
-  const lower48 = {
-    type: "FeatureCollection",
-    features: US_STATES
-  };
-
-  usProjection.fitSize([MAP_W, MAP_H], lower48);
-
-  // create geoPath variable
-  usPath = d3.geoPath().projection(usProjection);
-
   const svg = document.getElementById('map-svg');
   svg.setAttribute('viewBox', `0 0 ${MAP_W} ${MAP_H}`);
   svg.setAttribute('width',  MAP_W);
@@ -233,21 +215,10 @@ function drawMap(view, eventMarkers) {
     });
   } else {
     // US States
-    // US_STATES.forEach(([abbr, coords]) => {
-    //   const cls = SOUTH_STATES.has(abbr) ? 'state-south' : 'state-base';
-    //   s += `<path d="${buildPathD(coords, view)}" class="${cls}"/>`;
-    // });
-      US_STATES.forEach(f => {
-        const abbr =
-          f.properties.STUSPS ||
-          f.properties.NAME;
-
-        const cls = SOUTH_STATES.has(abbr)
-          ? 'state-south'
-          : 'state-base';
-
-        s += `<path d="${usPath(f)}" class="${cls}"/>`;
-      });
+    US_STATES.forEach(([abbr, coords]) => {
+      const cls = SOUTH_STATES.has(abbr) ? 'state-south' : 'state-base';
+      s += `<path d="${buildPathD(coords, view)}" class="${cls}"/>`;
+    });
     // Outer glow border
     s += `<rect width="${MAP_W}" height="${MAP_H}" fill="none" stroke="rgba(0, 213, 255, 0.12)" stroke-width="3"/>`;
     // Water labels
