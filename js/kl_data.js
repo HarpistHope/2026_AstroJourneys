@@ -110,7 +110,7 @@ var EVENTS = [
     fact:"The crew reached 248,655 miles from Earth while looping the lunar far side the farthest any human has EVER traveled from our planet. Temperature dropped to near freezing. They survived on 6 oz of water per day. This distance record stood 52 years until Artemis I broke it in 2022.",
     dyk:"🏆 LONG-TIME HUMAN DISTANCE RECORD: Apollo 13's accidental 248,655-mile record (an incidental achievement of the emergency response trajectory) held for 52 years - the longest-standing record in spaceflight history. The crew had to manually navigate using Earth and the Moon as reference points, like ancient mariners using stars, because most instruments were off to conserve power. The CO₂ scrubber fix built from a sock, cardboard, and a plastic bag saved their lives.",
     locAdv:"Mission Control's location in Houston was chosen partly because of its proximity to Gulf Coast manufacturing and NASA's human spaceflight teams. During Apollo 13, 22 separate Mission Control shifts worked around the clock to bring the crew home the greatest team rescue in engineering history.",
-    dist:248655, distLabel:'248,655 mi · ★ FARTHEST HUMANS EVER ★',
+    dist:248655, distLabel:'248,655 mi · ★ DISTANCE RECORD UNTIL 2026 ★',
     photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Apollo_13_original.jpg/480px-Apollo_13_original.jpg'],
     photoCap:'Apollo 13 lunar module Aquarius — the lifeboat that saved three lives (NASA)',
     emoji:'💥',
