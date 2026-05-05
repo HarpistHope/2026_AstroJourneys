@@ -63,45 +63,46 @@ const MAP_COMPRESS = 0.94;
 //   return [x, y];
 // }
 
-// declare global variables for US projection
-let usPath, usProjection;
+// declare global variables for d3 projections and paths
+let PROJECTIONS = {};
+let PATHS = {};
 
-// replace original project function to prevent maps/geojsons from strecthing with view changes
-function project(lat, lng, view) {
-  const v = VIEWS[view] || VIEWS.usa;
+// // replace original project function to prevent maps/geojsons from strecthing with view changes
+// function project(lat, lng, view) {
+//   const v = VIEWS[view] || VIEWS.usa;
 
-  const lonSpan = v.ln1 - v.ln0;
-  const latSpan = v.lt0 - v.lt1;
+//   const lonSpan = v.ln1 - v.ln0;
+//   const latSpan = v.lt0 - v.lt1;
 
-  const baseScale = Math.min(
-    MAP_W / lonSpan,
-    MAP_H / latSpan
-  );
+//   const baseScale = Math.min(
+//     MAP_W / lonSpan,
+//     MAP_H / latSpan
+//   );
 
-  const scale = baseScale * MAP_COMPRESS;
+//   const scale = baseScale * MAP_COMPRESS;
 
-  const offsetX = (MAP_W - lonSpan * scale) / 2;
-  const verticalBias = v.bias || 0; // moves the world map frame slightly higher for better visual balance
-  const offsetY =
-    (MAP_H - latSpan * scale) / 2 +
-    MAP_H * verticalBias;
+//   const offsetX = (MAP_W - lonSpan * scale) / 2;
+//   const verticalBias = v.bias || 0; // moves the world map frame slightly higher for better visual balance
+//   const offsetY =
+//     (MAP_H - latSpan * scale) / 2 +
+//     MAP_H * verticalBias;
 
-  const x = (lng - v.ln0) * scale + offsetX;
-  const y = (v.lt0 - lat) * scale + offsetY;
+//   const x = (lng - v.ln0) * scale + offsetX;
+//   const y = (v.lt0 - lat) * scale + offsetY;
 
-  return [x, y];
-};
+//   return [x, y];
+// };
 
-function buildPathD(coords, view) {
-  return coords.map((c, i) => {
-    const [x, y] = project(c[1], c[0], view);
-    return `${i === 0 ? 'M' : 'L'}${x.toFixed(1)},${y.toFixed(1)}`;
-  }).join('') + 'Z';
-}
+// function buildPathD(coords, view) {
+//   return coords.map((c, i) => {
+//     const [x, y] = project(c[1], c[0], view);
+//     return `${i === 0 ? 'M' : 'L'}${x.toFixed(1)},${y.toFixed(1)}`;
+//   }).join('') + 'Z';
+// }
 
 // fetch geojsons as US_STATES and WORLD_OUTLINES
 let US_STATES = [];
-let WORLD_OUTLINES = [];
+let WORLD_GEO = null;
 
 async function loadjsons() {
   const [usRes, worldRes] = await Promise.all([
@@ -110,16 +111,37 @@ async function loadjsons() {
   ]);
 
   const usGeo = await usRes.json();
-  const worldGeo = await worldRes.json();
+  WORLD_GEO = await worldRes.json();
 
   // US_STATES will be the geojson features; WORLD_OUTLINES will be converted using convertWorld to match Akhila's existing format
   US_STATES = usGeo.features;
-  WORLD_OUTLINES = convertWorld(worldGeo);
 
   console.log('states loaded:', US_STATES.length);
-  console.log('world loaded:', WORLD_OUTLINES.length);
+  console.log('world loaded:', WORLD_GEO.length);
 };
 
+// new projection function to build projections
+function buildProjections(width, height) {
+  // US Projection, fit to states
+  PROJECTIONS.usa = d3.geoAlbers()
+    .fitSize([width, height], {
+      type: "FeatureCollection",
+      features: US_STATES
+    });
+
+  PATHS.usa = d3.geoPath().projection(PROJECTIONS.usa);
+
+  // world projection, fit to full globe
+  PROJECTIONS.world = d3.geoNaturalEarth1()
+    .fitSize([width, height], WORLD_GEO);
+
+  PATHS.world = d3.geoPath().projection(PROJECTIONS.world);
+}
+
+// call projections, make sure the coordinate order matches geojson format (lng, lat)
+function projectPoint(lng, lat, view) {
+  return PROJECTIONS[view]([lng, lat]);
+}
 
 // convert states geojson to match existing format
 // function convertStates(usGeo) {
@@ -146,34 +168,34 @@ async function loadjsons() {
 //   return states;
 // }
 
-// convert world geojson to match existing format
-function convertWorld(worldGeo) {
-  const countries = [];
+// // convert world geojson to match existing format
+// function convertWorld(worldGeo) {
+//   const countries = [];
 
-  worldGeo.features.forEach(f => {
-    const geom = f.geometry;
+//   worldGeo.features.forEach(f => {
+//     const geom = f.geometry;
 
-    if (!geom) return;
+//     if (!geom) return;
 
-    // Polygon countries
-    if (geom.type === 'Polygon') {
-      geom.coordinates.forEach(ring => {
-        countries.push(ring);
-      });
-    }
+//     // Polygon countries
+//     if (geom.type === 'Polygon') {
+//       geom.coordinates.forEach(ring => {
+//         countries.push(ring);
+//       });
+//     }
 
-    // MultiPolygon countries
-    if (geom.type === 'MultiPolygon') {
-      geom.coordinates.forEach(poly => {
-        poly.forEach(ring => {
-          countries.push(ring);
-        });
-      });
-    }
-  });
+//     // MultiPolygon countries
+//     if (geom.type === 'MultiPolygon') {
+//       geom.coordinates.forEach(poly => {
+//         poly.forEach(ring => {
+//           countries.push(ring);
+//         });
+//       });
+//     }
+//   });
 
-  return countries;
-}
+//   return countries;
+// }
 
 /* MAP RENDERING */
 let ACTIVE_TAB  = 'c'; // 'c' = centers, 'a' = astronauts
@@ -184,28 +206,15 @@ function drawMap(view, eventMarkers) {
   MAP_W = wrap.offsetWidth  || 800;
   MAP_H = wrap.offsetHeight || 500;
 
-  // define US projection using geoAlbers()
-  usProjection = d3.geoAlbers();
-
-  // fit the projection to the lower 48 states using fitSize and the W/H dimensions
-  const lower48 = {
-    type: "FeatureCollection",
-    features: US_STATES
-  };
-
-  usProjection.fitExtent(
-    [[20, 20], [MAP_W - 20, MAP_H - 20]],
-    lower48
-  );
-
-  // create geoPath variable
-  usPath = d3.geoPath().projection(usProjection);
+  // call projections function to build the right projection when the map is drawn
+  buildProjections(MAP_W, MAP_H);
 
   const svg = document.getElementById('map-svg');
   svg.setAttribute('viewBox', `0 0 ${MAP_W} ${MAP_H}`);
-  svg.setAttribute('width',  MAP_W);
-  svg.setAttribute('height', MAP_H);
-  svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+  svg.innerHTML = "";
+  // svg.setAttribute('width',  MAP_W);
+  // svg.setAttribute('height', MAP_H);
+  // svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
 
   let s = '';
 
@@ -220,56 +229,77 @@ function drawMap(view, eventMarkers) {
     s += `<line x1="0" y1="${gy.toFixed(0)}" x2="${MAP_W}" y2="${gy.toFixed(0)}" stroke="rgba(0,212,255,0.03)" stroke-width="1"/>`;
 
   if (view === 'world') {
-    // World continents
-    WORLD_OUTLINES.forEach(pts => {
-      s += `<path d="${buildPathD(pts, view)}" class="world-land"/>`;
-    });
-    // Water labels
+    s += PATHS.world(WORLD_GEO);
+
     const labels = [
       [30, -35, 'Atlantic Ocean'],
       [10, 160, 'Pacific Ocean'],
       [-15, 75, 'Indian Ocean']
     ];
+
     labels.forEach(([lat, lng, txt]) => {
-      const [lx, ly] = project(lat, lng, view);
-      s += `<text x="${lx.toFixed(0)}" y="${ly.toFixed(0)}" class="water-label" text-anchor="middle">${txt}</text>`;
+      const [x, y] = PROJECTIONS.world([lng, lat]);
+      s += `<text x="${x}" y="${y}" class="water-label">${txt}</text>`;
     });
+
   } else {
-    // US States
-    // US_STATES.forEach(([abbr, coords]) => {
-    //   const cls = SOUTH_STATES.has(abbr) ? 'state-south' : 'state-base';
-    //   s += `<path d="${buildPathD(coords, view)}" class="${cls}"/>`;
-    // });
-      US_STATES.forEach(f => {
-        const abbr =
-          f.properties.STUSPS ||
-          f.properties.NAME;
+    US_STATES.forEach(f => {
+      const abbr = f.properties.STUSPS || f.properties.NAME;
 
-        const cls = SOUTH_STATES.has(abbr)
-          ? 'state-south'
-          : 'state-base';
+      const cls = SOUTH_STATES.has(abbr)
+      ? "state-south"
+      : "state-base";
 
-        s += `<path d="${usPath(f)}" class="${cls}"/>`;
-      });
+      s += `<path d="${PATHS.usa(f)}" class="${cls}"/>`;
+    });
+  }
+  // if (view === 'world') {
+  //   // World continents
+  //   WORLD_OUTLINES.forEach(pts => {
+  //     s += `<path d="${buildPathD(pts, view)}" class="world-land"/>`;
+  //   });
+  //   // Water labels
+  //   const labels = [
+  //     [30, -35, 'Atlantic Ocean'],
+  //     [10, 160, 'Pacific Ocean'],
+  //     [-15, 75, 'Indian Ocean']
+  //   ];
+  //   labels.forEach(([lat, lng, txt]) => {
+  //     const [lx, ly] = project(lat, lng, view);
+  //     s += `<text x="${lx.toFixed(0)}" y="${ly.toFixed(0)}" class="water-label" text-anchor="middle">${txt}</text>`;
+  //   });
+  // } else {
+  //   // US States
+  //   // US_STATES.forEach(([abbr, coords]) => {
+  //   //   const cls = SOUTH_STATES.has(abbr) ? 'state-south' : 'state-base';
+  //   //   s += `<path d="${buildPathD(coords, view)}" class="${cls}"/>`;
+  //   // });
+  //     US_STATES.forEach(f => {
+  //       const abbr =
+  //         f.properties.STUSPS ||
+  //         f.properties.NAME;
 
-      console.log(US_STATES[0]);
-      console.log(usPath(US_STATES[0]));
-      console.log(US_STATES.filter(f => !usPath(f)).length);
-      
+  //       const cls = SOUTH_STATES.has(abbr)
+  //         ? 'state-south'
+  //         : 'state-base';
+
+  //       s += `<path d="${usPath(f)}" class="${cls}"/>`;
+  //     });
+
     // Outer glow border
     s += `<rect width="${MAP_W}" height="${MAP_H}" fill="none" stroke="rgba(0, 213, 255, 0.12)" stroke-width="3"/>`;
     // Water labels
-    if (view !== 'usa' || MAP_W > 600) {
-      const [gl_x, gl_y] = usProjection([-89, 26]); // lng, lat
-      s += `<text x="${gl_x.toFixed(0)}" y="${gl_y.toFixed(0)}" class="water-label" text-anchor="middle">Gulf of Mexico</text>`;
-    }
-    if (view === 'usa') {
-      const [pa_x, pa_y] = usProjection([-123, 38]); 
-      s += `<text x="${pa_x.toFixed(0)}" y="${pa_y.toFixed(0)}" class="water-label" text-anchor="middle">Pacific Ocean</text>`;
+    // if (view !== 'usa' || MAP_W > 600) {
+    //   const [gl_x, gl_y] = usProjection([-89, 26]); // lng, lat
+    //   s += `<text x="${gl_x.toFixed(0)}" y="${gl_y.toFixed(0)}" class="water-label" text-anchor="middle">Gulf of Mexico</text>`;
+    // }
+    // if (view === 'usa') {
+    //   const [pa_x, pa_y] = usProjection([-123, 38]); 
+    //   s += `<text x="${pa_x.toFixed(0)}" y="${pa_y.toFixed(0)}" class="water-label" text-anchor="middle">Pacific Ocean</text>`;
 
-      const [at_x, at_y] = usProjection([-70, 35]);
-      s += `<text x="${at_x.toFixed(0)}" y="${at_y.toFixed(0)}" class="water-label" text-anchor="middle">Atlantic</text>`;
-    }
+    //   const [at_x, at_y] = usProjection([-70, 35]);
+    //   s += `<text x="${at_x.toFixed(0)}" y="${at_y.toFixed(0)}" class="water-label" text-anchor="middle">Atlantic</text>`;
+    // }
     // if (view !== 'usa' || MAP_W > 600) {
     //   const [gl_x, gl_y] = project(26, -89, view);
     //   s += `<text x="${gl_x.toFixed(0)}" y="${gl_y.toFixed(0)}" class="water-label" text-anchor="middle">Gulf of Mexico</text>`;
@@ -280,39 +310,83 @@ function drawMap(view, eventMarkers) {
     //   const [at_x, at_y] = project(34, -64, view);
     //   s += `<text x="${at_x.toFixed(0)}" y="${at_y.toFixed(0)}" class="water-label" text-anchor="middle">Atlantic</text>`;
     // }
-  }
+//}
 
   // Permanent layer (centers or astronaut birthplaces)
-  const permList = ACTIVE_TAB === 'c' ? NASA_CENTERS : ASTRONAUT_BIRTHS;
+  // const permList = ACTIVE_TAB === 'c' ? NASA_CENTERS : ASTRONAUT_BIRTHS;
+  // permList.forEach(p => {
+  //   // const [cx, cy] = project(p.lat, p.lng, view);
+  //   // // edit markers to use project for world, usProjection for US_STATES
+  //   //   if (view === 'world') {
+  //   //     const [cx, cy] = project(p.lat, p.lng, view)
+  //   //     if (cx < -15 || cx > MAP_W + 15 || cy < -15 || cy > MAP_H + 15) return;
+  //   //   } else {
+  //   //     const [cx, cy] = usProjection([p.lng, p.lat]);
+  //   //   }
+  //   const [cx, cy] = PROJECTIONS[view]([p.lng, p.lat]);
+        
+    
+  //   const col   = p.col || '#ffca28';
+  //   const label = p.abbr || p.name.split(' ')[0];
+  //   const desc  = ACTIVE_TAB === 'c' ? p.role : p.mission;
+  //   const tag   = ACTIVE_TAB === 'c' ? `NASA CENTER · ${p.state}` : `Born: ${p.born}`;
+  //   s += makeDot(cx, cy, col, 4.5, true, p.name, desc, tag, label, ACTIVE_TAB === 'a');
+  // });
+
+  // // Event-specific markers 
+  // eventMarkers.forEach(m => {
+  //   // const [cx, cy] = project(m.lat, m.lng, view);
+  //   // edit marker coordintates to use project for world, usProjection for US
+  //   // const [cx, cy] =
+  //   //   view === 'world'
+  //   //     ? project(m.lat, m.lng, view)
+  //   //     : usProjection([m.lng, m.lat]);
+  //   // if (cx < -15 || cx > MAP_W + 15 || cy < -15 || cy > MAP_H + 15) return;
+  //   // const short = (m.label || '').split(',')[0].trim().split(' ').slice(0, 2).join(' ');
+  //   s += makeDot(cx, cy, m.col, m.type === 'b' ? 5.5 : 7.5, false, m.label, m.desc,
+  //                m.type === 'b' ? 'BIRTHPLACE' : 'NASA FACILITY', m.type === 'b');
+  // });
+  const permList = ACTIVE_TAB === 'c'
+    ? NASA_CENTERS
+    : ASTRONAUT_BIRTHS;
+
   permList.forEach(p => {
-    // const [cx, cy] = project(p.lat, p.lng, view);
-    // edit markers to use project for world, usProjection for US_STATES
-    const [cx, cy] =
-      view === 'world'
-        ? project(p.lat, p.lng, view)
-        : usProjection([p.lng, p.lat]);
-    if (cx < -15 || cx > MAP_W + 15 || cy < -15 || cy > MAP_H + 15) return;
-    const col   = p.col || '#ffca28';
-    const label = p.abbr || p.name.split(' ')[0];
-    const desc  = ACTIVE_TAB === 'c' ? p.role : p.mission;
-    const tag   = ACTIVE_TAB === 'c' ? `NASA CENTER · ${p.state}` : `Born: ${p.born}`;
-    s += makeDot(cx, cy, col, 4.5, true, p.name, desc, tag, label, ACTIVE_TAB === 'a');
+
+    const [cx, cy] = PROJECTIONS[view]([p.lng, p.lat]);
+
+    s += makeDot(
+      cx,
+      cy,
+      p.col || "#ffca28",
+      4.5,
+      true,
+      p.name,
+      ACTIVE_TAB === 'c' ? p.role : p.mission,
+      ACTIVE_TAB === 'c'
+        ? `NASA CENTER · ${p.state}`
+        : `Born: ${p.born}`,
+      (p.abbr || p.name.split(" ")[0]),
+      ACTIVE_TAB === "a"
+    );
   });
 
-  // Event-specific markers 
   eventMarkers.forEach(m => {
-    // const [cx, cy] = project(m.lat, m.lng, view);
-    // edit marker coordintates to use project for world, usProjection for US
-    const [cx, cy] =
-      view === 'world'
-        ? project(m.lat, m.lng, view)
-        : usProjection([m.lng, m.lat]);
-    if (cx < -15 || cx > MAP_W + 15 || cy < -15 || cy > MAP_H + 15) return;
-    const short = (m.label || '').split(',')[0].trim().split(' ').slice(0, 2).join(' ');
-    s += makeDot(cx, cy, m.col, m.type === 'b' ? 5.5 : 7.5, false, m.label, m.desc,
-                 m.type === 'b' ? 'BIRTHPLACE' : 'NASA FACILITY', short, m.type === 'b');
-  });
 
+    const [cx, cy] = PROJECTIONS[view]([m.lng, m.lat]);
+
+    s += makeDot(
+      cx,
+      cy,
+      m.col,
+      m.type === "b" ? 5.5 : 7.5,
+      false,
+      m.label,
+      m.desc,
+      m.type === "b" ? "BIRTHPLACE" : "NASA FACILITY",
+      (m.label || "").split(",")[0],
+      m.type === "b"
+    );
+  });
   svg.innerHTML = s;
   attachTooltips();
 }
