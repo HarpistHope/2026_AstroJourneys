@@ -15,7 +15,7 @@ var EVENTS = [
     emoji:'🏛️',
     mapView:'usa',
     markers:[
-      { lat:38.883, lng:-77.016, label:'NASA HQ · Washington D.C.', desc:'Location Advantage: direct Congressional oversight and proximity to policy makers — critical for securing the massive budgets needed to reach the Moon.',       col:'#ff3d21', type:'c' }
+      { lat:38.883, lng:-77.016, label:'NASA HQ · Washington D.C.', desc:'Location Advantage: Direct Congressional oversight | Proximity to policy makers',       col:'#ff3d21', type:'c' }
     ]
   },
 
@@ -33,8 +33,8 @@ var EVENTS = [
     emoji:'🚀',
     mapView:'usa-e',
     markers:[
-      { lat:28.573, lng:-80.649, label:'Cape Canaveral · LC-5',          desc:"Location Advantage: Over-ocean launch safety; vehicle velocity boost from Earth's rotation, maximized at low latitudes", col:'#ff3d21', type:'c' },
-      { lat:29.559, lng:-95.089, label:'Houston JSC · Mission Control',  desc:'Location Advantage: Access to deep-water transport; Moderate climate; Nearby industrial industry and universities',         col:'#00d4ff', type:'c' },
+      { lat:28.573, lng:-80.649, label:'Cape Canaveral · LC-5',          desc:"Location Advantage: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes)", col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston JSC · Mission Control',  desc:'Location Advantage: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry',         col:'#00d4ff', type:'c' },
       { lat:42.887, lng:-71.275, label:'East Derry, NH · Shepard born',  desc:'Alan Bartlett Shepard Jr. born November 18, 1923.',                         col:'#ffca28', type:'b' }
     ]
   },
@@ -53,8 +53,8 @@ var EVENTS = [
     emoji:'🌍',
     mapView:'usa-e',
     markers:[
-      { lat:28.573, lng:-80.649, label:'Cape Canaveral · LC-14',        desc:"Location Advantage: Over-ocean launch safety; vehicle velocity boost from Earth's rotation, maximized at low latitudes", col:'#ff3d21', type:'c' },
-      { lat:29.559, lng:-95.089, label:'Houston · Mission Control',     desc:'Location Advantage: Access to deep-water transport; Moderate climate; Nearby industrial industry and universities', col:'#00d4ff', type:'c' },
+      { lat:28.573, lng:-80.649, label:'Cape Canaveral · LC-14',        desc:"Location Advantage: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes)", col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston · Mission Control',     desc:'Location Advantage: Access to deep-water transport | Moderate climate | Nearby industrial industry and universities', col:'#00d4ff', type:'c' },
       { lat:39.962, lng:-82.999, label:'Cambridge, OH · Glenn born',    desc:'John Herschel Glenn Jr. born July 18, 1921.', col:'#ffca28', type:'b' }
     ]
   },
@@ -73,30 +73,30 @@ var EVENTS = [
     emoji:'🧑‍🚀',
     mapView:'usa-e',
     markers:[
-      { lat:28.573, lng:-80.649, label:'Kennedy Space Center · Launch Complex 19',        desc:'Location Advantage: Low-latitude-launch velocity boost; Improved safety from over-ocean launches; Moderate climate; Nearby supporting infrastructure', col:'#ff3d21', type:'c' },
-      { lat:29.559, lng:-95.089, label:'Houston · Mission Control',      desc:"Location Advantage: Access to deep-water transport; Moderate climate; Nearby industrial industry and universities",  col:'#00d4ff', type:'c' },
+      { lat:28.573, lng:-80.649, label:'Kennedy Space Center · Launch Complex 19',        desc:"Location Advantage: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry", col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston · Mission Control',      desc:"Location Advantage: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry",  col:'#00d4ff', type:'c' },
       { lat:29.424, lng:-98.493, label:'San Antonio, TX · White born',   desc:'Edward Higgins White II born November 14, 1930.',                  col:'#ffca28', type:'b' }
     ]
   },
 
   /* ── 1969 ── */
   {
-    year:1969, name:'Apollo 11 — First Moon Landing',
+    year:1969, name:'Apollo 11 — One Small Step, One Giant Leap',
     meta:'Sea of Tranquility · July 20, 1969',
     desc:"'The Eagle has landed.' At 4:17 PM EDT on July 20, 1969, Neil Armstrong and Buzz Aldrin touched down on the Moon while Michael Collins orbited above. Six hours later, Armstrong stepped onto the lunar surface: 'One small step for man, one giant leap for mankind.' An estimated 600 million people watched one-fifth of all humanity.",
     fact:"The Apollo Guidance Computer had 64KB of memory a billion times less than today's smartphones. Armstrong manually piloted around a boulder field with only 20 seconds of fuel remaining. The crew left a plaque: 'We came in peace for all mankind.'",
     dyk:"🌕 The Apollo 11 lunar module's single ascent engine had one start switch. If it failed, Armstrong and Aldrin would be stranded on the Moon with no rescue possible. NASA engineer Don Eyles stayed up 36 hours straight writing a software patch when a computer alarm triggered during landing. He fixed it. It worked. Nobody told the astronauts how close they came.",
-    locAdv:"Kennedy Space Center's massive VAB (Vehicle Assembly Building) was built specifically for Saturn V at 526 feet tall, it's one of the largest buildings on Earth by volume. Its coastal location allowed finished rockets to be floated by barge from Michoud in Louisiana.",
+    locAdv:"Kennedy Space Center's massive VAB (Vehicle Assembly Building) was built specifically for Saturn V. At 526 feet tall, it's one of the largest buildings on Earth by volume. Its coastal location allowed finished rockets to be floated by barge from Michoud in Louisiana.",
     dist:238855, distLabel:'238,855 miles — The Moon',
     photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Aldrin_Apollo_11_original.jpg/480px-Aldrin_Apollo_11_original.jpg'],
     photoCap:'Buzz Aldrin on the lunar surface — July 20, 1969 (NASA / Neil Armstrong)',
     emoji:'🌕',
     mapView:'usa-s',
     markers:[
-      { lat:28.573, lng:-80.649, label:'Kennedy Space Center · Launch Complex 39A',       desc:'Apollo 11 launched July 16, 1969 the most watched event in history.',   col:'#ff3d21', type:'c' },
-      { lat:29.559, lng:-95.089, label:'Houston · Mission Control',      desc:'"Houston, Tranquility Base here. The Eagle has landed." July 20, 1969.', col:'#ffca28', type:'c' },
-      { lat:30.390, lng:-89.090, label:'Stennis SC · MS',                desc:'All Saturn V first-stage F-1 engines tested here before every Apollo mission.', col:'#00e5a0', type:'c' },
-      { lat:29.978, lng:-90.054, label:'Michoud · New Orleans, LA',      desc:'Saturn V S-IC first stage the most powerful rocket stage ever built manufactured here.', col:'#00e5a0', type:'c' },
+      { lat:28.573, lng:-80.649, label:'Kennedy Space Center · Launch Complex 39A', desc:"Location Advantage: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry",   col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston · Mission Control',      desc:'Location Advantage: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry', col:'#ffca28', type:'c' },
+      { lat:30.390, lng:-89.090, label:'Stennis Space Center · MS',      desc:'Location Advantage: Waterway transport access | Massive buffer zone to protect nearby communities from rocket testing noises and vibrations', col:'#00e5a0', type:'c' },
+      { lat:29.978, lng:-90.054, label:'Michoud Assembly Facility · New Orleans, LA',      desc:'Location Advantage: Deep-water port for transportation of rockets', col:'#00e5a0', type:'c' },
       { lat:40.564, lng:-84.194, label:'Wapakoneta, OH · Armstrong born',desc:'Neil Alden Armstrong born August 5, 1930.',  col:'#ffca28', type:'b' },
       { lat:40.807, lng:-74.153, label:'Glen Ridge, NJ · Aldrin born',   desc:'Buzz Aldrin born January 20, 1930.',          col:'#ffca28', type:'b' }
     ]
@@ -106,7 +106,7 @@ var EVENTS = [
   {
     year:1970, name:"Apollo 13 — 'Houston, we\'ve Had a Problem'",
     meta:'Lunar Far Side · April 14–15, 1970',
-    desc:"'Houston, we've had a problem.' An oxygen tank exploded 200,000 miles from Earth. Commander Jim Lovell, Jack Swigert, and Fred Haise powered down to near-darkness, used the lunar module as a lifeboat, and navigated home by starlight. Mission Control worked 87 consecutive hours. All three splashed down alive.",
+    desc:"'Houston, we've had a problem.' An oxygen tank exploded 56 hours into the flight, 200,000 miles from Earth. Commander Jim Lovell, Jack Swigert, and Fred Haise powered down to near-darkness, used the lunar module as a lifeboat, and navigated home by starlight. Mission Control worked 87 consecutive hours. All three splashed down alive.",
     fact:"The crew reached 248,655 miles from Earth while looping the lunar far side the farthest any human has EVER traveled from our planet. Temperature dropped to near freezing. They survived on 6 oz of water per day. This distance record stood 52 years until Artemis I broke it in 2022.",
     dyk:"🏆 LONG-TIME HUMAN DISTANCE RECORD: Apollo 13's accidental 248,655-mile record (an incidental achievement of the emergency response trajectory) held for 52 years - the longest-standing record in spaceflight history. The crew had to manually navigate using Earth and the Moon as reference points, like ancient mariners using stars, because most instruments were off to conserve power. The CO₂ scrubber fix built from a sock, cardboard, and a plastic bag saved their lives.",
     locAdv:"Mission Control's location in Houston was chosen partly because of its proximity to Gulf Coast manufacturing and NASA's human spaceflight teams. During Apollo 13, 22 separate Mission Control shifts worked around the clock to bring the crew home the greatest team rescue in engineering history.",
@@ -116,8 +116,8 @@ var EVENTS = [
     emoji:'💥',
     mapView:'usa-s',
     markers:[
-      { lat:28.573, lng:-80.649, label:'Kennedy Space Center',           desc:'Apollo 13 launched April 11, 1970. Explosion struck 56 hours into flight.', col:'#ff3d21', type:'c' },
-      { lat:29.559, lng:-95.089, label:'Houston · Mission Control',      desc:'"Houston, we\'ve had a problem." 87 hours of non-stop crisis management.', col:'#ffca28', type:'c' },
+      { lat:28.573, lng:-80.649, label:'Kennedy Space Center',           desc:"Location Advantage: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry", col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston · Mission Control',      desc:'Location Advantage: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry', col:'#ffca28', type:'c' },
       { lat:41.499, lng:-81.694, label:'Cleveland, OH · Lovell born',    desc:'James Arthur Lovell Jr. born March 25, 1928.', col:'#ffca28', type:'b' }
     ]
   },
@@ -129,15 +129,15 @@ var EVENTS = [
     desc:"Gene Cernan and geologist Harrison Schmitt spent 3 days exploring the lunar surface while Ron Evans orbited above. On December 14, Cernan paused at the ladder: 'As I take these last steps from the surface for some time to come I believe history will record that America's challenge of today has forged man's destiny of tomorrow.' Then he climbed in. The hatch closed.",
     fact:"The 'Blue Marble' — the first photograph of a fully lit Earth was taken by the Apollo 17 crew from 28,000 miles away on December 7, 1972. It is the most reproduced photograph in human history. It launched the environmental movement. No human has returned to the Moon's surface since.",
     dyk:"🌎 The Blue Marble photo changed how humanity sees Earth. Before Apollo 17, there was no single photograph showing our entire planet fully illuminated. The photo was so powerful that Greenpeace used it, the first Earth Day was inspired partly by it, and it appeared on the cover of the Whole Earth Catalog. Cernan was the last human to walk on the Moon and whispered his daughter's initials (TDC) into the lunar dust before leaving.",
-    locAdv:"Apollo 17 was the only night launch in Apollo history the Saturn V lit up the sky so brightly it was visible from 500 miles away. Cernan, Schmitt, and Evans drove the Lunar Rover a record 22 miles across the Taurus-Littrow Valley, collecting 243 pounds of Moon rocks.",
+    locAdv:"Apollo 17 was the only night launch in Apollo history. The Saturn V lit up the sky so brightly it was visible from 500 miles away. Cernan, Schmitt, and Evans drove the Lunar Rover a record 22 miles across the Taurus-Littrow Valley, collecting 243 pounds of Moon rocks.",
     dist:238855, distLabel:'238,855 miles — The Moon',
     photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/The_Earth_seen_from_Apollo_17.jpg/480px-The_Earth_seen_from_Apollo_17.jpg'],
     photoCap:'"The Blue Marble" Earth from Apollo 17, December 7, 1972 (NASA)',
     emoji:'🌎',
     mapView:'usa-s',
     markers:[
-      { lat:28.573, lng:-80.649, label:'KSC · LC-39A Night Launch',    desc:'Apollo 17 launched December 7, 1972 only Apollo night launch, seen 500 miles away.', col:'#ff3d21', type:'c' },
-      { lat:29.559, lng:-95.089, label:'Houston JSC · Mission Control',  desc:"Mission Control watched Cernan take humanity's last steps on the Moon.",                  col:'#00d4ff', type:'c' }
+      { lat:28.573, lng:-80.649, label:'Kennedy Space Center · LC-39A Night Launch',    desc:"Location Advantage: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry", col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston JSC · Mission Control',  desc:'Location Advantage: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry',                  col:'#00d4ff', type:'c' }
     ]
   },
 
@@ -148,15 +148,15 @@ var EVENTS = [
     desc:"Space Shuttle Columbia roared to life on April 12, 1981 — exactly 20 years after Gagarin's first flight. John Young and Bob Crippen rode the world's first reusable spacecraft into orbit, opening 30 years of Shuttle operations: 135 missions, the International Space Station built, Hubble Space Telescope deployed, and an entire generation of astronauts.",
     fact:"The Shuttle's three main engines always ran at 109% of rated thrust. They could drain an Olympic swimming pool in 25 seconds. The orbiter landed as a 240,000-pound unpowered glider — no engine, no second chance, no go-around. Pilots had one shot.",
     dyk:"🛸 The Space Shuttle was the world's first reusable spacecraft — but it was never meant to fly 135 missions. NASA originally projected each orbiter would fly up to 100 times before retirement. Columbia flew only 27 times. The heat shield's ceramic tiles — 24,000 of them on each orbiter — had to be hand-inspected between every single flight. Each tile was unique, like a fingerprint.",
-    locAdv:"The Shuttle's solid rocket boosters were manufactured in Utah and shipped by rail to the Kennedy Space Center. The external tank was built at Michoud in New Orleans and floated by barge around Florida. This supply chain touched five Gulf Coast states — making the Shuttle a true product of southeastern America.",
+    locAdv:"The Shuttle's solid rocket boosters were manufactured in Utah and shipped by rail to the Kennedy Space Center. All 135 Shuttle External Tanks were built at Michoud in New Orleans and floated by barge around Florida. Over 1,100 Shuttle main engine hot-fire tests were performed at Stennis Space Center in Mississippi. This supply chain touched five Gulf Coast states — making the Shuttle a true product of southeastern America.",
     dist:250, distLabel:'250 miles — Low Earth Orbit',
     photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/STS-1_launch.jpg/480px-STS-1_launch.jpg'],
     photoCap:'Space Shuttle Columbia · STS-1, April 12, 1981 (NASA)',
     emoji:'🛸',
     mapView:'usa-s',
     markers:[
-      { lat:28.573, lng:-80.649, label:'KSC · LC-39A — Shuttle Launch',  desc:'Home of all 135 Shuttle missions. Vehicle stack stood 184 feet tall.',      col:'#ff3d21', type:'c' },
-      { lat:29.559, lng:-95.089, label:'Houston JSC · Mission Control',  desc:'All 135 Shuttle missions controlled from Mission Control in Houston.',       col:'#00d4ff', type:'c' },
+      { lat:28.573, lng:-80.649, label:'Kennedy Space Center · LC-39A — Shuttle Launch',  desc:"Location Advantage: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry",      col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston JSC · Mission Control',  desc:'Location Advantage: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry',       col:'#00d4ff', type:'c' },
       { lat:30.390, lng:-89.090, label:'Stennis SC · Mississippi',       desc:'Over 1,100 Shuttle main engine hot-fire tests performed at Stennis.',        col:'#ffca28', type:'c' },
       { lat:29.978, lng:-90.054, label:'Michoud · New Orleans, LA',      desc:'All 135 Shuttle External Tanks manufactured and tested at Michoud.',         col:'#00e5a0', type:'c' },
       { lat:34.631, lng:-86.661, label:'Marshall SFC · Huntsville, AL',  desc:'Marshall designed and managed all Shuttle propulsion systems.',              col:'#ffca28', type:'c' }
@@ -167,7 +167,7 @@ var EVENTS = [
   {
     year:1998, name:'International Space Station',
     meta:'Low Earth Orbit · November 20, 1998',
-    desc:"Russia's Zarya module launched November 20, 1998, marking an end to the US-Soviet Space Race and beginning humanity's greatest international engineering collaboration. In the following years, sixteen nations worked together to build a football-field-sized laboratory 254 miles above Earth. Continuously inhabited since November 2, 2000 humanity has now lived in space for over 25 consecutive years without interruption.",
+    desc:"Russia's Zarya module launched November 20, 1998, marking an end to the US-Soviet Space Race and beginning humanity's greatest international engineering collaboration. In the following years, sixteen nations worked together to build a football-field-sized laboratory 254 miles above Earth. Continuously inhabited since November 2, 2000 humanity has now lived in space for over 25 consecutive years without interruption. The ISS Flight Control Room in Houston monitors the station 24/7/365.'",
     fact:"ISS astronauts see 16 sunrises every single day, orbiting at 17,500 mph every 90 minutes. The station spans 357 feet across wider than a football field. Over 280 people from 23 countries have visited. You can spot it with the naked eye it's the third-brightest object in the night sky after the Sun and Moon.",
     dyk:"🛰️ The ISS is the most expensive object ever built by humans $150 billion across all participating nations. It was assembled piece by piece over 13 years and 42 assembly flights. The station's science has given us water-purification technology, improved cancer treatments, and fire-resistant textiles. Every single water molecule aboard is recycled including sweat and urine achieving 93% water recovery efficiency.",
     locAdv:"The ISS orbit was carefully chosen at 51.6° inclination steep enough to fly over most partner nations (US, Russia, Europe, Japan, Canada) while still allowing launch from multiple sites around the world. It passes over 90% of Earth's populated areas.",
@@ -177,8 +177,8 @@ var EVENTS = [
     emoji:'🛰️',
     mapView:'world',
     markers:[
-      { lat:28.573, lng:-80.649, label:'Kennedy Space Center',         desc:'All US ISS modules launched from KSC aboard Space Shuttles.', col:'#ff3d21', type:'c' },
-      { lat:29.559, lng:-95.089, label:'Houston JSC · ISS Control',   desc:'ISS Flight Control Room in Houston monitors the station 24/7/365.', col:'#00d4ff', type:'c' },
+      { lat:28.573, lng:-80.649, label:'Kennedy Space Center',         desc:"Location Advantage: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry", col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston JSC · ISS Control',   desc:'Location Advantage: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry', col:'#00d4ff', type:'c' },
       { lat:45.965, lng: 63.305, label:'Baikonur · Kazakhstan',       desc:"Russia's historic launch site all Soyuz crew missions to ISS depart here.", col:'#ffca28', type:'c' },
       { lat:36.130, lng:138.360, label:'JAXA · Tsukuba, Japan',       desc:"Japan's Space Center controls the ISS Kibo laboratory module.", col:'#00e5a0', type:'c' }
     ]
@@ -191,15 +191,15 @@ var EVENTS = [
     desc:"NASA's Space Launch System, the most powerful rocket ever built, lit up the Florida night on November 16, 2022. The uncrewed Orion capsule traveled 268,553 miles from Earth on a 26 day journey around the Moon, breaking Apollo 13's 52-year distance record. The mission ended with a perfect splashdown on December 11, confirming Orion is ready for crew.",
     fact:"SLS produced 8.8 million pounds of thrust at liftoff 15% more than the Saturn V, the previous record holder. The 322-foot rocket burned through 733,000 gallons of propellant in 8 minutes. Orion flew farther from Earth than any spacecraft designed to carry humans.",
     dyk:"🌙 Artemis I carried 10 small CubeSat satellites as secondary payloads, including one searching for water ice at lunar poles. The Orion capsule experienced re-entry temperatures of 5,000°F — half the temperature of the Sun's surface — and its heat shield worked flawlessly. The night launch was visible from 100 miles away across Florida.",
-    locAdv:"Pad 39B at Kennedy Space Center was rebuilt specifically for SLS — requiring removal of the Shuttle era lightning towers and installation of a new flame trench drainage system. The mobile launcher tower, standing 380 feet tall, is the tallest structure ever used for a NASA rocket.",
+    locAdv:"SLS launched from Pad 39B — the same complex family as Saturn V. Pad 39B was rebuilt specifically for SLS — requiring removal of the Shuttle era lightning towers and installation of a new flame trench drainage system. The mobile launcher tower, standing 380 feet tall, is the tallest structure ever used for a NASA rocket.",
     dist:268553, distLabel:'268,553 mi · Spacecraft Distance Record 🏆',
     photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Artemis_I_Launch_-_NHQ202211160006.jpg/480px-Artemis_I_Launch_-_NHQ202211160006.jpg'],
     photoCap:'Artemis I night launch · November 16, 2022 · Kennedy Space Center (NASA)',
     emoji:'🌙',
     mapView:'usa-s',
     markers:[
-      { lat:28.573, lng:-80.649, label:'KSC · LC-39B — Artemis Launch', desc:'SLS launched from Pad 39B — same complex family as Saturn V.',         col:'#ff3d21', type:'c' },
-      { lat:29.559, lng:-95.089, label:'Houston JSC · Artemis Control', desc:'JSC manages all Artemis mission operations and crew training.',         col:'#00d4ff', type:'c' },
+      { lat:28.573, lng:-80.649, label:'Kennedy Space Center · LC-39B — Artemis Launch', desc:"Location Advantage: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry",         col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston JSC · Artemis Control', desc:'Location Advantage: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry',         col:'#00d4ff', type:'c' },
       { lat:30.390, lng:-89.090, label:'Stennis SC · Engine Testing',   desc:'SLS core stage engines hot-fire tested for 8+ continuous minutes.',    col:'#ffca28', type:'c' },
       { lat:29.978, lng:-90.054, label:'Michoud · SLS Core Stage',      desc:'SLS core stage — backbone of every Artemis mission — built here.',    col:'#00e5a0', type:'c' },
       { lat:34.631, lng:-86.661, label:'Marshall SFC · Huntsville',     desc:'Marshall leads all SLS rocket design, development, and engineering.', col:'#ffca28', type:'c' }
@@ -211,7 +211,7 @@ var EVENTS = [
     year:2024, name:'Polaris Dawn — Commercial Spacewalk',
     meta:'Kennedy Space Center · September 10, 2024',
     desc:"SpaceX and the Polaris program made history on September 12, 2024 when Jared Isaacman and Sarah Gillis performed the first-ever commercial spacewalk from a Dragon capsule orbiting at 870 miles altitude — the highest crewed flight since the Apollo era. All four crew members spent 5 days in orbit in brand-new SpaceX EVA suits.",
-    fact:"At 870 miles altitude, Polaris Dawn crossed directly through the Van Allen radiation belt — a zone of intense particle radiation that most crewed missions deliberately avoid. The crew received a radiation dose roughly equivalent to 24 chest X-rays. The mission proved private astronauts can conduct complex EVA operations.",
+    fact:"At 870 miles altitude, Polaris Dawn crossed directly through the Van Allen radiation belt — a zone of intense particle radiation that most crewed missions deliberately avoid. The crew received a radiation dose roughly equivalent to 24 chest X-rays. The mission proved private astronauts can conduct complex EVA operations. NASA supported the mission; the crew also trained with SpaceX in California.",
     dyk:"⭐ Polaris Dawn had the fastest pace of any private spaceflight mission. Isaacman and Gillis became the first people to perform a spacewalk without an airlock — the Dragon hatch simply opened to space and they floated out, tethered to the capsule. The suits they wore were designed entirely by SpaceX — the first non-NASA spacesuit used for an actual spacewalk in US spaceflight history.",
     locAdv:"SpaceX's Pad 39A at Kennedy Space Center — the same pad that launched Apollo 11 to the Moon — is now leased by SpaceX and has launched more crewed missions than any other pad in history. Its proximity to SpaceX's Hawthorne, CA design facility and Cape facilities creates an integrated rapid-launch capability.",
     dist:870, distLabel:'870 miles — Highest Crewed Orbit Since Apollo',
@@ -220,8 +220,8 @@ var EVENTS = [
     emoji:'⭐',
     mapView:'usa-s',
     markers:[
-      { lat:28.573, lng:-80.649, label:'KSC · LC-39A — SpaceX Pad',     desc:'SpaceX Falcon 9 launched Polaris Dawn from Pad 39A on September 10, 2024.', col:'#00d4ff', type:'c' },
-      { lat:29.559, lng:-95.089, label:'Houston JSC',                   desc:'NASA supported the mission; crew also trained with SpaceX in California.',   col:'#00e5a0', type:'c' },
+      { lat:28.573, lng:-80.649, label:'Kennedy Space Center · LC-39A — SpaceX Pad',     desc:"Location Advantage: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry", col:'#00d4ff', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston JSC',                   desc:'Location Advantage: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry',   col:'#00e5a0', type:'c' },
       { lat:40.735, lng:-74.172, label:'Westfield, NJ · Isaacman born', desc:'Mission commander Jared Isaacman born February 11, 1983.',                   col:'#ffca28', type:'b' }
     ]
   },
@@ -241,13 +241,13 @@ var EVENTS = [
     emoji:'🌕',
     mapView:'usa-s',
     markers:[
-      { lat:28.573, lng:-80.649, label:'KSC · LC-39B — Artemis II',     desc:'Artemis II launches from Pad 39B on the Space Launch System.',              col:'#ff3d21', type:'c' },
-      { lat:29.559, lng:-95.089, label:'Houston JSC · Crew Training',   desc:'All 4 Artemis II astronauts train at Johnson Space Center in Houston.',    col:'#00d4ff', type:'c' },
+      { lat:28.573, lng:-80.649, label:'KSC · LC-39B — Artemis II',     desc:"Location Advantage: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry",              col:'#ff3d21', type:'c' },
+      { lat:29.559, lng:-95.089, label:'Houston JSC · Crew Training',   desc:'Location Advantage: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry',    col:'#00d4ff', type:'c' },
       { lat:30.390, lng:-89.090, label:'Stennis · Engine Certification', desc:'Artemis II SLS engines tested and certified at Stennis.',                  col:'#ffca28', type:'c' },
       { lat:34.631, lng:-86.661, label:'Marshall SFC · Huntsville, AL', desc:'Marshall leads all SLS rocket development for Artemis.',                   col:'#00e5a0', type:'c' },
       { lat:29.978, lng:-90.054, label:'Michoud · New Orleans, LA',     desc:'SLS core stage for Artemis II manufactured at Michoud.',                   col:'#00e5a0', type:'c' },
       { lat:42.232, lng:-83.352, label:'Grand Rapids, MI · Koch born',  desc:'Christina Koch — record-holding female astronaut, Artemis II crew.',       col:'#ffca28', type:'b' },
-      { lat:34.058, lng:-117.288,label:'Pomona, CA · Glover born',      desc:'Victor Glover — 1st Black astronaut to travel to the Moon.',               col:'#ffca28', type:'b' }
+      { lat:34.058, lng:-117.288,label:'Pomona, CA · Glover born',      desc:'Victor Glover — 1st African American astronaut to travel to the Moon.',               col:'#ffca28', type:'b' }
     ]
   }
 
