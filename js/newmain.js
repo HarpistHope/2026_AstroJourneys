@@ -56,13 +56,6 @@ let MAP_W = 0, MAP_H = 0;
 
 const MAP_COMPRESS = 0.94;
 
-// function project(lat, lng, view) {
-//   const v = VIEWS[view] || VIEWS.usa;
-//   const x = (lng - v.ln0) / (v.ln1 - v.ln0) * MAP_W;
-//   const y = (v.lt0 - lat) / (v.lt0 - v.lt1) * MAP_H;
-//   return [x, y];
-// }
-
 // replace original project function to prevent maps/geojsons from strecthing with view changes
 function project(lat, lng, view) {
   const v = VIEWS[view] || VIEWS.usa;
@@ -558,10 +551,10 @@ function renderDistTracker(idx){
 
   /* All notable points we always show */
   var POINTS=[
-    {dist:254,    lbl:'ISS',       sub:'254 mi',       col:'#00d4ff', r:8,  emoji:'🛰️',  ya:-1},
-    {dist:870,    lbl:'POLARIS',   sub:'870 mi',        col:'#00e5a0', r:9,  emoji:'⭐',  ya:1},
+    //{dist:254,    lbl:'ISS',       sub:'254 mi',       col:'#00d4ff', r:8,  emoji:'🛰️',  ya:-1},
+    //{dist:870,    lbl:'POLARIS',   sub:'870 mi',        col:'#00e5a0', r:9,  emoji:'⭐',  ya:1},
     {dist:238855, lbl:'THE MOON',  sub:'238,855 mi',    col:'#c8d8f0', r:22, emoji:'🌕',  ya:-1},
-    {dist:268553, lbl:'ARTEMIS I', sub:'268,553 mi ★',  col:'#00e5a0', r:14, emoji:'🚀',  ya:1},
+    //{dist:268553, lbl:'ARTEMIS I', sub:'268,553 mi ★',  col:'#00e5a0', r:14, emoji:'🚀',  ya:1},
   ];
 
   /* Compute x positions using log scale stretched across available width */
