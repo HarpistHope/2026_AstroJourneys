@@ -257,7 +257,7 @@ var NASA_CENTERS = [
   { lat:28.573, lng:-80.649, name:'Kennedy Space Center',       abbr:'KSC',  state:'FL', role:'Launch site for ALL crewed NASA missions since 1961',                     col:'#ff3d21' },
   { lat:29.559, lng:-95.089, name:'Johnson Space Center',       abbr:'JSC',  state:'TX', role:'Mission Control & astronaut training — heart of human spaceflight',        col:'#00d4ff' },
   { lat:30.390, lng:-89.090, name:'Stennis Space Center',       abbr:'SSC',  state:'MS', role:'Rocket engine testing — Saturn V, Shuttle & SLS all tested here',          col:'#ffca28' },
-  { lat:35.402, lng:-86.671, name:'Marshall Space Flight Ctr',  abbr:'MSFC', state:'AL', role:'Propulsion engineering — birthplace of Saturn V and SLS',                  col:'#ffca28' },
+  { lat:34.631, lng:-86.661, name:'Marshall Space Flight Ctr',  abbr:'MSFC', state:'AL', role:'Propulsion engineering — birthplace of Saturn V and SLS',                  col:'#ffca28' },
   { lat:29.978, lng:-90.054, name:'Michoud Assembly Facility',  abbr:'MAF',  state:'LA', role:'Manufacturing — Shuttle tanks & SLS core stage built here',                col:'#00e5a0' },
   { lat:38.883, lng:-77.016, name:'NASA Headquarters',          abbr:'HQ',   state:'DC', role:'Central administration, policy, and budget since 1958',                    col:'#ff3d21' },
   { lat:38.991, lng:-76.848, name:'Goddard Space Flight Ctr',   abbr:'GSFC', state:'MD', role:'Earth science, Hubble & James Webb telescope operations',                  col:'#b06fff' },
