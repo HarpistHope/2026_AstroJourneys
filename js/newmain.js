@@ -303,7 +303,7 @@ function attachTooltips() {
   const tipG = document.getElementById('tip-tag');
 
   document.getElementById('map-svg').querySelectorAll('.map-dot').forEach(dot => {
-    dot.addEventListener('mouseenter', e => {
+    dot.addEventListener('click', e => {
       tipT.textContent = dot.dataset.l;
       tipB.textContent = dot.dataset.d;
       tipG.textContent = dot.dataset.t;
@@ -318,7 +318,7 @@ function attachTooltips() {
       tip.style.top  = ty + 'px';
       tip.classList.add('on');
     });
-    dot.addEventListener('mouseleave', () => tip.classList.remove('on'));
+    // dot.addEventListener('mouseleave', () => tip.classList.remove('on'));
   });
 }
 
@@ -549,7 +549,7 @@ function renderDistTracker(idx){
   /* Earth is at x=EX, centered vertically */
   var EX=75, EY=H/2, ER=34;
 
-  /* All notable points we always show */
+  // /* All notable points we always show */ -- Comment from Hope: I commented out all but the Moon so they weren't always glowing in the background; I'm not sure how to add them to EVENTS properly...
   var POINTS=[
     //{dist:254,    lbl:'ISS',       sub:'254 mi',       col:'#00d4ff', r:8,  emoji:'🛰️',  ya:-1},
     //{dist:870,    lbl:'POLARIS',   sub:'870 mi',        col:'#00e5a0', r:9,  emoji:'⭐',  ya:1},

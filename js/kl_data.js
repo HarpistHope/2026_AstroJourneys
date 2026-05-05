@@ -159,7 +159,7 @@ var EVENTS = [
       { lat:29.559, lng:-95.089, label:'Houston JSC · Mission Control',  desc:'All 135 Shuttle missions controlled from Mission Control in Houston.',       col:'#00d4ff', type:'c' },
       { lat:30.390, lng:-89.090, label:'Stennis SC · Mississippi',       desc:'Over 1,100 Shuttle main engine hot-fire tests performed at Stennis.',        col:'#ffca28', type:'c' },
       { lat:29.978, lng:-90.054, label:'Michoud · New Orleans, LA',      desc:'All 135 Shuttle External Tanks manufactured and tested at Michoud.',         col:'#00e5a0', type:'c' },
-      { lat:35.402, lng:-86.671, label:'Marshall SFC · Huntsville, AL',  desc:'Marshall designed and managed all Shuttle propulsion systems.',              col:'#ffca28', type:'c' }
+      { lat:34.631, lng:-86.661, label:'Marshall SFC · Huntsville, AL',  desc:'Marshall designed and managed all Shuttle propulsion systems.',              col:'#ffca28', type:'c' }
     ]
   },
 
@@ -167,12 +167,11 @@ var EVENTS = [
   {
     year:1998, name:'International Space Station',
     meta:'Low Earth Orbit · November 20, 1998',
-    desc:"Russia's Zarya module launched November 20, 1998, beginning humanity's greatest engineering collaboration. Sixteen nations built a football-field-sized laboratory 254 miles above Earth. Continuously inhabited since November 2, 2000 humanity has now lived in space for over 25 consecutive years without interruption.",
+    desc:"Russia's Zarya module launched November 20, 1998, marking an end to the US-Soviet Space Race and beginning humanity's greatest international engineering collaboration. In the following years, sixteen nations worked together to build a football-field-sized laboratory 254 miles above Earth. Continuously inhabited since November 2, 2000 humanity has now lived in space for over 25 consecutive years without interruption.",
     fact:"ISS astronauts see 16 sunrises every single day, orbiting at 17,500 mph every 90 minutes. The station spans 357 feet across wider than a football field. Over 280 people from 23 countries have visited. You can spot it with the naked eye it's the third-brightest object in the night sky after the Sun and Moon.",
     dyk:"🛰️ The ISS is the most expensive object ever built by humans $150 billion across all participating nations. It was assembled piece by piece over 13 years and 42 assembly flights. The station's science has given us water-purification technology, improved cancer treatments, and fire-resistant textiles. Every single water molecule aboard is recycled including sweat and urine achieving 93% water recovery efficiency.",
     locAdv:"The ISS orbit was carefully chosen at 51.6° inclination steep enough to fly over most partner nations (US, Russia, Europe, Japan, Canada) while still allowing launch from multiple sites around the world. It passes over 90% of Earth's populated areas.",
-    // dist:254, distLabel:'254 miles — ISS Orbital Altitude', 
-    dist:254,    lbl:'ISS',       sub:'254 mi',       col:'#00d4ff', r:8,  emoji:'🛰️',  ya:-1,
+    dist:254, distLabel:'254 miles — ISS Orbital Altitude', 
     photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/International_Space_Station_after_undocking_of_STS-132.jpg/800px-International_Space_Station_after_undocking_of_STS-132.jpg'],
     photoCap:'The International Space Station from Space Shuttle Atlantis (NASA)',
     emoji:'🛰️',
@@ -189,7 +188,7 @@ var EVENTS = [
   {
     year:2022, name:'Artemis I — New Distance Record',
     meta:'Kennedy Space Center · November 16, 2022',
-    desc:"NASA's Space Launch System the most powerful rocket ever built lit up the Florida night on November 16, 2022. The uncrewed Orion capsule traveled 268,553 miles from Earth on a 26 day journey around the Moon, breaking Apollo 13's 52-year distance record. The mission ended with a perfect splashdown on December 11, confirming Orion is ready for crew.",
+    desc:"NASA's Space Launch System, the most powerful rocket ever built, lit up the Florida night on November 16, 2022. The uncrewed Orion capsule traveled 268,553 miles from Earth on a 26 day journey around the Moon, breaking Apollo 13's 52-year distance record. The mission ended with a perfect splashdown on December 11, confirming Orion is ready for crew.",
     fact:"SLS produced 8.8 million pounds of thrust at liftoff 15% more than the Saturn V, the previous record holder. The 322-foot rocket burned through 733,000 gallons of propellant in 8 minutes. Orion flew farther from Earth than any spacecraft designed to carry humans.",
     dyk:"🌙 Artemis I carried 10 small CubeSat satellites as secondary payloads, including one searching for water ice at lunar poles. The Orion capsule experienced re-entry temperatures of 5,000°F — half the temperature of the Sun's surface — and its heat shield worked flawlessly. The night launch was visible from 100 miles away across Florida.",
     locAdv:"Pad 39B at Kennedy Space Center was rebuilt specifically for SLS — requiring removal of the Shuttle era lightning towers and installation of a new flame trench drainage system. The mobile launcher tower, standing 380 feet tall, is the tallest structure ever used for a NASA rocket.",
@@ -203,7 +202,7 @@ var EVENTS = [
       { lat:29.559, lng:-95.089, label:'Houston JSC · Artemis Control', desc:'JSC manages all Artemis mission operations and crew training.',         col:'#00d4ff', type:'c' },
       { lat:30.390, lng:-89.090, label:'Stennis SC · Engine Testing',   desc:'SLS core stage engines hot-fire tested for 8+ continuous minutes.',    col:'#ffca28', type:'c' },
       { lat:29.978, lng:-90.054, label:'Michoud · SLS Core Stage',      desc:'SLS core stage — backbone of every Artemis mission — built here.',    col:'#00e5a0', type:'c' },
-      { lat:35.402, lng:-86.671, label:'Marshall SFC · Huntsville',     desc:'Marshall leads all SLS rocket design, development, and engineering.', col:'#ffca28', type:'c' }
+      { lat:34.631, lng:-86.661, label:'Marshall SFC · Huntsville',     desc:'Marshall leads all SLS rocket design, development, and engineering.', col:'#ffca28', type:'c' }
     ]
   },
 
@@ -231,7 +230,7 @@ var EVENTS = [
   {
     year:2026, name:'Artemis II — First Crew to Moon Since 1972',
     meta:'Kennedy Space Center · April 6, 2026',
-    desc:"Four astronauts — Reid Wiseman, Victor Glover, Christina Koch, and Canadian Jeremy Hansen — flew around the Moon aboard NASA's Orion capsule atop the Space Launch System. This was the first crewed lunar voyage since Apollo 17 in December 1972 — over 53 years ago. The crew stretched the boundary of human space exploration by traveling 252,756 miles from the Earth's surface - easily breaking Apollo 13's long-standing record by nearly 4,100 miles.",
+    desc:"Four astronauts — Reid Wiseman, Victor Glover, Christina Koch, and Canadian Jeremy Hansen — returned humanity to lunar orbit aboard NASA's Orion capsule atop the Space Launch System. This was the first crewed lunar voyage since Apollo 17 in December 1972 — over 53 years ago. The crew stretched the boundary of human space exploration by traveling 252,756 miles from the Earth's surface - easily breaking Apollo 13's long-standing record by nearly 4,100 miles.",
     fact:"Christina Koch is no stranger to pushing boundaries. Now the first woman to fly to the moon, she also holds the record for the longest single spaceflight by a woman: 328 consecutive days on the ISS in 2019–2020. Her crewmembers also set records during Artemis II's mission: Victor Glover became the first African American and Jeremy Hansen of Canada became the first non-American to travel to the Moon.",
     dyk:"🌕 For the first time since December 1972 — over 53 years — humans left Earth orbit and traveled to the Moon. Artemis II is the pathfinder for Artemis III, which will land astronauts on the lunar south pole to search for water ice that could support permanent human presence. If water ice is confirmed in useful quantities, it changes everything — rocket fuel, drinking water, and oxygen can all be made from lunar ice.",
     locAdv:"The Artemis crew trains at both Johnson Space Center in Houston (mission simulations, EVA training in the Neutral Buoyancy Lab) and at Kennedy Space Center (launch vehicle familiarization and emergency egress procedures). The Gulf Coast corridor from KSC to Marshall to Michoud to Stennis to JSC represents the complete Artemis supply chain.",
