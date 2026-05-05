@@ -193,7 +193,10 @@ function drawMap(view, eventMarkers) {
     features: US_STATES
   };
 
-  usProjection.fitSize([MAP_W, MAP_H], lower48);
+  usProjection.fitExtent(
+    [[20, 20], [MAP_W - 20, MAP_H - 20]],
+    lower48
+  );
 
   // create geoPath variable
   usPath = d3.geoPath().projection(usProjection);
@@ -248,6 +251,11 @@ function drawMap(view, eventMarkers) {
 
         s += `<path d="${usPath(f)}" class="${cls}"/>`;
       });
+
+      console.log(US_STATES[0]);
+      console.log(usPath(US_STATES[0]));
+      console.log(US_STATES.filter(f => !usPath(f)).length);
+      
     // Outer glow border
     s += `<rect width="${MAP_W}" height="${MAP_H}" fill="none" stroke="rgba(0, 213, 255, 0.12)" stroke-width="3"/>`;
     // Water labels
