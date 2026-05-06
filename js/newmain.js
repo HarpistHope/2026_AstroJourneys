@@ -487,7 +487,7 @@ function renderDistTracker(idx){
   });
 
   /* ── CURRENT MISSION rocket dot if not already a POINT ── */
-  var knownDists=[0,254,870,238855,268553];
+  var knownDists=[0,238855];
   var isKnown=knownDists.indexOf(cur.dist)>-1;
   if(cur.dist>0&&!isKnown){
     var rx=EX+ER+8+(Math.log10(cur.dist+1)/logMax)*SCENE_W*0.88;
