@@ -246,17 +246,6 @@ function drawMap(view, eventMarkers) {
     const short = (m.label || '').split(',')[0].trim().split(' ').slice(0, 2).join(' ');
     s += makeEventDot(cx, cy, m.col, m.type === 'b' ? 5.5 : 7.5, false, m.label, m.desc,
                  m.type === 'b' ? 'BIRTHPLACE' : 'NASA FACILITY', short, m.type === 'b')
-    console.log('circle test 1')
-                 // Pulse rings
-    // s += `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${r}" fill="none" stroke="${col}" stroke-width="${perm ? 1.2 : 1.8}">
-    //   <animate attributeName="r" values="${r};${r + 13};${r}" dur="${dur}" repeatCount="indefinite"/>
-    //   <animate attributeName="opacity" values="0.8;0;0.8" dur="${dur}" repeatCount="indefinite"/>
-    // </circle>`;
-    console.log('circle test')
-    // s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="none" stroke="${col}" stroke-width=".9">
-    //   <animate attributeName="r" values="${r};${r + 7};${r}" dur="${dur}" begin=".8s" repeatCount="indefinite"/>
-    //   <animate attributeName="opacity" values="0.5;0;0.5" dur="${dur}" begin=".8s" repeatCount="indefinite"/>
-    // </circle>`;
   });
 
   svg.innerHTML = s;
