@@ -283,3 +283,13 @@ var NASA_CENTERS = [
 //   { lat:34.058, lng:-117.288,name:'Victor Glover',     mission:'Artemis II — 1st Black astronaut to Moon orbit',  born:'Pomona, CA' },
 //   { lat:40.735, lng:-74.172, name:'Jared Isaacman',    mission:'Polaris Dawn — 1st commercial spacewalk 2024', born:'Westfield, NJ' },
 // ];
+
+    // // Pulse rings
+  // s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="none" stroke="${col}" stroke-width="${perm ? 1.2 : 1.8}">
+  //   <animate attributeName="r" values="${r};${r + 13};${r}" dur="${dur}" repeatCount="indefinite"/>
+  //   <animate attributeName="opacity" values="0.8;0;0.8" dur="${dur}" repeatCount="indefinite"/>
+  // </circle>`;
+  // s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="none" stroke="${col}" stroke-width=".9">
+  //   <animate attributeName="r" values="${r};${r + 7};${r}" dur="${dur}" begin=".8s" repeatCount="indefinite"/>
+  //   <animate attributeName="opacity" values="0.5;0;0.5" dur="${dur}" begin=".8s" repeatCount="indefinite"/>
+  // </circle>`;

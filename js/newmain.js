@@ -236,7 +236,7 @@ function drawMap(view, eventMarkers) {
     const label = p.abbr || p.name.split(' ')[0];
     const desc  = ACTIVE_TAB === 'c' ? p.role : p.mission;
     const tag   = ACTIVE_TAB === 'c' ? `NASA CENTER · ${p.state}` : `Born: ${p.born}`;
-    s += makeDot(cx, cy, col, 4.5, true, p.name, desc, tag, label, ACTIVE_TAB === 'a');
+    s += makePermDot(cx, cy, col, 4.5, true, p.name, desc, tag, label, ACTIVE_TAB === 'a');
   });
 
   // Event-specific markers 
@@ -244,15 +244,29 @@ function drawMap(view, eventMarkers) {
     const [cx, cy] = project(m.lat, m.lng, view);
     if (cx < -15 || cx > MAP_W + 15 || cy < -15 || cy > MAP_H + 15) return;
     const short = (m.label || '').split(',')[0].trim().split(' ').slice(0, 2).join(' ');
-    s += makeDot(cx, cy, m.col, m.type === 'b' ? 5.5 : 7.5, false, m.label, m.desc,
-                 m.type === 'b' ? 'BIRTHPLACE' : 'NASA FACILITY', short, m.type === 'b');
+    s += makeEventDot(cx, cy, m.col, m.type === 'b' ? 5.5 : 7.5, false, m.label, m.desc,
+                 m.type === 'b' ? 'BIRTHPLACE' : 'NASA FACILITY', short, m.type === 'b')
+    console.log('circle test 1')
+                 // Pulse rings
+    // s += `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${r}" fill="none" stroke="${col}" stroke-width="${perm ? 1.2 : 1.8}">
+    //   <animate attributeName="r" values="${r};${r + 13};${r}" dur="${dur}" repeatCount="indefinite"/>
+    //   <animate attributeName="opacity" values="0.8;0;0.8" dur="${dur}" repeatCount="indefinite"/>
+    // </circle>`;
+    console.log('circle test')
+    // s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="none" stroke="${col}" stroke-width=".9">
+    //   <animate attributeName="r" values="${r};${r + 7};${r}" dur="${dur}" begin=".8s" repeatCount="indefinite"/>
+    //   <animate attributeName="opacity" values="0.5;0;0.5" dur="${dur}" begin=".8s" repeatCount="indefinite"/>
+    // </circle>`;
   });
 
   svg.innerHTML = s;
   attachTooltips();
 }
 
-function makeDot(x, y, col, r, perm, lbl, desc, tag, shortLabel, isBirth) {
+
+
+
+function makeEventDot(x, y, col, r, perm, lbl, desc, tag, shortLabel, isBirth) {
   const opacity = perm ? 0.72 : 1;
   const dur     = perm ? '3.5s' : '2.3s';
   const L = (lbl  || '').replace(/"/g, "'");
@@ -271,6 +285,50 @@ function makeDot(x, y, col, r, perm, lbl, desc, tag, shortLabel, isBirth) {
     <animate attributeName="r" values="${r};${r + 7};${r}" dur="${dur}" begin=".8s" repeatCount="indefinite"/>
     <animate attributeName="opacity" values="0.5;0;0.5" dur="${dur}" begin=".8s" repeatCount="indefinite"/>
   </circle>`;
+  
+  // Core dot — data attributes for tooltip
+  s += `<circle class="map-dot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}"
+    fill="${col}" stroke="rgba(255,255,255,0.5)" stroke-width="1.3"
+    style="cursor:pointer;filter:drop-shadow(0 0 ${glow}px ${col})"
+    data-l="${L}" data-d="${D}" data-t="${T}"/>`;
+
+  // Star symbol for birthplace markers
+  if (isBirth) {
+    s += `<text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle"
+      font-size="${(r * 1.1).toFixed(1)}" fill="#010c1e"
+      style="pointer-events:none;font-weight:bold">&#9733;</text>`;
+  }
+
+  // Short label for event-specific (non-permanent) markers
+  if (!perm) {
+    s += `<text x="${(x + r + 4).toFixed(1)}" y="${(y + 4).toFixed(1)}"
+      font-family="Share Tech Mono,Courier New,monospace" font-size="8"
+      fill="${col}" opacity=".88" style="pointer-events:none">${shortLabel}</text>`;
+  }
+
+  s += '</g>';
+  return s;
+}
+
+function makePermDot(x, y, col, r, perm, lbl, desc, tag, shortLabel, isBirth) {
+  const opacity = perm ? 0.72 : 1;
+  const dur     = perm ? '3.5s' : '2.3s';
+  const L = (lbl  || '').replace(/"/g, "'");
+  const D = (desc || '').replace(/"/g, "'");
+  const T = (tag  || '').replace(/"/g, "'");
+  const glow = perm ? 3 : 5;
+
+  let s = `<g opacity="${opacity}">`;
+
+  // // Pulse rings
+  // s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="none" stroke="${col}" stroke-width="${perm ? 1.2 : 1.8}">
+  //   <animate attributeName="r" values="${r};${r + 13};${r}" dur="${dur}" repeatCount="indefinite"/>
+  //   <animate attributeName="opacity" values="0.8;0;0.8" dur="${dur}" repeatCount="indefinite"/>
+  // </circle>`;
+  // s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="none" stroke="${col}" stroke-width=".9">
+  //   <animate attributeName="r" values="${r};${r + 7};${r}" dur="${dur}" begin=".8s" repeatCount="indefinite"/>
+  //   <animate attributeName="opacity" values="0.5;0;0.5" dur="${dur}" begin=".8s" repeatCount="indefinite"/>
+  // </circle>`;
 
   // Core dot — data attributes for tooltip
   s += `<circle class="map-dot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}"
