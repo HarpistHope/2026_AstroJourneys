@@ -303,7 +303,7 @@ function attachTooltips() {
   const tipG = document.getElementById('tip-tag');
 
   document.getElementById('map-svg').querySelectorAll('.map-dot').forEach(dot => {
-    dot.addEventListener('mouseenter', e => {
+    dot.addEventListener('click', e => {
       tipT.textContent = dot.dataset.l;
       tipB.textContent = dot.dataset.d;
       tipG.textContent = dot.dataset.t;
@@ -318,7 +318,7 @@ function attachTooltips() {
       tip.style.top  = ty + 'px';
       tip.classList.add('on');
     });
-    dot.addEventListener('mouseleave', () => tip.classList.remove('on'));
+    // dot.addEventListener('mouseleave', () => tip.classList.remove('on'));
   });
 }
 
