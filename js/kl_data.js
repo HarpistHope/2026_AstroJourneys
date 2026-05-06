@@ -35,7 +35,7 @@ var EVENTS = [
     markers:[
       { lat:28.573, lng:-80.649, label:'Cape Canaveral · LC-5',          desc:"LOCATION PRO: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes)", col:'#ff3d21', type:'c' },
       { lat:29.559, lng:-95.089, label:'Houston JSC · Mission Control',  desc:'LOCATION PRO: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry',         col:'#00d4ff', type:'c' },
-      { lat:42.887, lng:-71.275, label:'East Derry, NH · Shepard born',  desc:'Alan Bartlett Shepard Jr. born November 18, 1923.',                         col:'#ffca28', type:'b' }
+      // { lat:42.887, lng:-71.275, label:'East Derry, NH · Shepard born',  desc:'Alan Bartlett Shepard Jr. born November 18, 1923.',                         col:'#ffca28', type:'b' }
     ]
   },
 
@@ -55,7 +55,7 @@ var EVENTS = [
     markers:[
       { lat:28.573, lng:-80.649, label:'Cape Canaveral · LC-14',        desc:"LOCATION PRO: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes)", col:'#ff3d21', type:'c' },
       { lat:29.559, lng:-95.089, label:'Houston · Mission Control',     desc:'LOCATION PRO: Access to deep-water transport | Moderate climate | Nearby industrial industry and universities', col:'#00d4ff', type:'c' },
-      { lat:39.962, lng:-82.999, label:'Cambridge, OH · Glenn born',    desc:'John Herschel Glenn Jr. born July 18, 1921.', col:'#ffca28', type:'b' }
+      // { lat:39.962, lng:-82.999, label:'Cambridge, OH · Glenn born',    desc:'John Herschel Glenn Jr. born July 18, 1921.', col:'#ffca28', type:'b' }
     ]
   },
 
@@ -75,7 +75,7 @@ var EVENTS = [
     markers:[
       { lat:28.573, lng:-80.649, label:'Kennedy Space Center · Launch Complex 19',        desc:"LOCATION PRO: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry", col:'#ff3d21', type:'c' },
       { lat:29.559, lng:-95.089, label:'Houston · Mission Control',      desc:"LOCATION PRO: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry",  col:'#00d4ff', type:'c' },
-      { lat:29.424, lng:-98.493, label:'San Antonio, TX · White born',   desc:'Edward Higgins White II born November 14, 1930.',                  col:'#ffca28', type:'b' }
+      // { lat:29.424, lng:-98.493, label:'San Antonio, TX · White born',   desc:'Edward Higgins White II born November 14, 1930.',                  col:'#ffca28', type:'b' }
     ]
   },
 
@@ -97,8 +97,8 @@ var EVENTS = [
       { lat:29.559, lng:-95.089, label:'Houston · Mission Control',      desc:'LOCATION PRO: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry', col:'#ffca28', type:'c' },
       { lat:30.390, lng:-89.090, label:'Stennis Space Center · MS',      desc:'LOCATION PRO: Waterway transport access | Massive buffer zone to protect nearby communities from rocket testing noises and vibrations', col:'#00e5a0', type:'c' },
       { lat:29.978, lng:-90.054, label:'Michoud Assembly Facility · New Orleans, LA',      desc:'LOCATION PRO: Deep-water port for transportation of rockets', col:'#00e5a0', type:'c' },
-      { lat:40.564, lng:-84.194, label:'Wapakoneta, OH · Armstrong born',desc:'Neil Alden Armstrong born August 5, 1930.',  col:'#ffca28', type:'b' },
-      { lat:40.807, lng:-74.153, label:'Glen Ridge, NJ · Aldrin born',   desc:'Buzz Aldrin born January 20, 1930.',          col:'#ffca28', type:'b' }
+      // { lat:40.564, lng:-84.194, label:'Wapakoneta, OH · Armstrong born',desc:'Neil Alden Armstrong born August 5, 1930.',  col:'#ffca28', type:'b' },
+      // { lat:40.807, lng:-74.153, label:'Glen Ridge, NJ · Aldrin born',   desc:'Buzz Aldrin born January 20, 1930.',          col:'#ffca28', type:'b' }
     ]
   },
 
@@ -118,7 +118,7 @@ var EVENTS = [
     markers:[
       { lat:28.573, lng:-80.649, label:'Kennedy Space Center',           desc:"LOCATION PRO: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry", col:'#ff3d21', type:'c' },
       { lat:29.559, lng:-95.089, label:'Houston · Mission Control',      desc:'LOCATION PRO: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry', col:'#ffca28', type:'c' },
-      { lat:41.499, lng:-81.694, label:'Cleveland, OH · Lovell born',    desc:'James Arthur Lovell Jr. born March 25, 1928.', col:'#ffca28', type:'b' }
+      // { lat:41.499, lng:-81.694, label:'Cleveland, OH · Lovell born',    desc:'James Arthur Lovell Jr. born March 25, 1928.', col:'#ffca28', type:'b' }
     ]
   },
 
@@ -222,7 +222,7 @@ var EVENTS = [
     markers:[
       { lat:28.573, lng:-80.649, label:'Kennedy Space Center · LC-39A — SpaceX Pad',     desc:"LOCATION PRO: over-ocean launch safety | vehicle velocity boost from Earth's rotation (maximized at low latitudes) | moderate climate | nearby supporting industry", col:'#00d4ff', type:'c' },
       { lat:29.559, lng:-95.089, label:'Houston JSC',                   desc:'LOCATION PRO: Access to deep-water transport | Moderate climate | Nearby universities and industrial industry',   col:'#00e5a0', type:'c' },
-      { lat:40.735, lng:-74.172, label:'Westfield, NJ · Isaacman born', desc:'Mission commander Jared Isaacman born February 11, 1983.',                   col:'#ffca28', type:'b' }
+      // { lat:40.735, lng:-74.172, label:'Westfield, NJ · Isaacman born', desc:'Mission commander Jared Isaacman born February 11, 1983.',                   col:'#ffca28', type:'b' }
     ]
   },
 
@@ -246,8 +246,8 @@ var EVENTS = [
       { lat:30.390, lng:-89.090, label:'Stennis · Engine Certification', desc:'LOCATION PRO: Waterway transport access | Massive buffer zone to protect nearby communities from rocket testing noises and vibrations',                  col:'#ffca28', type:'c' },
       { lat:34.631, lng:-86.661, label:'Marshall SFC · Huntsville, AL', desc:"LOCATION PRO: Est. in 1960 within the U.S. Army's Redstone Arsenal (missile facility) | nearby missile and propulsion industry expertise",                   col:'#00e5a0', type:'c' },
       { lat:29.978, lng:-90.054, label:'Michoud · New Orleans, LA',     desc:'LOCATION PRO: Deep-water port for transportation of rockets',                   col:'#00e5a0', type:'c' },
-      { lat:42.232, lng:-83.352, label:'Grand Rapids, MI · Koch born',  desc:'Christina Koch — record-holding female astronaut, Artemis II crew.',       col:'#ffca28', type:'b' },
-      { lat:34.058, lng:-117.288,label:'Pomona, CA · Glover born',      desc:'Victor Glover — 1st African American astronaut to travel to the Moon.',               col:'#ffca28', type:'b' }
+      // { lat:42.232, lng:-83.352, label:'Grand Rapids, MI · Koch born',  desc:'Christina Koch — record-holding female astronaut, Artemis II crew.',       col:'#ffca28', type:'b' },
+      // { lat:34.058, lng:-117.288,label:'Pomona, CA · Glover born',      desc:'Victor Glover — 1st African American astronaut to travel to the Moon.',               col:'#ffca28', type:'b' }
     ]
   }
 
