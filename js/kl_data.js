@@ -269,17 +269,17 @@ var NASA_CENTERS = [
 ];
 
 /* ━━━━━━━━━━━━━━━━ ASTRONAUT BIRTHPLACES ━━━━━━━━━━━━━━━━ */
-var ASTRONAUT_BIRTHS = [
-  { lat:40.564, lng:-84.194, name:'Neil Armstrong',    mission:'Apollo 11 — 1st Human on the Moon',            born:'Wapakoneta, OH' },
-  { lat:40.807, lng:-74.153, name:'Buzz Aldrin',       mission:'Apollo 11 — 2nd Human on the Moon',            born:'Glen Ridge, NJ' },
-  { lat:42.887, lng:-71.275, name:'Alan Shepard',      mission:'Freedom 7 — 1st American in Space',            born:'East Derry, NH' },
-  { lat:39.962, lng:-82.999, name:'John Glenn',        mission:'Friendship 7 — 1st American to Orbit',         born:'Cambridge, OH' },
-  { lat:41.499, lng:-81.694, name:'Jim Lovell',        mission:'Apollo 13 — Saved crew from disaster',         born:'Cleveland, OH' },
-  { lat:29.424, lng:-98.493, name:'Ed White',          mission:'Gemini IV — 1st American Spacewalk',           born:'San Antonio, TX' },
-  { lat:34.052, lng:-118.243,name:'Sally Ride',        mission:'STS-7 — 1st American Woman in Space',          born:'Los Angeles, CA' },
-  { lat:34.606, lng:-86.983, name:'Mae Jemison',       mission:'STS-47 — 1st Black Woman in Space',            born:'Decatur, AL' },
-  { lat:38.731, lng:-86.474, name:'Gus Grissom',       mission:'Mercury / Gemini pioneer',                     born:'Mitchell, IN' },
-  { lat:42.232, lng:-83.352, name:'Christina Koch',    mission:'Artemis II — record female spaceflight 328 days', born:'Grand Rapids, MI' },
-  { lat:34.058, lng:-117.288,name:'Victor Glover',     mission:'Artemis II — 1st Black astronaut to Moon orbit',  born:'Pomona, CA' },
-  { lat:40.735, lng:-74.172, name:'Jared Isaacman',    mission:'Polaris Dawn — 1st commercial spacewalk 2024', born:'Westfield, NJ' },
-];
+// var ASTRONAUT_BIRTHS = [
+//   { lat:40.564, lng:-84.194, name:'Neil Armstrong',    mission:'Apollo 11 — 1st Human on the Moon',            born:'Wapakoneta, OH' },
+//   { lat:40.807, lng:-74.153, name:'Buzz Aldrin',       mission:'Apollo 11 — 2nd Human on the Moon',            born:'Glen Ridge, NJ' },
+//   { lat:42.887, lng:-71.275, name:'Alan Shepard',      mission:'Freedom 7 — 1st American in Space',            born:'East Derry, NH' },
+//   { lat:39.962, lng:-82.999, name:'John Glenn',        mission:'Friendship 7 — 1st American to Orbit',         born:'Cambridge, OH' },
+//   { lat:41.499, lng:-81.694, name:'Jim Lovell',        mission:'Apollo 13 — Saved crew from disaster',         born:'Cleveland, OH' },
+//   { lat:29.424, lng:-98.493, name:'Ed White',          mission:'Gemini IV — 1st American Spacewalk',           born:'San Antonio, TX' },
+//   { lat:34.052, lng:-118.243,name:'Sally Ride',        mission:'STS-7 — 1st American Woman in Space',          born:'Los Angeles, CA' },
+//   { lat:34.606, lng:-86.983, name:'Mae Jemison',       mission:'STS-47 — 1st Black Woman in Space',            born:'Decatur, AL' },
+//   { lat:38.731, lng:-86.474, name:'Gus Grissom',       mission:'Mercury / Gemini pioneer',                     born:'Mitchell, IN' },
+//   { lat:42.232, lng:-83.352, name:'Christina Koch',    mission:'Artemis II — record female spaceflight 328 days', born:'Grand Rapids, MI' },
+//   { lat:34.058, lng:-117.288,name:'Victor Glover',     mission:'Artemis II — 1st Black astronaut to Moon orbit',  born:'Pomona, CA' },
+//   { lat:40.735, lng:-74.172, name:'Jared Isaacman',    mission:'Polaris Dawn — 1st commercial spacewalk 2024', born:'Westfield, NJ' },
+// ];
