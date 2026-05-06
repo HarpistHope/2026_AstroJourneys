@@ -402,7 +402,7 @@ function renderDistTracker(idx){
   ];
 
   /* Compute x positions using log scale stretched across available width */
-  var SCENE_W = W - EX - 30;
+  var SCENE_W = W - EX - 75;
   POINTS.forEach(function(p){
     p.x = EX + ER + 8 + (Math.log10(p.dist+1)/logMax)*SCENE_W * 0.88;
   });
@@ -429,7 +429,7 @@ function renderDistTracker(idx){
   s+='<ellipse cx="'+(W*0.82)+'" cy="'+(H*0.6)+'" rx="80" ry="50" fill="rgba(0,80,80,0.07)"/>';
 
   /* Dashed baseline line from Earth to far right */
-  s+='<line x1="'+(EX+ER)+'" y1="'+EY+'" x2="'+(W-15)+'" y2="'+EY+'" stroke="rgba(255,255,255,0.12)" stroke-width="1" stroke-dasharray="6,5"/>';
+  s+='<line x1="'+(EX+ER)+'" y1="'+EY+'" x2="'+(W-75)+'" y2="'+EY+'" stroke="rgba(255,255,255,0.12)" stroke-width="1" stroke-dasharray="6,5"/>';
 
   /* DRAW EACH POINT */
   POINTS.forEach(function(p){
