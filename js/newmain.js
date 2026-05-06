@@ -713,7 +713,7 @@ function renderInfo(ev){
     <img class="event-img" id="ev-photo" alt="${ev.photoCap}" style="${ev.photoStyle || ''}"/>
     <div class="img-overlay"></div>
     <div class="img-caption">${ev.photoCap}</div>
-  </div>`;
+    </div>`;
   
   h +='<div class="event-body">'
     +'<div class="event-name">'+ev.name+'</div>'
@@ -725,6 +725,10 @@ function renderInfo(ev){
     +'<div class="dyk-panel" id="dyk-panel">'+ev.dyk+'</div>'
     +'</div>';
   document.getElementById('info-inner').innerHTML=h;
+
+   //Load image with multi-URL fallback
+  const img = document.getElementById('ev-photo');
+  if (img) loadImageWithFallback(img, ev.photos, ev.emoji, ev.photoCap);
 }
 
 window.toggleDyk=function(btn){
