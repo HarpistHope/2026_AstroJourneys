@@ -729,41 +729,41 @@ window.toggleDyk=function(btn){
 
 
 
-// /* INFO PANEL*/
-// function renderInfo(ev) {
-//   let h = `<div class="event-img-wrap">
-//     <img class="event-img" id="ev-photo" alt="${ev.photoCap}" style="${ev.photoStyle || ''}"/>
-//     <div class="img-overlay"></div>
-//     <div class="img-caption">${ev.photoCap}</div>
-//   </div>`;
+/* INFO PANEL*/
+function renderInfo(ev) {
+  let h = `<div class="event-img-wrap">
+    <img class="event-img" id="ev-photo" alt="${ev.photoCap}" style="${ev.photoStyle || ''}"/>
+    <div class="img-overlay"></div>
+    <div class="img-caption">${ev.photoCap}</div>
+  </div>`;
 
-//   h += `<div class="event-body">
-//     <div class="event-name">${ev.name}</div>
-//     <div class="event-meta">${ev.meta}</div>
-//     <div class="event-desc">${ev.desc}</div>
-//     <div class="fact-block">
-//       <div class="fact-label">★ Historical Fact</div>
-//       <div class="fact-text">${ev.fact}</div>
-//     </div>`;
+  h += `<div class="event-body">
+    <div class="event-name">${ev.name}</div>
+    <div class="event-meta">${ev.meta}</div>
+    <div class="event-desc">${ev.desc}</div>
+    <div class="fact-block">
+      <div class="fact-label">★ Historical Fact</div>
+      <div class="fact-text">${ev.fact}</div>
+    </div>`;
 
-//   if (ev.dyk) {
-//     h += `<button class="dyk-btn" onclick="toggleDyk(this)">✦ &nbsp;Did You Know?</button>
-//           <div class="dyk-panel" id="dyk-panel">${ev.dyk}</div>`;
-//   }
-//   h += '</div>';
+  if (ev.dyk) {
+    h += `<button class="dyk-btn" onclick="toggleDyk(this)">✦ &nbsp;Did You Know?</button>
+          <div class="dyk-panel" id="dyk-panel">${ev.dyk}</div>`;
+  }
+  h += '</div>';
 
-//   document.getElementById('info-inner').innerHTML = h;
+  document.getElementById('info-inner').innerHTML = h;
 
-//   // Load image with multi-URL fallback
-//   const img = document.getElementById('ev-photo');
-//   if (img) loadImageWithFallback(img, ev.photos, ev.emoji, ev.photoCap);
-// }
+  // Load image with multi-URL fallback
+  const img = document.getElementById('ev-photo');
+  if (img) loadImageWithFallback(img, ev.photos, ev.emoji, ev.photoCap);
+}
 
-// function toggleDyk(btn) {
-//   const panel = document.getElementById('dyk-panel');
-//   panel.classList.toggle('on');
-//   btn.innerHTML = panel.classList.contains('on') ? '✕ &nbsp;Close' : '✦ &nbsp;Did You Know?';
-// }
+function toggleDyk(btn) {
+  const panel = document.getElementById('dyk-panel');
+  panel.classList.toggle('on');
+  btn.innerHTML = panel.classList.contains('on') ? '✕ &nbsp;Close' : '✦ &nbsp;Did You Know?';
+}
 
 
 /* TIMELINE */
