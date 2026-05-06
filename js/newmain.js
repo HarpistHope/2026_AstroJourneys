@@ -551,10 +551,10 @@ function renderDistTracker(idx){
 
   // /* All notable points we always show */ -- Comment from Hope: I commented out all but the Moon so they weren't always glowing in the background; I'm not sure how to add them to EVENTS properly...
   var POINTS=[
-    //{dist:254,    lbl:'ISS',       sub:'254 mi',       col:'#00d4ff', r:8,  emoji:'🛰️',  ya:-1},
-    //{dist:870,    lbl:'POLARIS',   sub:'870 mi',        col:'#00e5a0', r:9,  emoji:'⭐',  ya:1},
+    {dist:254,    lbl:'ISS',       sub:'254 mi',       col:'#00d4ff', r:8,  emoji:'🛰️',  ya:-1},
+    {dist:870,    lbl:'POLARIS',   sub:'870 mi',        col:'#00e5a0', r:9,  emoji:'⭐',  ya:1},
     {dist:238855, lbl:'THE MOON',  sub:'238,855 mi',    col:'#c8d8f0', r:22, emoji:'🌕',  ya:-1},
-    //{dist:268553, lbl:'ARTEMIS I', sub:'268,553 mi ★',  col:'#00e5a0', r:14, emoji:'🚀',  ya:1},
+    {dist:268553, lbl:'ARTEMIS I', sub:'268,553 mi ★',  col:'#00e5a0', r:14, emoji:'🚀',  ya:1},
   ];
 
   /* Compute x positions using log scale stretched across available width */
