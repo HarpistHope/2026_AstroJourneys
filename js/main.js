@@ -578,6 +578,7 @@ function loadImageWithFallback(imgEl, urlList, emoji, caption) {
 /* INFO PANEL*/
 function renderInfo(ev) {
   let h = `<div class="event-img-wrap">
+    <div class="event-img">${ev.photos}</div>
     <img class="event-img" id="ev-photo" alt="${ev.photoCap}" style="${ev.photoStyle || ''}"/>
     <div class="img-overlay"></div>
     <div class="img-caption">${ev.photoCap}</div>
