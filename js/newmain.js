@@ -708,24 +708,24 @@ function loadImageWithFallback(imgEl, urlList, emoji, caption) {
 }
 
 
-function renderInfo(ev){
-  var h='<div class="event-body">'
-    +'<div class="event-name">'+ev.name+'</div>'
-    +'<div class="event-meta">'+ev.meta+'</div>'
-    +'<div class="event-desc">'+ev.desc+'</div>'
-    +'<div class="fact-block"><div class="fact-label">★ Historical Fact</div><div class="fact-text">'+ev.fact+'</div></div>';
-  if(ev.locAdv) h+='<div class="loc-adv"><div class="loc-adv-label">📍 Of Note</div><div class="loc-adv-txt">'+ev.locAdv+'</div></div>';
-  h+='<button class="dyk-btn" onclick="toggleDyk(this)">✦ &nbsp;Did You Know?</button>'
-    +'<div class="dyk-panel" id="dyk-panel">'+ev.dyk+'</div>'
-    +'</div>';
-  document.getElementById('info-inner').innerHTML=h;
-}
+// function renderInfo(ev){
+//   var h='<div class="event-body">'
+//     +'<div class="event-name">'+ev.name+'</div>'
+//     +'<div class="event-meta">'+ev.meta+'</div>'
+//     +'<div class="event-desc">'+ev.desc+'</div>'
+//     +'<div class="fact-block"><div class="fact-label">★ Historical Fact</div><div class="fact-text">'+ev.fact+'</div></div>';
+//   if(ev.locAdv) h+='<div class="loc-adv"><div class="loc-adv-label">📍 Of Note</div><div class="loc-adv-txt">'+ev.locAdv+'</div></div>';
+//   h+='<button class="dyk-btn" onclick="toggleDyk(this)">✦ &nbsp;Did You Know?</button>'
+//     +'<div class="dyk-panel" id="dyk-panel">'+ev.dyk+'</div>'
+//     +'</div>';
+//   document.getElementById('info-inner').innerHTML=h;
+// }
 
-window.toggleDyk=function(btn){
-  var p=document.getElementById('dyk-panel');
-  p.classList.toggle('on');
-  btn.innerHTML=p.classList.contains('on')?'✕ &nbsp;Close':'✦ &nbsp;Did You Know?';
-};
+// window.toggleDyk=function(btn){
+//   var p=document.getElementById('dyk-panel');
+//   p.classList.toggle('on');
+//   btn.innerHTML=p.classList.contains('on')?'✕ &nbsp;Close':'✦ &nbsp;Did You Know?';
+// };
 
 
 
