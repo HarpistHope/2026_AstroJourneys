@@ -120,11 +120,11 @@ canvas#starfield{position:fixed;inset:0;z-index:0;pointer-events:none;}
 .tl-line{position:absolute;left:0;right:0;height:2px;top:50%;transform:translateY(-50%);background:rgba(0, 213, 255, 0.277);}
 #tl-fill{position:absolute;height:2px;top:50%;left:0;transform:translateY(-50%);background:var(--cyan);transition:width .5s ease;box-shadow:0 0 10px var(--cyan);}
 #tl-nodes{position:absolute;inset:0;}
-.tl-node{position:absolute;top:50%;transform:translate(-50%,-50%);width:10px;height:10px;border-radius:50%;border:1.5px solid rgba(0,212,255,.48);background:var(--bg);cursor:pointer;transition:all .2s;z-index:2;}
+.tl-node{position:absolute;top:50%;transform:translate(-60%,-50%);width:10px;height:10px;border-radius:50%;border:1.5px solid rgba(0,212,255,.48);background:var(--bg);cursor:pointer;transition:all .2s;z-index:2;}
 .tl-node:hover{border-color:var(--cyan);transform:translate(-50%,-50%) scale(1.6);}
 .tl-node.on{border-color: #ffca28 /*var(--cyan)*/;background: #ffca28/*var(--cyan)*/;box-shadow:0 0 11px var(--cyan);transform:translate(-50%,-50%) scale(1.4);}
 .tl-node.done{border-color:rgba(0,212,255,.5);background:rgba(0,212,255,.2);}
-.tl-year{position:absolute;top:calc(100% + 5px);left:50%;transform:translateX(-50%);font-family:var(--fm);font-weight:700;font-size:.7rem;color:rgba(0, 213, 255, 0.586);white-space:nowrap;pointer-events:none;}
+.tl-year{position:absolute;top:calc(100% + 5px);left:50%;transform:translateX(-55%);font-family:var(--fm);font-weight:700;font-size:.7rem;color:rgba(0, 213, 255, 0.586);white-space:nowrap;pointer-events:none;}
 .tl-node.on .tl-year{color: #ffca28 /*var(--cyan)*/;}
 
 /* SVG map element classes */

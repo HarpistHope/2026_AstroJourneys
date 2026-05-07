@@ -198,9 +198,9 @@ function drawMap(view, eventMarkers) {
     });
     // Water labels
     const labels = [
-      [30, -35, 'Atlantic Ocean'],
-      [10, 160, 'Pacific Ocean'],
-      [-15, 75, 'Indian Ocean']
+      // [30, -20, 'Atlantic Ocean'],
+      // [10, 180, 'Pacific Ocean'],
+      // [-15, 75, 'Indian Ocean']
     ];
     labels.forEach(([lat, lng, txt]) => {
       const [lx, ly] = project(lat, lng, view);
@@ -219,12 +219,12 @@ function drawMap(view, eventMarkers) {
       const [gl_x, gl_y] = project(26, -89, view);
       s += `<text x="${gl_x.toFixed(0)}" y="${gl_y.toFixed(0)}" class="water-label" text-anchor="middle">Gulf of Mexico</text>`;
     }
-    if (view === 'usa') {
-      const [pa_x, pa_y] = project(40, -128, view);
-      s += `<text x="${pa_x.toFixed(0)}" y="${pa_y.toFixed(0)}" class="water-label" text-anchor="middle">Pacific Ocean</text>`;
-      const [at_x, at_y] = project(34, -64, view);
-      s += `<text x="${at_x.toFixed(0)}" y="${at_y.toFixed(0)}" class="water-label" text-anchor="middle">Atlantic</text>`;
-    }
+    // if (view === 'usa') {
+    //   const [pa_x, pa_y] = project(40, -128, view);
+    //   s += `<text x="${pa_x.toFixed(0)}" y="${pa_y.toFixed(0)}" class="water-label" text-anchor="middle">Pacific Ocean</text>`;
+    //   const [at_x, at_y] = project(34, -64, view);
+    //   s += `<text x="${at_x.toFixed(0)}" y="${at_y.toFixed(0)}" class="water-label" text-anchor="middle">Atlantic</text>`;
+    // }
   }
 
   // Permanent layer (centers or astronaut birthplaces)
