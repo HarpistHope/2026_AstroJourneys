@@ -348,9 +348,11 @@ function attachTooltips() {
   const tipT = document.getElementById('tip-title');
   const tipB = document.getElementById('tip-body');
   const tipG = document.getElementById('tip-tag');
+  const closeBtn = document.getElementById('close-btn');
+
 
   document.getElementById('map-svg').querySelectorAll('.map-dot').forEach(dot => {
-    dot.addEventListener('click', e => {
+    dot.addEventListener('mouseenter', e => {
       tipT.textContent = dot.dataset.l;
       tipB.textContent = dot.dataset.d;
       tipG.textContent = dot.dataset.t;
@@ -365,9 +367,13 @@ function attachTooltips() {
       tip.style.top  = ty + 'px';
       tip.classList.add('on');
     });
-    // dot.addEventListener('mouseleave', () => tip.classList.remove('on'));
+    dot.addEventListener('mouseleave', () => tip.classList.remove('on'));
   });
 }
+
+// document.getElementById('close-btn').addEventListener('click', () => {
+//       document.getElementById('map-tooltip').classList.remove('on'); 
+//     });
 
 function switchTab(t) {
   ACTIVE_TAB = t;
