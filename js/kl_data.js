@@ -262,7 +262,7 @@ var NASA_CENTERS = [
   { lat:38.883, lng:-77.016, name:'NASA Headquarters',          abbr:'HQ',   state:'DC', role:'Central administration, policy, and budget since 1958',                    col:'#ff3d21' },
   { lat:38.991, lng:-76.848, name:'Goddard Space Flight Ctr',   abbr:'GSFC', state:'MD', role:'Earth science, Hubble & James Webb telescope operations',                  col:'#b06fff' },
   { lat:37.098, lng:-76.384, name:'Langley Research Center',    abbr:'LaRC', state:'VA', role:"NASA's oldest center — aeronautics research since 1917",                   col:'#b06fff' },
-  { lat:41.977, lng:-87.901, name:'Glenn Research Center',      abbr:'GRC',  state:'OH', role:'Propulsion, power systems & communications research',                      col:'#00d4ff' },
+  { lat:41.412, lng:-81.862, name:'Glenn Research Center',      abbr:'GRC',  state:'OH', role:'Propulsion, power systems & communications research',                      col:'#00d4ff' },
   { lat:37.416, lng:-122.053,name:'Ames Research Center',       abbr:'ARC',  state:'CA', role:'Aeronautics, astrobiology & high-performance computing',                   col:'#00e5a0' },
   { lat:34.959, lng:-117.189,name:'Armstrong Flight Research',  abbr:'AFRC', state:'CA', role:'Advanced aircraft & experimental vehicle flight testing',                  col:'#00e5a0' },
   { lat:32.303, lng:-106.768,name:'White Sands Test Facility',  abbr:'WSTF', state:'NM', role:'Propulsion & hazardous materials testing',                                 col:'#00e5a0' },
