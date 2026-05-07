@@ -81,7 +81,7 @@ canvas#starfield{position:fixed;inset:0;z-index:0;pointer-events:none;}
 /* RIGHT PANEL */
 #panel{display:flex;flex-direction:column;background:var(--panel);overflow:hidden;}
 #dist-wrap{padding:8px 10px 6px;border-bottom:1px solid var(--bdr);flex-shrink: 0;}
-.section-label{font-family:var(--fm);font-size:.52rem;letter-spacing:.16rem;color:var(--cyan);opacity:.6;margin-bottom:4px;}
+.section-label{font-family:var(--fm);font-size:.62rem;letter-spacing:.14rem;color:var(--cyan);opacity:.6;margin-bottom:4px;}
 #info-wrap{flex:1;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(0,212,255,.14) transparent;}
 #info-wrap::-webkit-scrollbar{width:3px;}
 #info-wrap::-webkit-scrollbar-thumb{background:rgba(0,212,255,.2);}
