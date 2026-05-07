@@ -198,9 +198,11 @@ function drawMap(view, eventMarkers) {
     });
     // Water labels
     const labels = [
-      // [30, -20, 'Atlantic Ocean'],
-      // [10, 180, 'Pacific Ocean'],
-      // [-15, 75, 'Indian Ocean']
+      [37, -36, 'ATLANTIC'],
+      [-35, -17, 'ATLANTIC'],
+      [15, 170, 'PACIFIC'],
+      [-10, -130, 'PACIFIC'],
+      [-15, 75, 'INDIAN']
     ];
     labels.forEach(([lat, lng, txt]) => {
       const [lx, ly] = project(lat, lng, view);
