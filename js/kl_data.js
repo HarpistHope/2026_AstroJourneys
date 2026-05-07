@@ -237,7 +237,7 @@ var EVENTS = [
     dist:252760, distLabel:'252,760 miles — First Crew to Moon Since 1972',
     photos:['img/christinakoch_braidsinorbit.jpg'],
     //photoStyle:'object-fit:contain;background:#010d22;padding:22px;',
-    photoCap:'"First braids to leave Earth orbit. (unconfirmed)" - Artemis II Christina Koch gazes at Earth from the Orion capsule, April 2026 (NASA/astro_christina on Instagram)',
+    photoCap:'Artemis II Christina Koch gazes at Earth from the Orion capsule, April 2026 (NASA/astro_christina on Instagram)',
     emoji:'🌕',
     mapView:'usa-s',
     markers:[
