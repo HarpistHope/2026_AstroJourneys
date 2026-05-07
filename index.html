@@ -1,3 +1,10 @@
+<!-- GEOG 575 Final Project! 07May2026
+      Authors:
+      - Tiffany Jones 
+      - Katie Litchen
+      - Hope McBride
+      - Akhila Vattaluri Gangireddigari -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,7 +30,7 @@
   <div class="land-badge">NASA &middot; Human Spaceflight &middot; 1958&ndash;2026</div>
   <br><h1 class="land-title">ASTRO<br>JOURNEYS</h1><br>
   <p class="land-sub">Small Steps &nbsp;&middot;&nbsp; Giant Leaps &nbsp;&middot;&nbsp; Infinite Frontier</p>
-  <!-- <p class="land-desc"> -->
+  <!-- <p class="land-desc">  removed additional landing pg text  -->
     <!-- From Alan Shepard&rsquo;s 15-minute flight to Artemis and beyond &mdash;
     68 years of human spaceflight through interactive maps, orbital distance tracking,
     and real mission stories updated through 2026. -->
@@ -48,7 +55,7 @@
     <button class="reset-btn" id="btn-reset">&#8617; Return to Launch</button>
   </div>
 
-  <!--MAP-->
+  <!--MAP FRAME-->
   <div id="map-wrap">
     <svg id="map-svg" xmlns="http://www.w3.org/2000/svg"></svg>
     <div id="map-scan"></div>
@@ -62,12 +69,13 @@
     <!-- HUD label -->
     <div id="map-hud">GEOSPATIAL VIEW &middot; NASA OPERATIONS</div>
 
-    <!-- Layer toggle tabs -->
+    <!-- Layer toggle tabs - Removed Separate Layer for Astronaut Info - out of scope -->
     <!-- <div id="map-tabs">
       <div class="map-tab on" id="tab-c" onclick="switchTab('c')">NASA Centers</div>
       <div class="map-tab"    id="tab-a" onclick="switchTab('a')">Astronauts</div>
     </div> -->
 
+    <!-- Legend -->
     <div id="map-legend">
       <div class="legend-title">&#9660; MARKER KEY</div>
       <div class="legend-item"><span class="ldot" style="background:#ff3d21;box-shadow:0 0 7px #ff3d21"></span>Launch / Mission HQ</div>
@@ -79,14 +87,11 @@
       <div class="legend-item" id="legend-intl" style="display:none"><span class="ldot" style="background:#00e5a0;box-shadow:0 0 7px #00e5a0"></span>Intl. Partner Site</div>
     </div>
 
-
-
-    <!-- Hover tooltip -->
+    <!-- Hover tooltip: These do work on my touchscreen laptop! -->
     <div id="map-tooltip">
       <div class="tip-title" id="tip-title"></div>
       <div class="tip-body"  id="tip-body"></div>
       <div class="tip-tag"   id="tip-tag"></div>
-
     </div>
 
   </div>
@@ -94,13 +99,13 @@
   <!-- ── RIGHT PANEL ── -->
   <div id="panel">
 
-    <!-- Orbital Distance Tracker -->
+    <!-- Orbital Distance Tracker - Top Panel -->
     <div id="dist-wrap">
       <div class="section-label">&#10022; Orbital Distance Tracker &mdash; Journey From Earth</div>
       <svg id="dist-svg" viewBox="0 0 420 290" xmlns="http://www.w3.org/2000/svg" style="height: 250px;"></svg>
     </div>
 
-    <!-- Event Info -->
+    <!-- Event Info - Bottom Panel -->
     <div id="info-wrap" class="fade-content">
       <div id="info-inner"></div>
     </div>
@@ -122,12 +127,7 @@
 
 </div><!-- /#app -->
 
-<!-- SCRIPTS
-     Load order matters:
-     1. map-data.js  — US state polygons + world outlines
-     2. data.js      — Mission events, NASA centers, astronaut data
-     3. main.js      — All application logic
--->
+<!-- SCRIPTS-->
 <script src="lib/d3.v7.js"></script>
 <script src="js/ak_map-data.js"></script>
 <script src="js/kl_data.js"></script>
