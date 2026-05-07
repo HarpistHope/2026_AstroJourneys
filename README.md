@@ -52,5 +52,5 @@ From the first manned space flights in the 1960s to the lunar ventures of future
 3. User Selected View:
 ![UserSelectedView](img/userselectedview.png)
 
-4. Our Kiosk Has a Mouse!:
-5. ![Kiosk-Mouse](img/Trackball-Kensington-ExpertMouse5_NEW.jpg)
+4. Our Kiosk Has a Mouse!
+![Kiosk-Mouse](img/Trackball-Kensington-ExpertMouse5_NEW.jpg)
