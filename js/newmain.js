@@ -501,7 +501,7 @@ function renderDistTracker(idx){
     s+='<circle cx="'+rx+'" cy="'+ry+'" r="10" fill="none" stroke="'+mc+'" stroke-width="2"><animate attributeName="r" values="10;24;10" dur="2.3s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.9;0;0.9" dur="2.3s" repeatCount="indefinite"/></circle>';
     s+='<circle cx="'+rx+'" cy="'+ry+'" r="7" fill="'+mc+'" stroke="white" stroke-width="1.5" filter="url(#glo)"/>';
     s+='<text x="'+rx+'" y="'+(ry-20)+'" text-anchor="middle" font-family="Impact,Arial Black,sans-serif" font-size="10" fill="'+mc+'" letter-spacing="1">'+cur.name.split(' ')[0].toUpperCase()+'</text>';
-    s+='<text x="'+rx+'" y="'+(ry-8)+'" text-anchor="middle" font-family="Courier New,monospace" font-size="7.5" fill="rgba(255,255,255,0.6)">'+cur.dist+' mi</text>';
+    s+='<text x="'+rx+'" y="'+(ry+30)+'" text-anchor="middle" font-family="Courier New,monospace" font-size="10" fill="rgb(255, 255, 255)">'+cur.dist+' mi</text>';
     /* Line from Earth */
     s+='<line x1="'+(EX+ER*0.7)+'" y1="'+EY+'" x2="'+(rx-9)+'" y2="'+EY+'" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>';
   }
@@ -520,7 +520,7 @@ function renderDistTracker(idx){
   s+='<text x="'+EX+'" y="'+(EY+ER+17)+'" text-anchor="middle" font-family="Impact,Arial Black,sans-serif" font-size="12" fill="rgba(180,220,255,0.8)" letter-spacing="2">EARTH</text>';
 
   /* Current mission label at very bottom */
-  s+='<text x="'+(W/2)+'" y="'+(H-6)+'" text-anchor="middle" font-family="Impact,Arial Black,sans-serif" font-size="10" fill="'+mc+'">'+cur.distLabel+'</text>';
+  s+='<text x="'+(W/2)+'" y="'+(H-6)+'" text-anchor="middle" font-family="Impact,Arial Black,sans-serif" font-size="15" fill="'+mc+'">'+cur.distLabel+'</text>';
 
   svgEl.innerHTML=s;
 }
@@ -681,7 +681,6 @@ function goTo(idx, instant) {
     infoWrap.classList.remove('fading');
   }, 260);
 }
-
 
 /* BOOT */
 document.getElementById('btn-start').addEventListener('click', () => {
