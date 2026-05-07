@@ -1,18 +1,6 @@
 /* main.js — NASA Giant Leaps application logic */
 
-// Note from HKM: Thanks for writing this, Akhila! I am having a bit of trouble incorporating the geojsons with d3, I think your coding skills are a bit too advanced for me lol. I will keep working on it! 
-// Notes from group meeting 04/28/26
-// Add location advantage to location popups 
-// add legend/color context for NASA center markers colors
-// make distance tracker graphic bigger
-// standardize distance
-// edit+add events to ak_data.js
-// default view should only highlight/mark relevant NASA centers; include all centers + astronaut birthplaces as extra 
-// make map frame smaller to allow more legible detail with disttracker and info boxes
-// Do the marker colors have relevance? If so, maybe make a legend?
-// Incorporate Image context,make images more prominent?
-// dehighlight south east states 
-// fix astronaut birth places button and Did You Know buttons?
+// Note from HKM: Thanks for writing this, Akhila! <-- Akhila is the MVP for this, 10/10, Goated team-member award 
 
 /* STARFIELD  */
 (function initStars() {
@@ -283,16 +271,40 @@ function makeEventDot(x, y, col, r, perm, lbl, desc, tag, shortLabel, isBirth) {
     style="cursor:pointer;filter:drop-shadow(0 0 ${glow}px ${col})"
     data-l="${L}" data-d="${D}" data-t="${T}"/>`;
 
-  // Star symbol for birthplace markers
+  // Star symbol for birthplace markers - not used**
   if (isBirth) {
     s += `<text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle"
       font-size="${(r * 1.1).toFixed(1)}" fill="#010c1e"
       style="pointer-events:none;font-weight:bold">&#9733;</text>`;
   }
 
-  // Short label for event-specific (non-permanent) markers
-  if (!perm) {
-    s += `<text x="${(x + r + 4).toFixed(1)}" y="${(y + 4).toFixed(1)}"
+  // Short label for event-specific (non-permanent) markers - KML: updated conditions to prevent overprinting of labels; kind-of clunky but it works?
+  if (!perm && L.includes("Kennedy")) {
+    s += `<text x="${(x + r + 4).toFixed(1)}" y="${(y - 5).toFixed(1)}"
+      font-family="Share Tech Mono,Courier New,monospace" font-size="8"
+      fill="${col}" opacity=".88" style="pointer-events:none">${shortLabel}</text>`;
+  }
+
+  if (!perm && L.includes("Stennis")) {
+    s += `<text x="${(x + r + 4).toFixed(1)}" y="${(y - 5).toFixed(1)}"
+      font-family="Share Tech Mono,Courier New,monospace" font-size="8"
+      fill="${col}" opacity=".88" style="pointer-events:none">${shortLabel}</text>`;
+  }
+
+  if (!perm && L.includes("Michoud")) {
+    s += `<text x="${(x + r + 6).toFixed(1)}" y="${(y + 10).toFixed(1)}"
+      font-family="Share Tech Mono,Courier New,monospace" font-size="8"
+      fill="${col}" opacity=".88" style="pointer-events:none">${shortLabel}</text>`;
+  }
+
+  if (!perm && L.includes("Houston")) {
+    s += `<text x="${(x + r + 2).toFixed(1)}" y="${(y + 18).toFixed(1)}"
+      font-family="Share Tech Mono,Courier New,monospace" font-size="8"
+      fill="${col}" opacity=".88" style="pointer-events:none">${shortLabel}</text>`;
+  }
+
+  if (!perm && !L.includes("Michoud") && !L.includes("Kennedy") && !L.includes("Stennis") && !L.includes("Houston")) {
+    s += `<text x="${(x + r + 2).toFixed(1)}" y="${(y + 12).toFixed(1)}"
       font-family="Share Tech Mono,Courier New,monospace" font-size="8"
       fill="${col}" opacity=".88" style="pointer-events:none">${shortLabel}</text>`;
   }

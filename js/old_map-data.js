@@ -1,8 +1,18 @@
 /* map-data.js — Geographic boundary data
 */
 
+
+
 /* Southeast states highlighted (NASA corridor) */
 const SOUTH_STATES = new Set(['FL','GA','AL','MS','LA','TX','TN','SC','NC','VA','MD','AR','OK']);
+
+// Deadcode from a once-broken map:
+// that top bit is pulled in the newmain.js file, but I think it's just an artifact 
+// from when the southeastern corridor was once highlighted
+// it's not hurting anything, so this file can stay out of the graveyard 
+
+
+
 
 // /* US States — detailed lat/lng polygons [lng, lat]
 //    20–50 points per state for smooth, realistic shapes */
