@@ -21,7 +21,7 @@ var EVENTS = [
 
   /* ── 1961 ── */
   {
-    year:1961, name:'Freedom 7 — 1st American in Space',
+    year:1961, name:'Freedom-7 — 1st American in Space',
     meta:'Cape Canaveral, FL · May 5, 1961',
     desc:"Alan Shepard climbed into a capsule barely bigger than a phone booth and rode a Redstone rocket 116 miles into space. His 15-minute flight proved humans could survive space travel. President Kennedy watched from the White House; only days later, he declared America would land on the Moon before the decade was out.",
     fact:"Shepard waited in the capsule 4 hours due to weather and technical delays. He famously radioed: 'Why don't you fix your little problem and light this candle!' He reached 5,134 mph and experienced 5 full minutes of weightlessness.",
@@ -41,7 +41,7 @@ var EVENTS = [
 
   /* ── 1962 ── */
   {
-    year:1962, name:'Friendship 7 — 1st American Orbit',
+    year:1962, name:'Friendship-7 — 1st American Orbit',
     meta:'Cape Canaveral, FL · February 20, 1962',
     desc:"John Glenn orbited Earth three times in 4 hours 55 minutes. A faulty sensor caused a mid-flight scare; it indicated his heat shield might be loose, a potentially fatal defect for reentry. Glenn kept his cool, trusted his training, and splashed down safely.",
     fact:"Glenn orbited at 17,500 mph, crossing 3 continents. He later served 24 years as a US Senator for Ohio. In 1998, at age 77, he flew again aboard Space Shuttle Discovery, the oldest person ever in space.",
@@ -61,7 +61,7 @@ var EVENTS = [
 
   /* ── 1965 ── */
   {
-    year:1965, name:'Gemini IV — 1st American Spacewalk',
+    year:1965, name:'Gemini-IV — 1st American Spacewalk',
     meta:'Cape Canaveral, FL · June 3, 1965',
     desc:"The Mercury missions proved humanity could survive in the unforgiving environment of space. The Gemini missions put that survival to the test. Each mission was a wild experiment that tested the limits of both rocket and man. Gemini IV launched June 3, 1965 with Ed White and Jim McDivitt. Once in orbit, Ed White floated free outside Gemini IV for 23 glorious minutes over the Pacific Ocean, 100 miles up. He used a small handheld oxygen jet gun to maneuver and called it 'the most comfortable part of the mission.' Flight Director Chris Kraft eventually had to order him back inside. White said re-entering was 'the saddest moment of my life.'",
     fact:"White's jet gun ran out of fuel with 10 minutes of scheduled EVA remaining - he had to pull himself back to the capsule via the tether. White would later lose his life in the Apollo I launchpad fire on January 27, 1967 alongside Gus Grissom and Roger Chaffee. Their sacrifice - NASA's first tragedy - reshaped the safety culture of space exploration forever.",
@@ -81,13 +81,13 @@ var EVENTS = [
 
   /* ── 1969 ── */
   {
-    year:1969, name:'Apollo 11 — One Small Step, One Giant Leap',
+    year:1969, name:'Apollo-11 — One Small Step, One Giant Leap',
     meta:'Sea of Tranquility · July 20, 1969',
     desc:"'The Eagle has landed.' At 4:17 PM EDT on July 20, 1969, Neil Armstrong and Buzz Aldrin touched down on the Moon's surface while Michael Collins stayed in lunar orbit above. With the eyes of the entire world watching, Armstrong stepped onto the lunar surface: 'That's one small step for man, one giant leap for mankind.'",
     fact:"The Apollo Guidance Computer had 64KB of memory - nearly a billion times less than today's smartphones. During lunar touchdown, Armstrong manually piloted around a boulder field with only 20 seconds of fuel remaining. Before leaving the Moon's surface, the crew left a plaque: 'We came in peace for all mankind.'",
     dyk:"🌕 The Apollo 11 lunar module's single ascent engine had one start switch. If it failed, Armstrong and Aldrin would be stranded on the Moon with no rescue possible. NASA engineer Don Eyles stayed up 36 hours straight writing a software patch when a computer alarm triggered during landing. He fixed it. It worked. Nobody told the astronauts how close they came to disaster.",
     locAdv:"Kennedy Space Center's massive VAB (Vehicle Assembly Building) was built specifically for Saturn V. At 526 feet tall, it's one of the largest buildings on Earth by volume. Its coastal location allowed finished rockets to be floated by barge from Michoud in Louisiana.",
-    dist:238855, distLabel:'238,855 miles — The Moon',
+    dist:240000, distLabel:'238,855 miles — The Moon',
     photos:['img/Apollo_Apollo11Aldrin_1969.jpg'],
     photoCap:'Buzz Aldrin on the lunar surface — July 20, 1969 (NASA / Neil Armstrong)',
     emoji:'🌕',
@@ -104,7 +104,7 @@ var EVENTS = [
 
   /* ── 1970 ── */
   {
-    year:1970, name:"Apollo 13 — 'Houston, We\'ve Had a Problem'",
+    year:1970, name:"Apollo-13 — 'Houston, We\'ve Had a Problem'",
     meta:'Lunar Far Side · April 14–15, 1970',
     desc:"'Houston, we've had a problem.' An oxygen tank exploded 56 hours into Apollo 13's flight, 200,000 miles from Earth. Commander Jim Lovell, Jack Swigert, and Fred Haise powered down to near-darkness, used the lunar module as a lifeboat, and navigated home by starlight. Mission Control worked 87 consecutive hours. After a harrowing 5 days 22 hours 54 minutes and 41 seconds, the three atronauts splashed down safe and sound.",
     fact:"The crew traveled 248,655 miles from Earth's surface while looping around the far side of the Moon - the farthest humanity ventured from our planet until Artemis II. It was not a cozy ride. Temperatures dropped to near freezing and the men survived on 6 oz of water per day.",
@@ -124,13 +124,13 @@ var EVENTS = [
 
   /* ── 1972 ── */
   {
-    year:1972, name:'Apollo 17 — Last Footprints on the Moon',
+    year:1972, name:'Apollo-17 — Last Footprints on the Moon',
     meta:'Taurus-Littrow Valley · December 1972',
     desc:"Gene Cernan and geologist Harrison Schmitt spent 3 days exploring the lunar surface while Ron Evans orbited above. On December 14, Cernan paused at the ladder: 'As I take these last steps from the surface for some time to come, I believe history will record that America's challenge of today has forged man's destiny of tomorrow.' He climbed in. The hatch closed.",
     fact:"The 'Blue Marble' — the first photograph of a fully-lit Earth was taken by the Apollo 17 crew from 28,000 miles away on December 7, 1972. It is the most reproduced photograph in human history.",
     dyk:"🌎 The Blue Marble photo changed how humanity sees Earth. Before Apollo 17, there was no single photograph showing our entire planet fully illuminated. The photo was so powerful that Greenpeace used it, the first Earth Day was inspired partly by it, and it appeared on the cover of the Whole Earth Catalog. Cernan was the last human to walk on the Moon and whispered his daughter's initials (TDC) into the lunar dust before leaving.",
     locAdv:"Apollo 17 was the only night launch in Apollo history. The Saturn V's launch was so bright, people could see it from 500 miles away. Once on the Moon, Cernan, Schmitt, and Evans drove the Lunar Rover a record 22 miles across the Taurus-Littrow Valley, collecting 243 pounds of Moon rocks.",
-    dist:238855, distLabel:'238,855 miles — The Moon',
+    dist:240000, distLabel:'238,855 miles — The Moon',
     photos:['img/Apollo_Apollo17Earth_1972.jpg'],
     photoCap:'"The Blue Marble" Earth from Apollo 17, December 7, 1972 (NASA)',
     emoji:'🌎',
@@ -143,7 +143,7 @@ var EVENTS = [
 
   /* ── 1981 ── */
   {
-    year:1981, name:'Space Shuttle — First Flight STS-1',
+    year:1981, name:'Columbia Space Shuttle — First Flight STS-1',
     meta:'Kennedy Space Center · April 12, 1981',
     desc:"Space Shuttle Columbia roared to life on April 12, 1981 — exactly 20 years after Soviet cosmonaut Yuri Gagarin's first human space flight. John Young and Bob Crippen rode the world's first reusable spacecraft into orbit, marking the start of 30 years of Space Shuttle operations: 135 missions, construction of the International Space Station, Hubble Space Telescope deployed, and an entire generation of astronauts and scientists.",
     fact:"The Shuttle's three main engines always ran at 109% of rated thrust. They could drain an Olympic swimming pool in 25 seconds. The orbiter landed as a 240,000-pound unpowered glider — no engine, no second chance, no go-around. Pilots had one shot. Over the course of 135 missions, not one Shuttle pilot missed their mark.",
@@ -165,7 +165,7 @@ var EVENTS = [
 
   /* ── 1998 ── */
   {
-    year:1998, name:'International Space Station',
+    year:1998, name:'ISS - International Space Station',
     meta:'Low Earth Orbit · November 20, 1998',
     desc:"Russia's Zarya module launched on November 20, 1998, marking an end to the US-Soviet Space Race and beginning humanity's greatest international engineering collaboration - a partnership that is ongoing today! In the following years, sixteen nations worked together to build a football-field-sized laboratory 254 miles above Earth. Continuously inhabited since November 2, 2000, humanity has now lived in space for over 25 consecutive years without interruption. The ISS Flight Control Room in Houston monitors the station 24/7/365.'",
     fact:"ISS astronauts see 16 sunrises every single day. Zooming along at 17,500 mph, they complete an Earth orbit every 90 minutes. The station spans 361 feet across - about the length of an American football field. Over 280 people from 23 countries have visited. If you watch closely on a clear night, you can spot it with the naked eye: a small speck orbiting peacefully high above.",
@@ -186,7 +186,7 @@ var EVENTS = [
 
   /* ── 2022 ── */
   {
-    year:2022, name:'Artemis I — First Step Back to the Moon',
+    year:2022, name:'Artemis-I — First Step Back to the Moon',
     meta:'Kennedy Space Center · November 16, 2022',
     desc:"NASA's Space Launch System, the most powerful rocket ever built, lit up the Florida night on November 16, 2022. The uncrewed Orion capsule traveled 268,553 miles from Earth on a 26 day journey around the Moon, a dry run of future crewed lunar missions. The mission ended with a perfect splashdown on December 11, confirming the Orion capsule is spaceworthy and ready to carry astronauts to the Moon.",
     fact:"SLS produced 8.8 million pounds of thrust at liftoff, 15% more than the Saturn V, the previous record holder. The 322-foot rocket burned through 733,000 gallons of propellant in 8 minutes.",
@@ -208,7 +208,7 @@ var EVENTS = [
 
   /* ── 2024 ── */
   {
-    year:2024, name:'Polaris Dawn — Commercial Spacewalk',
+    year:2024, name:'Polaris-Dawn — Commercial Spacewalk',
     meta:'Kennedy Space Center · September 10, 2024',
     desc:"In recent years, several new space powers have joined NASA on the playing field. SpaceX and the Polaris program made history on September 12, 2024 when Jared Isaacman and Sarah Gillis performed the first-ever commercial spacewalk from a Dragon capsule orbiting at 870 miles altitude — the highest crewed flight since the Apollo era. All four crew members spent 5 days in orbit in brand-new SpaceX EVA suits.",
     fact:"At 870 miles altitude, Polaris Dawn crossed directly through the Van Allen radiation belt — a zone of intense particle radiation that most crewed missions deliberately avoid. The crew received a radiation dose roughly equivalent to 24 chest X-rays. The mission proved private astronauts can conduct complex EVA operations. Though the crew trained with SpaceX in California, NASA provided critical support throughout the mission.",
@@ -228,13 +228,13 @@ var EVENTS = [
 
   /* ── 2026 ── */
   {
-    year:2026, name:'Artemis II — Moon Joy For All Humanity',
+    year:2026, name:'Artemis-II — Moon Joy For All Humanity',
     meta:'Kennedy Space Center · April 1-11, 2026',
-    desc:"Four astronauts — Reid Wiseman, Victor Glover, Christina Koch, and Canadian Jeremy Hansen — brought humanity back to lunar orbit aboard NASA's Orion capsule atop the Space Launch System. This was the first crewed lunar voyage since Apollo 17 in December 1972, over 53 years before. The crew stretched the boundary of human space exploration by traveling 252,756 miles from the Earth's surface - breaking Apollo 13's long-standing record by nearly 4,100 miles.",
+    desc:"Four astronauts — Reid Wiseman, Victor Glover, Christina Koch, and Canadian Jeremy Hansen — brought humanity back to lunar orbit aboard NASA's Orion capsule atop the Space Launch System. This was the first crewed lunar voyage since Apollo 17 in December 1972, over 53 years before. The crew stretched the boundary of human space exploration by traveling 252,760 miles from the Earth's surface - breaking Apollo 13's long-standing record by nearly 4,100 miles.",
     fact:"Christina Koch is no stranger to pushing boundaries. Now the first woman to fly to the moon, she also holds the record for the longest single spaceflight by a woman: 328 consecutive days on the ISS in 2019–2020. Her crewmembers also hold their own records: Victor Glover became the first African American and Jeremy Hansen of Canada became the first non-American to travel to the Moon.",
     dyk:"🌕 For the first time since December 1972 — over 53 years — humans left Earth orbit and traveled to the Moon. Artemis II is the pathfinder for Artemis III, which will land astronauts on the lunar south pole to search for water ice that could support permanent human presence on the lunar surface. If water ice is confirmed in useful quantities, it changes everything — rocket fuel, drinking water, and oxygen can all be made from lunar ice.",
     locAdv:"The Artemis crew trains at both Johnson Space Center in Houston (mission simulations, EVA training in the Neutral Buoyancy Lab) and at Kennedy Space Center (launch vehicle familiarization and emergency egress procedures). The Gulf Coast corridor from KSC to Marshall to Michoud to Stennis to JSC represents the complete Artemis supply chain.",
-    dist:238855, distLabel:'238,855 miles — First Crew to Moon Since 1972',
+    dist:252760, distLabel:'252,760 miles — First Crew to Moon Since 1972',
     photos:['img/christinakoch_braidsinorbit.jpg'],
     //photoStyle:'object-fit:contain;background:#010d22;padding:22px;',
     photoCap:'"First braids to leave Earth orbit. (unconfirmed)" - Artemis II Christina Koch gazes at Earth from the Orion capsule, April 2026 (NASA/astro_christina on Instagram)',
