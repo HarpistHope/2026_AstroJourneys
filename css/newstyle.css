@@ -133,6 +133,8 @@ canvas#starfield{position:fixed;inset:0;z-index:0;pointer-events:none;}
 .state-border { fill:none; stroke:#1e5090; stroke-width:1.3px; }
 .world-land  { fill:#0d2245; stroke:#1e5090; stroke-width:.5px; }
 .water-label {
+  position: absolute;
+  z-index: 1000;
   font-family:var(--fm); font-size:10px;
   fill:rgba(0,212,255,.2); letter-spacing:1.5px;
 }

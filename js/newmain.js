@@ -196,24 +196,21 @@ function drawMap(view, eventMarkers) {
     WORLD_OUTLINES.forEach(pts => {
       s += `<path d="${buildPathD(pts, view)}" class="world-land"/>`;
     });
-
+    // Water labels
+    const labels = [
+      // [30, -20, 'Atlantic Ocean'],
+      // [10, 180, 'Pacific Ocean'],
+      // [-15, 75, 'Indian Ocean']
+    ];
+    labels.forEach(([lat, lng, txt]) => {
+      const [lx, ly] = project(lat, lng, view);
+      s += `<text x="${lx.toFixed(0)}" y="${ly.toFixed(0)}" class="water-label" text-anchor="middle">${txt}</text>`;
+    });
   } else {
     // US States
     US_STATES.forEach(([abbr, coords]) => {
       const cls = SOUTH_STATES.has(abbr) ? 'state-south' : 'state-base';
       s += `<path d="${buildPathD(coords, view)}" class="${cls}"/>`;
-    });
-    // State labels
-    const labels = [
-      // [30, -20, 'Atlantic Ocean'],
-      // [10, 180, 'Pacific Ocean'],
-      // [-15, 75, 'Indian Ocean']
-      [32.7794, 86.8287, 'AL'], [34.2744, 111.6602, 'AZ'], [34.8938, 92.4426, 'AK']
-    //  WCalifornia: 37.1841° N, 119.4696° WColorado: 38.9972° N, 105.5478° WConnecticut: 41.6219° N, 72.7273° WDelaware: 38.9896° N, 75.5050° WFlorida: 28.6305° N, 82.4497° WGeorgia: 32.6415° N, 83.4426° WIdaho: 44.3509° N, 114.6130° WIllinois: 40.0417° N, 89.1965° WIndiana: 39.8942° N, 86.2816° WIowa: 42.0751° N, 93.4960° WKansas: 38.4937° N, 98.3804° WKentucky: 37.5347° N, 85.3021° WLouisiana: 31.0689° N, 91.9968° WMaine: 45.3695° N, 69.2428° WMaryland: 39.0550° N, 76.7909° WMassachusetts: 42.2596° N, 71.8083° WMichigan: 44.3467° N, 85.4102° WMinnesota: 46.2807° N, 94.3053° WMississippi: 32.7364° N, 89.6678° WMissouri: 38.3566° N, 92.4580° WMontana: 47.0527° N, 109.6333° WNebraska: 41.5378° N, 99.7951° WNevada: 39.3289° N, 116.6312° WNew Hampshire: 43.6805° N, 71.5811° WNew Jersey: 40.1907° N, 74.6728° WNew Mexico: 34.4071° N, 106.1126° WNew York: 42.9538° N, 75.5268° WNorth Carolina: 35.5557° N, 79.3877° WNorth Dakota: 47.4501° N, 100.4659° WOhio: 40.2862° N, 82.7937° WOklahoma: 35.5889° N, 97.4943° WOregon: 43.9336° N, 120.5583° WPennsylvania: 40.8781° N, 77.7996° WRhode Island: 41.6762° N, 71.5562° WSouth Carolina: 33.9169° N, 80.8964° WSouth Dakota: 44.4443° N, 100.2263° WTennessee: 35.8580° N, 86.3505° WTexas: 31.4757° N, 99.3312° WUtah: 39.3055° N, 111.6703° WVermont: 44.0687° N, 72.6658° WVirginia: 37.5215° N, 78.8537° WWashington: 47.3826° N, 120.4472° WWest Virginia: 38.6409° N, 80.6227° WWisconsin: 44.6243° N, 89.9941° WWyoming: 42.9957° N, 107.5512° W
-    ];
-    labels.forEach(([lat, lng, txt]) => {
-      const [lx, ly] = project(lat, lng, view);
-      s += `<text x="${lx.toFixed(0)}" y="${ly.toFixed(0)}" class="water-label" text-anchor="middle">${txt}</text>`;
     });
     // Outer glow border
     s += `<rect width="${MAP_W}" height="${MAP_H}" fill="none" stroke="rgba(0, 213, 255, 0.12)" stroke-width="3"/>`;
