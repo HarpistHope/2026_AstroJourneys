@@ -445,7 +445,7 @@ function renderDistTracker(idx){
     var isActive=(Math.abs(p.dist-cur.dist)<2||
       (cur.dist>=248000&&cur.dist<268000&&p.dist===248000)||
       (cur.dist>=268000&&p.dist===268553)||
-      (cur.dist>=200000&&cur.dist<248000&&p.dist===238855)||
+      (cur.dist>=200000&&cur.dist<260000&&p.dist===238855)||
       (cur.dist>=800&&cur.dist<200000&&p.dist===870)||
       (cur.dist>=100&&cur.dist<800&&p.dist===254)||
       (cur.dist===0&&false));

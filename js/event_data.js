@@ -236,7 +236,7 @@ var EVENTS = [
     fact:"Christina Koch is no stranger to pushing boundaries. Now the first woman to fly to the moon, she also holds the record for the longest single spaceflight by a woman: 328 consecutive days on the ISS in 2019–2020. Her crewmembers also hold their own records: Victor Glover became the first African American and Jeremy Hansen of Canada became the first non-American to travel to the Moon.",
     dyk:"🌕 For the first time since December 1972 — over 53 years — humans left Earth orbit and traveled to the Moon. Artemis II is the pathfinder for Artemis III, which will land astronauts on the lunar south pole to search for water ice that could support permanent human presence on the lunar surface. If water ice is confirmed in useful quantities, it changes everything — rocket fuel, drinking water, and oxygen can all be made from lunar ice.",
     locAdv:"The Artemis crew trains at both Johnson Space Center in Houston (mission simulations, EVA training in the Neutral Buoyancy Lab) and at Kennedy Space Center (launch vehicle familiarization and emergency egress procedures). The Gulf Coast corridor from KSC to Marshall to Michoud to Stennis to JSC represents the complete Artemis supply chain.",
-    dist:238855, distLabel:'252,760 miles — First Crew to Moon Since 1972',
+    dist:252760, distLabel:'252,760 miles — First Crew to Moon Since 1972',
     photos:['img/christinakoch_braidsinorbit.jpg'],
     //photoStyle:'object-fit:contain;background:#010d22;padding:22px;',
     photoCap:'Artemis II Christina Koch gazes at Earth from the Orion capsule, April 2026 (NASA/astro_christina on Instagram)',
