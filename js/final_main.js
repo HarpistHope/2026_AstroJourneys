@@ -1,6 +1,25 @@
-/* main.js — NASA Giant Leaps application logic */
+/* main main.js -- this is it, folks ~~~ the final frontier ~~~~ */
 
-// Note from HKM: Thanks for writing this, Akhila! <-- Akhila is the MVP for this, 10/10, Goated team-member award 
+// Note from HKM: Thanks for writing this, Akhila! <-- Akhila is the MVP, 100/100, Goated team-member award, 5-star review, no notes - KML
+
+// Feedback from 75%: 
+// - It would be nice to have a better projection for the US view -> we agree, but a better projection just wasn't in the stars :/
+// - Marshall seems to be in TN when it's really in AL -> fixed, also the research site in Cleveland was in IL for some reason? 
+// - Remove pulse from background data pts -> fixed, new pts are bigger and pulsing. Should be distinct from fixed loc pts
+// - More labels? -> only new/active event pts have labels to reduce clutter. State labels weren't as easy to implement with the way the map is projected/loaded and seemed like a low-value add ??
+// - Distance Tracker cuts off mooooooon -> it wasn't the size of the element, the moon position was hard coded too far away. should be fixed
+// - Pop-ups coded to trigger on hover -> Tiffany used her pro skills to add a mock up for a mouse element for our kiosk. I think it's very fun. It's in the read-me. Also, the pop-ups work on our touch-screen devices, so the computer gods must know how to convert this on their own ?
+
+// Notes from not the 75%:
+// - We removed all astronaut birthplace references as out of scope
+// - Tiffany fixed the images in the event window and they should be sized appropriately now too
+// - Generally tried to make text bigger and more readable, spiffed up some styleds, spruced up the timeline, moved legend, fixed some positioning in the dist tracker... some other things too idk
+// - Tried to make labeling more consistent and not strip everything out, light edits to event text 
+// - Tried to update the code comments / organization to appease my brain
+// - If it's not very responsive, pretend the kiosk screens are a fixed size that render everything just right and it isn't available anywhere else
+// - Katie still needs to record a video
+
+// Back to your regularly scheduled programming: 
 
 /* STARFIELD  */
 (function initStars() {
@@ -31,7 +50,7 @@
   draw();
 })();
 
-
+// *********** MAP ***************
 /*  MAP PROJECTION  */
 const VIEWS = {
   usa:   { ln0:-125, ln1:-66,  lt0:50,  lt1:23, bias: 0 },   // full continental US
@@ -96,7 +115,6 @@ async function loadjsons() {
   console.log('states loaded:', US_STATES.length);
   console.log('world loaded:', WORLD_OUTLINES.length);
 };
-
 
 // convert states geojson to match existing format
 function convertStates(usGeo) {
@@ -209,6 +227,7 @@ function drawMap(view, eventMarkers) {
       const [gl_x, gl_y] = project(26, -89, view);
       s += `<text x="${gl_x.toFixed(0)}" y="${gl_y.toFixed(0)}" class="water-label" text-anchor="middle">Gulf of Mexico</text>`;
     }
+    // Removed ocean labels from US view bc they weren't printing well in some cases; kept gulf of mexico as an act of resistence, also it was behaving
     // if (view === 'usa') {
     //   const [pa_x, pa_y] = project(40, -128, view);
     //   s += `<text x="${pa_x.toFixed(0)}" y="${pa_y.toFixed(0)}" class="water-label" text-anchor="middle">Pacific Ocean</text>`;
@@ -217,7 +236,7 @@ function drawMap(view, eventMarkers) {
     // }
   }
 
-  // Permanent layer (centers or astronaut birthplaces)
+  // Permanent layer (centers or astronaut birthplaces) <- except no birthplaces anymore
   const permList = ACTIVE_TAB === 'c' ? NASA_CENTERS : ASTRONAUT_BIRTHS;
   permList.forEach(p => {
     const [cx, cy] = project(p.lat, p.lng, view);
@@ -242,9 +261,7 @@ function drawMap(view, eventMarkers) {
   attachTooltips();
 }
 
-
-
-
+// Dots for active event locations
 function makeEventDot(x, y, col, r, perm, lbl, desc, tag, shortLabel, isBirth) {
   const opacity = perm ? 0.72 : 1;
   const dur     = perm ? '3.5s' : '2.3s';
@@ -281,31 +298,27 @@ function makeEventDot(x, y, col, r, perm, lbl, desc, tag, shortLabel, isBirth) {
   // Short label for event-specific (non-permanent) markers - KML: updated conditions to prevent overprinting of labels; kind-of clunky but it works?
   if (!perm && L.includes("Kennedy")) {
     s += `<text x="${(x + r + 4).toFixed(1)}" y="${(y - 5).toFixed(1)}"
-      font-family="Share Tech Mono,Courier New,monospace" font-size="8"
+      font-family="Share Tech Mono,Courier New,monospace" font-size="9"
       fill="${col}" opacity=".88" style="pointer-events:none">${shortLabel}</text>`;
   }
-
   if (!perm && L.includes("Stennis")) {
     s += `<text x="${(x + r + 4).toFixed(1)}" y="${(y - 5).toFixed(1)}"
-      font-family="Share Tech Mono,Courier New,monospace" font-size="8"
+      font-family="Share Tech Mono,Courier New,monospace" font-size="9"
       fill="${col}" opacity=".88" style="pointer-events:none">${shortLabel}</text>`;
   }
-
   if (!perm && L.includes("Michoud")) {
     s += `<text x="${(x + r + 6).toFixed(1)}" y="${(y + 10).toFixed(1)}"
-      font-family="Share Tech Mono,Courier New,monospace" font-size="8"
+      font-family="Share Tech Mono,Courier New,monospace" font-size="9"
       fill="${col}" opacity=".88" style="pointer-events:none">${shortLabel}</text>`;
   }
-
   if (!perm && L.includes("Houston")) {
     s += `<text x="${(x + r + 2).toFixed(1)}" y="${(y + 18).toFixed(1)}"
-      font-family="Share Tech Mono,Courier New,monospace" font-size="8"
+      font-family="Share Tech Mono,Courier New,monospace" font-size="9"
       fill="${col}" opacity=".88" style="pointer-events:none">${shortLabel}</text>`;
   }
-
   if (!perm && !L.includes("Michoud") && !L.includes("Kennedy") && !L.includes("Stennis") && !L.includes("Houston")) {
     s += `<text x="${(x + r + 2).toFixed(1)}" y="${(y + 12).toFixed(1)}"
-      font-family="Share Tech Mono,Courier New,monospace" font-size="8"
+      font-family="Share Tech Mono,Courier New,monospace" font-size="9"
       fill="${col}" opacity=".88" style="pointer-events:none">${shortLabel}</text>`;
   }
 
@@ -313,6 +326,7 @@ function makeEventDot(x, y, col, r, perm, lbl, desc, tag, shortLabel, isBirth) {
   return s;
 }
 
+// Dots for permanently displayed locations
 function makePermDot(x, y, col, r, perm, lbl, desc, tag, shortLabel, isBirth) {
   const opacity = perm ? 0.72 : 1;
   const dur     = perm ? '3.5s' : '2.3s';
@@ -323,23 +337,13 @@ function makePermDot(x, y, col, r, perm, lbl, desc, tag, shortLabel, isBirth) {
 
   let s = `<g opacity="${opacity}">`;
 
-  // // Pulse rings
-  // s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="none" stroke="${col}" stroke-width="${perm ? 1.2 : 1.8}">
-  //   <animate attributeName="r" values="${r};${r + 13};${r}" dur="${dur}" repeatCount="indefinite"/>
-  //   <animate attributeName="opacity" values="0.8;0;0.8" dur="${dur}" repeatCount="indefinite"/>
-  // </circle>`;
-  // s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="none" stroke="${col}" stroke-width=".9">
-  //   <animate attributeName="r" values="${r};${r + 7};${r}" dur="${dur}" begin=".8s" repeatCount="indefinite"/>
-  //   <animate attributeName="opacity" values="0.5;0;0.5" dur="${dur}" begin=".8s" repeatCount="indefinite"/>
-  // </circle>`;
-
   // Core dot — data attributes for tooltip
   s += `<circle class="map-dot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}"
     fill="${col}" stroke="rgba(255,255,255,0.5)" stroke-width="1.3"
     style="cursor:pointer;filter:drop-shadow(0 0 ${glow}px ${col})"
     data-l="${L}" data-d="${D}" data-t="${T}"/>`;
 
-  // Star symbol for birthplace markers
+  // Star symbol for birthplace markers - not used
   if (isBirth) {
     s += `<text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle"
       font-size="${(r * 1.1).toFixed(1)}" fill="#010c1e"
@@ -364,7 +368,6 @@ function attachTooltips() {
   const tipG = document.getElementById('tip-tag');
   const closeBtn = document.getElementById('close-btn');
 
-
   document.getElementById('map-svg').querySelectorAll('.map-dot').forEach(dot => {
     dot.addEventListener('mouseenter', e => {
       tipT.textContent = dot.dataset.l;
@@ -385,21 +388,7 @@ function attachTooltips() {
   });
 }
 
-// document.getElementById('close-btn').addEventListener('click', () => {
-//       document.getElementById('map-tooltip').classList.remove('on'); 
-//     });
-
-function switchTab(t) {
-  ACTIVE_TAB = t;
-  document.getElementById('tab-c').classList.toggle('on', t === 'c');
-  document.getElementById('tab-a').classList.toggle('on', t === 'a');
-  document.getElementById('map-hud').textContent =
-    t === 'a' ? 'ASTRONAUT BIRTHPLACES · HOVER STARS FOR INFO'
-               : 'NASA CENTERS · SOUTHEASTERN OPERATIONS CORRIDOR';
-  drawMap(EVENTS[CURRENT_IDX].mapView, EVENTS[CURRENT_IDX].markers);
-}
-
-
+// ****** DISTANCE TRACKER - Top right **********
 function renderDistTracker(idx){
   var svgEl=document.getElementById('dist-svg');
   var W=svgEl.parentElement.offsetWidth||420, H=290;
@@ -413,7 +402,7 @@ function renderDistTracker(idx){
   /* Earth is at x=EX, centered vertically */
   var EX=75, EY=H/2, ER=34;
 
-  // /* All notable points we always show */ -- Comment from Hope: I commented out all but the Moon so they weren't always glowing in the background; I'm not sure how to add them to EVENTS properly...
+  // /* Points we always show */ -- Comment from Hope: I commented out all but the Moon so they weren't always glowing in the background
   var POINTS=[
     // {dist:254,    lbl:'ISS',       sub:'254 mi',       col:'#00d4ff', r:8,  emoji:'🛰️',  ya:-1},
     // {dist:870,    lbl:'POLARIS',   sub:'870 mi',        col:'#00e5a0', r:9,  emoji:'⭐',  ya:1},
@@ -539,7 +528,7 @@ function renderDistTracker(idx){
   svgEl.innerHTML=s;
 }
 
-
+// ************ EVENT BOX - Bottom Right *****************
 /* IMAGE LOADER WITH FALLBACK */
 function loadImageWithFallback(imgEl, urlList, emoji, caption) {
   let attempt = 0;
@@ -571,7 +560,7 @@ function loadImageWithFallback(imgEl, urlList, emoji, caption) {
   tryNext();
 }
 
-
+// Render events
 function renderInfo(ev){
     let h = `<div class="event-img-wrap">
     <img class="event-img" id="ev-photo" alt="${ev.photoCap}" style="${ev.photoStyle || ''}"/>
@@ -601,46 +590,7 @@ window.toggleDyk=function(btn){
   btn.innerHTML=p.classList.contains('on')?'✕ &nbsp;Close':'✦ &nbsp;Did You Know?';
 };
 
-
-
-// /* INFO PANEL*/
-// function renderInfo(ev) {
-//   let h = `<div class="event-img-wrap">
-//     <img class="event-img" id="ev-photo" alt="${ev.photoCap}" style="${ev.photoStyle || ''}"/>
-//     <div class="img-overlay"></div>
-//     <div class="img-caption">${ev.photoCap}</div>
-//   </div>`;
-
-//   h += `<div class="event-body">
-//     <div class="event-name">${ev.name}</div>
-//     <div class="event-meta">${ev.meta}</div>
-//     <div class="event-desc">${ev.desc}</div>
-//     <div class="fact-block">
-//       <div class="fact-label">★ Historical Fact</div>
-//       <div class="fact-text">${ev.fact}</div>
-//     </div>`;
-
-//   if (ev.dyk) {
-//     h += `<button class="dyk-btn" onclick="toggleDyk(this)">✦ &nbsp;Did You Know?</button>
-//           <div class="dyk-panel" id="dyk-panel">${ev.dyk}</div>`;
-//   }
-//   h += '</div>';
-
-//   document.getElementById('info-inner').innerHTML = h;
-
-//   // Load image with multi-URL fallback
-//   const img = document.getElementById('ev-photo');
-//   if (img) loadImageWithFallback(img, ev.photos, ev.emoji, ev.photoCap);
-// }
-
-// function toggleDyk(btn) {
-//   const panel = document.getElementById('dyk-panel');
-//   panel.classList.toggle('on');
-//   btn.innerHTML = panel.classList.contains('on') ? '✕ &nbsp;Close' : '✦ &nbsp;Did You Know?';
-// }
-
-
-/* TIMELINE */
+// *************** TIMELINE ***************
 function buildTimeline() {
   const container = document.getElementById('tl-nodes');
   container.innerHTML = '';
