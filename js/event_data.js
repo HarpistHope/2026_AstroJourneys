@@ -132,7 +132,7 @@ var EVENTS = [
     fact:"The 'Blue Marble' — the first photograph of a fully-lit Earth was taken by the Apollo 17 crew from 28,000 miles away on December 7, 1972. It is the most reproduced photograph in human history.",
     dyk:"🌎 The Blue Marble photo changed how humanity sees Earth. Before Apollo 17, there was no single photograph showing our entire planet fully illuminated. The photo was so powerful that Greenpeace used it, the first Earth Day was inspired partly by it, and it appeared on the cover of the Whole Earth Catalog. Cernan was the last human to walk on the Moon and whispered his daughter's initials (TDC) into the lunar dust before leaving.",
     locAdv:"Apollo 17 was the only night launch in Apollo history. The Saturn V's launch was so bright, people could see it from 500 miles away. Once on the Moon, Cernan, Schmitt, and Evans drove the Lunar Rover a record 22 miles across the Taurus-Littrow Valley, collecting 243 pounds of Moon rocks!",
-    dist:240000, distLabel:'238,855 miles — The Moon',
+    dist:240000, distLabel:'~240,000 mi — The Moon',
     photos:['img/Apollo_Apollo17Earth_1972.jpg'],
     photoCap:'"The Blue Marble" Earth from Apollo 17, December 7, 1972 (NASA)',
     emoji:'🌎',
