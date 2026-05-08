@@ -13,10 +13,10 @@
 // Notes from not the 75%:
 // - We removed all astronaut birthplace references as out of scope
 // - Tiffany fixed the images in the event window and they should be sized appropriately now too
-// - Generally tried to make text bigger and more readable, spiffed up some styleds, spruced up the timeline, moved legend, fixed some positioning in the dist tracker... some other things too idk
-// - Tried to make labeling more consistent and not strip everything out, light edits to event text 
+// - Generally tried to make text bigger and more readable, spiffed up some styles, spruced up the timeline, moved legend, fixed some positioning in the dist tracker... some other things too idk
+// - Tried to make labeling more consistent and not strip too much out w/o making separate marker labels, light edits to event text 
 // - Tried to update the code comments / organization to appease my brain
-// - If it's not very responsive, pretend the kiosk screens are a fixed size that render everything just right and it isn't available anywhere else
+// - If it's not very responsive, pretend the kiosk screens are a fixed size that render everything just right and the astrojourney experience is trademarked - it isn't available anywhere else, sorry kids
 // - Katie still needs to record a video
 
 // Back to your regularly scheduled programming: 
